@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "checkJs": false,       // TypeScript가 JS 파일 검사하지 않도록
+    "jsx": "react-jsx",     // React JSX 지원
+    "baseUrl": "./"         // 절대경로 import 가능
+  },
+  "include": ["src/**/*"]
+}
