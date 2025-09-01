@@ -13,7 +13,7 @@ function Record({ dataArray }) {
             const distance = parseFloat(obj.d);
             const speed = parseFloat(obj.vy);
             if (isNaN(angle) || isNaN(distance)) return null;
-            return `[${id}] ${distance}M / ${angle}° / ${speed}m/s`;
+            return `[${id}] ${distance}m / ${angle}° / ${speed}m/s`;
         }).filter(Boolean);
         setRecordData(formatted);
     }, [dataArray]);

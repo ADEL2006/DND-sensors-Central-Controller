@@ -87,25 +87,40 @@ function Radar({ dataArray }) {
             ctx.stroke();
 
             // 감지 물체 표시
-            (dataRef.current || []).forEach(obj => {
-                const angleDeg = parseFloat(obj.a) * -1 + 90;
-                const distance = parseFloat(obj.d);
-                if (isNaN(angleDeg) || isNaN(distance)) return;
+(dataRef.current || []).forEach(obj => {
+    const id = parseFloat(obj.id);
+    const angle = parseFloat(obj.a);
+    const angleDeg = angle * -1 + 90;
+    const distance = parseFloat(obj.d);
+    const speed = parseFloat(obj.vy);
+    if (isNaN(angleDeg) || isNaN(distance)) return;
 
-                const angleRad = (angleDeg * Math.PI) / 180;
-                const scaledR = Math.sqrt(distance / maxDistance) * maxRadius;
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const scaledR = (distance / maxDistance) * maxRadius;
 
-                // const x = parseFloat(obj.x);
-                // const y = parseFloat(obj.y);
+    const x = centerX + scaledR * Math.cos(angleRad);
+    const y = centerY - scaledR * Math.sin(angleRad);
 
-                const x = (centerX + scaledR * Math.cos(angleRad) / 2);
-                const y = (centerY - scaledR * Math.sin(angleRad) / 2);
+    const radius = 6; // 빨간 원 반지름
 
-                ctx.beginPath();
-                ctx.arc(x, y, 6, 0, Math.PI * 2);
-                ctx.fillStyle = 'red';
-                ctx.fill();
-            });
+    // 빨간 원 (그라디언트)
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
+    gradient.addColorStop(1, "rgba(255, 0, 0, 0)");
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    // 🔹 텍스트 표시 (빨간 원 오른쪽 위)
+    ctx.fillStyle = "white";  
+    ctx.font = "bold 14px 'Nunito Sans', Arial, sans-serif"; // 원하는 글씨체 적용
+    ctx.textAlign = "left";   
+    ctx.textBaseline = "bottom"; 
+    ctx.fillText(`[${id}] ${distance}m / ${angle}° / ${speed}m/s`, x + radius + 2, y - radius - 2);
+});
+
 
             // 원 애니메이션
             if (pulseRef.current > 0) {
@@ -113,7 +128,7 @@ function Radar({ dataArray }) {
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, pulseRef.current, Math.PI, 0);
                 ctx.strokeStyle = `rgba(0, 255, 0, ${alpha})`; // lime색 + 투명도
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1;
                 ctx.stroke();
             }
 
