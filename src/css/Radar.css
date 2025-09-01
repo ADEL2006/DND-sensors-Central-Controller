@@ -1,0 +1,11 @@
+
+.radar {
+  height: 800px;
+  width: 800px;
+}
+
+.radar_title{
+  line-height: 50px;
+  margin: 0;
+  height: 50px;
+}

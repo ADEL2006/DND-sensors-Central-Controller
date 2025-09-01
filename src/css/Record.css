@@ -4,6 +4,22 @@
   font-family: 'Nunito Sans', 'Arial', sans-serif;
   font-size: 16px;
   font-weight: bold;
-  line-height: 1.4;
-  white-space: pre-wrap; /* 줄바꿈 유지 */
+  line-height: 50px;
+  white-space: pre-wrap;
+  height: 50px;
+  border: 1px solid white;
+  margin: 0; /* pre 기본 margin 제거 */
+  padding: 0; /* 불필요한 padding 제거 */
+}
+
+.record_title{
+  margin: 0;
+  height: 50px;
+  line-height: 50px;
+}
+
+.record {
+  height: 300px;
+  width: 800px;
+  margin: 0;
 }
