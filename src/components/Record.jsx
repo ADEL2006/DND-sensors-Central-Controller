@@ -19,7 +19,8 @@ function Record({ dataArray }) {
     }, [dataArray]);
 
     return (
-        <div>
+        <div className='record'>
+            <h2 className="record_title">Record</h2>
             <pre className="record_text">{recordData.join("\n")}</pre>
         </div>
     );

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import '../css/Radar.css';
 
 function Radar({ dataArray }) {
     const canvasRef = useRef(null);
@@ -87,39 +88,56 @@ function Radar({ dataArray }) {
             ctx.stroke();
 
             // 감지 물체 표시
-(dataRef.current || []).forEach(obj => {
-    const id = parseFloat(obj.id);
-    const angle = parseFloat(obj.a);
-    const angleDeg = angle * -1 + 90;
-    const distance = parseFloat(obj.d);
-    const speed = parseFloat(obj.vy);
-    if (isNaN(angleDeg) || isNaN(distance)) return;
+            (dataRef.current || []).forEach(obj => {
+                const id = parseFloat(obj.id);
+                const angle = parseFloat(obj.a);
+                const angleDeg = angle * -1 + 90;
+                const distance = parseFloat(obj.d);
+                const speed = parseFloat(obj.vy);
+                if (isNaN(angleDeg) || isNaN(distance)) return;
 
-    const angleRad = (angleDeg * Math.PI) / 180;
-    const scaledR = (distance / maxDistance) * maxRadius;
+                const angleRad = (angleDeg * Math.PI) / 180;
+                const scaledR = (distance / maxDistance) * maxRadius;
 
-    const x = centerX + scaledR * Math.cos(angleRad);
-    const y = centerY - scaledR * Math.sin(angleRad);
+                const x = centerX + scaledR * Math.cos(angleRad);
+                const y = centerY - scaledR * Math.sin(angleRad);
 
-    const radius = 6; // 빨간 원 반지름
+                const radius = 6;
 
-    // 빨간 원 (그라디언트)
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-    gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
-    gradient.addColorStop(1, "rgba(255, 0, 0, 0)");
+                // 빨간점
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
+                gradient.addColorStop(1, "rgba(255, 0, 0, 0)");
 
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fillStyle = gradient;
-    ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
 
-    // 🔹 텍스트 표시 (빨간 원 오른쪽 위)
-    ctx.fillStyle = "white";  
-    ctx.font = "bold 14px 'Nunito Sans', Arial, sans-serif"; // 원하는 글씨체 적용
-    ctx.textAlign = "left";   
-    ctx.textBaseline = "bottom"; 
-    ctx.fillText(`[${id}] ${distance}m / ${angle}° / ${speed}m/s`, x + radius + 2, y - radius - 2);
-});
+                // 텍스트 위치
+                const offset = 15;
+                const textX = x + radius + offset;
+                const textY = y - radius - offset;
+
+                // 빨간점에서 조금 떨어진 위치에서 선 시작
+                const lineStartOffset = radius + 0;
+                const startX = x + lineStartOffset * Math.cos(angleRad) + 5;
+                const startY = y - lineStartOffset * Math.sin(angleRad) + 1;
+
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(textX, textY);
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // 텍스트 표시
+                ctx.fillStyle = "white";
+                ctx.font = "bold 14px 'Nunito Sans', Arial, sans-serif";
+                ctx.textAlign = "left";
+                ctx.textBaseline = "bottom";
+                ctx.fillText(`[${id}] ${distance}m / ${angle}° / ${speed}m/s`, textX, textY);
+            });
 
 
             // 원 애니메이션
@@ -127,19 +145,19 @@ function Radar({ dataArray }) {
                 const alpha = 1 - pulseRef.current / maxRadius; // 1 → 0으로 점점 투명해짐
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, pulseRef.current, Math.PI, 0);
-                ctx.strokeStyle = `rgba(0, 255, 0, ${alpha})`; // lime색 + 투명도
+                ctx.strokeStyle = `rgba(0, 255, 0, ${alpha})`;
                 ctx.lineWidth = 1;
                 ctx.stroke();
             }
 
             if (!pulsePausedRef.current) {
-                pulseRef.current += 3; // 반경 증가 속도
+                pulseRef.current += 3;
                 if (pulseRef.current > maxRadius) {
-                    pulsePausedRef.current = true; // 멈춤 시작
+                    pulsePausedRef.current = true;
                     setTimeout(() => {
-                        pulseRef.current = 0;        // 반경 초기화
-                        pulsePausedRef.current = false; // 다시 진행
-                    }, 500); // 🔹 0.5초 간격
+                        pulseRef.current = 0;
+                        pulsePausedRef.current = false;
+                    }, 500);
                 }
             }
 
@@ -150,12 +168,15 @@ function Radar({ dataArray }) {
     }, []);
 
     return (
-        <canvas
-            ref={canvasRef}
-            width="800"
-            height="800"
-            style={{ background: "black" }}
-        />
+        <div className='radar'>
+            <h2 className='radar_title'>Radar</h2>
+            <canvas
+                ref={canvasRef}
+                width="800"
+                height="750"
+                style={{ background: "black" }}
+            />
+        </div>
     );
 }
 
