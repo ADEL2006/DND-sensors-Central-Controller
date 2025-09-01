@@ -6,11 +6,14 @@ function Radar({ dataArray }) {
     const directionRef = useRef(1);
     const isPaused = useRef(false);
 
-    // 🔹 최신 데이터 참조
+    // 최신 데이터 참조
     const dataRef = useRef([]);
     useEffect(() => {
         dataRef.current = dataArray || [];
     }, [dataArray]);
+
+    const pulseRef = useRef(0);
+    const pulsePausedRef = useRef(false);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -45,13 +48,10 @@ function Radar({ dataArray }) {
 
             // 각도 표기
             anglesToShow.forEach(displayText => {
-                // 좌표 계산용 각도
                 const angleRad = ((displayText - 90) * Math.PI) / 180 * -1;
-
                 const x = centerX + maxRadius * Math.cos(angleRad);
                 const y = centerY - maxRadius * Math.sin(angleRad);
 
-                // 각도선 그리기
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
@@ -59,7 +59,6 @@ function Radar({ dataArray }) {
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
-                // 텍스트 위치
                 const textOffset = 15;
                 let textX = centerX + (maxRadius + textOffset) * Math.cos(angleRad);
                 let textY = centerY - (maxRadius + textOffset) * Math.sin(angleRad);
@@ -93,8 +92,12 @@ function Radar({ dataArray }) {
                 const distance = parseFloat(obj.d);
                 if (isNaN(angleDeg) || isNaN(distance)) return;
 
-                const angleRad = (angleDeg * Math.PI) / 180; // 좌우 거꾸로
+                const angleRad = (angleDeg * Math.PI) / 180;
                 const scaledR = Math.sqrt(distance / maxDistance) * maxRadius;
+
+                // const x = parseFloat(obj.x);
+                // const y = parseFloat(obj.y);
+
                 const x = (centerX + scaledR * Math.cos(angleRad) / 2);
                 const y = (centerY - scaledR * Math.sin(angleRad) / 2);
 
@@ -104,29 +107,26 @@ function Radar({ dataArray }) {
                 ctx.fill();
             });
 
-            // // 스캔 바
-            // const scanRad = ((180 - angleRef.current) * Math.PI) / 180;
-            // const scanX = centerX + maxRadius * Math.cos(scanRad);
-            // const scanY = centerY - maxRadius * Math.sin(scanRad);
+            // 원 애니메이션
+            if (pulseRef.current > 0) {
+                const alpha = 1 - pulseRef.current / maxRadius; // 1 → 0으로 점점 투명해짐
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, pulseRef.current, Math.PI, 0);
+                ctx.strokeStyle = `rgba(0, 255, 0, ${alpha})`; // lime색 + 투명도
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
 
-            // ctx.beginPath();
-            // ctx.moveTo(centerX, centerY);
-            // ctx.lineTo(scanX, scanY);
-            // ctx.strokeStyle = 'yellow';
-            // ctx.lineWidth = 2;
-            // ctx.stroke();
-
-            // // 스캔바 애니메이션
-            // if (!isPaused.current) {
-            //     angleRef.current += 0.8 * directionRef.current;
-            //     if (angleRef.current >= 180 || angleRef.current <= 0) {
-            //         isPaused.current = true;
-            //         setTimeout(() => {
-            //             directionRef.current *= -1;
-            //             isPaused.current = false;
-            //         }, 500);
-            //     }
-            // }
+            if (!pulsePausedRef.current) {
+                pulseRef.current += 3; // 반경 증가 속도
+                if (pulseRef.current > maxRadius) {
+                    pulsePausedRef.current = true; // 멈춤 시작
+                    setTimeout(() => {
+                        pulseRef.current = 0;        // 반경 초기화
+                        pulsePausedRef.current = false; // 다시 진행
+                    }, 500); // 🔹 0.5초 간격
+                }
+            }
 
             requestAnimationFrame(drawRadar);
         }
@@ -138,7 +138,7 @@ function Radar({ dataArray }) {
         <canvas
             ref={canvasRef}
             width="800"
-            height="800" // 세로 길이 800으로 변경
+            height="800"
             style={{ background: "black" }}
         />
     );
