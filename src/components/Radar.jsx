@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ dataArray }) {
+function Radar({ wsStatus, dataArray }) {
     const canvasRef = useRef(null);
     const dataRef = useRef([]);
 
@@ -10,6 +10,18 @@ function Radar({ dataArray }) {
     const pulseRef = useRef(0); // 현재 원 반경
     const pulsePausedRef = useRef(false); // pulse 증가 중단 여부
     const trailRef = useRef([]); // 원 트레일 저장
+
+    const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
+    
+    // wsStatus 변경 시 색상 업데이트
+    useEffect(() => {
+        if (wsStatus === "Connected") {
+            setConnectionStatusColor("lime");
+        } else {
+            setConnectionStatusColor("red");
+        }
+        console.log(wsStatus);
+    }, [wsStatus]);
 
     useEffect(() => {
         dataRef.current = dataArray || [];
@@ -35,7 +47,7 @@ function Radar({ dataArray }) {
                 const r = (distance / maxDistance) * maxRadius;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.2)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 5)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -55,7 +67,7 @@ function Radar({ dataArray }) {
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.2)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 5)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -77,7 +89,7 @@ function Radar({ dataArray }) {
             ctx.beginPath();
             ctx.arc(centerX, centerY, maxRadius, Math.PI, 0);
             ctx.setLineDash([]);
-            ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)';
+            ctx.strokeStyle = 'rgba(115, 255, 115, 1)';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
@@ -178,6 +190,9 @@ function Radar({ dataArray }) {
     return (
         <div className='radar'>
             <h2 className='radar_title'>Radar</h2>
+            <h3 className='connection_status'>
+                <span style={{ color: connectionStatusColor }}>{wsStatus}</span>
+            </h3>
             <canvas
                 ref={canvasRef}
                 width="1000"
