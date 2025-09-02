@@ -5,13 +5,12 @@ export function useRadarSocket() {
     const [dataArray, setDataArray] = useState([]);
     const wsRef = useRef(null);
 
-    const onConnect = useRef(true);
+    const hasConnected = useRef(false);
 
     const url_ws = "ws://192.168.0.123:1883";
 
     useEffect(() => {
-        if(onConnect.current) {
-            function initWebSocket() {
+        function initWebSocket() {
             if (wsRef.current) return;
 
             const ws = new WebSocket(url_ws);
@@ -20,23 +19,29 @@ export function useRadarSocket() {
             ws.onopen = () => {
                 setWsStatus("연결됨");
                 console.log("WebSocket Connected");
-                console.log("onConnect: " + onConnect.current);
-                onConnect.current = false;
+                hasConnected.current = true;
             };
 
             ws.onclose = (e) => {
-                setWsStatus("연결중");
                 console.log("WebSocket Disconnected:", e.reason);
-                console.log("onConnect: " + onConnect.current);
                 wsRef.current = null;
-                setTimeout(initWebSocket, 5000); // 5초 후 재연결
+                if (!hasConnected.current) {
+                    setWsStatus("연결중");
+                    setTimeout(initWebSocket, 5000);
+                } else {
+                    setWsStatus("연결됨");
+                }
             };
 
             ws.onerror = (e) => {
-                setWsStatus("연결 에러");
                 console.log("WebSocket Error:", e);
                 wsRef.current = null;
-                setTimeout(initWebSocket, 5000);
+                if (!hasConnected.current) {
+                    setWsStatus("연결 에러");
+                    setTimeout(initWebSocket, 5000);
+                } else {
+                    setWsStatus("연결됨");
+                }
             };
 
             ws.onmessage = (e) => {
@@ -45,9 +50,10 @@ export function useRadarSocket() {
                     if (msg.data && Array.isArray(msg.data)) {
                         const arr = msg.data.map(obj => ({
                             ...obj,
-                            a: (parseFloat(obj.a)).toString() // 각도 +45도
+                            a: (parseFloat(obj.a)).toString()
                         }));
                         setDataArray(arr);
+                        setWsStatus("연결됨");
                     } else {
                         console.warn("Data 형식이 예상과 다름:", msg);
                     }
@@ -62,7 +68,7 @@ export function useRadarSocket() {
         return () => {
             if (wsRef.current) wsRef.current.close();
             wsRef.current = null;
-        };}
+        };
     }, []);
 
     return { wsStatus, dataArray };
