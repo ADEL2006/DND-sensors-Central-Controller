@@ -114,8 +114,8 @@ function Radar({ dataArray }) {
                 const textY = y - radius - offset;
 
                 const lineStartOffset = radius;
-                const startX = x + lineStartOffset * Math.cos(angleRad);
-                const startY = y - lineStartOffset * Math.sin(angleRad);
+                const startX = x + lineStartOffset * Math.cos(angleRad) + 2;
+                const startY = y - lineStartOffset * Math.sin(angleRad) - 3;
 
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
