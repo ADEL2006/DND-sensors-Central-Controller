@@ -20,11 +20,11 @@ export default function App() {
 
     return (
         <div className='main'>
-            <div className='main_title'>
+            {/* <div className='main_title'>
                 <h1>
                     센서 상태: <span style={{ color: statusColor }}>{wsStatus}</span>
                 </h1>
-            </div>
+            </div> */}
             <div className='contents'>
                 <Radar dataArray={dataArray} />
                 <div className='right_element'>
