@@ -30,9 +30,9 @@ function Video() {
     }, [ready]);
 
     return (
-        <div className='video'>
+        <div className='livqCQ'>
             <h2 className='video_title'>Video</h2>
-            <canvas ref={canvasRef} style={{ width: '100%', height: 'auto' }}/> 
+            <canvas ref={canvasRef} className='video'/> 
         </div>
     );
 }

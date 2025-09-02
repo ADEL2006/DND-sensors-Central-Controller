@@ -2,26 +2,37 @@ import { useEffect, useState } from "react";
 import '../css/Record.css'
 
 function Record({ dataArray }) {
-    const [recordData, setRecordData] = useState([]);
+    const [recordMap, setRecordMap] = useState({}); // id별 데이터 저장
 
-    // dataArray가 바뀔 때마다 상태 업데이트
     useEffect(() => {
         if (!dataArray) return;
-        const formatted = dataArray.map(obj => {
-            const id = parseFloat(obj.id);
-            const angle = parseFloat(obj.a);
-            const distance = parseFloat(obj.d);
-            const speed = parseFloat(obj.vy);
-            if (isNaN(angle) || isNaN(distance)) return null;
-            return `[${id}] ${distance}m / ${angle}° / ${speed}m/s`;
-        }).filter(Boolean);
-        setRecordData(formatted);
+
+        setRecordMap(prev => {
+            const updated = { ...prev };
+
+            dataArray.forEach(obj => {
+                const id = parseFloat(obj.id);
+                const angle = parseFloat(obj.a);
+                const distance = parseFloat(obj.d);
+                const speed = parseFloat(obj.vy);
+
+                if (!isNaN(id) && !isNaN(angle) && !isNaN(distance)) {
+                    updated[id] = `[${id}] ${distance}m / ${angle}° / ${speed}m/s`;
+                }
+            });
+
+            return updated;
+        });
     }, [dataArray]);
 
     return (
         <div className='record'>
             <h2 className="record_title">Record</h2>
-            <pre className="record_text">{recordData.join("\n")}</pre>
+            <div className="record_text_box">
+                <pre className="record_text">
+                    {Object.values(recordMap).join("\n")}
+                </pre>
+            </div>
         </div>
     );
 }

@@ -71,10 +71,12 @@ html, body {
   display: flex;
   width: 1600px;   /* 원하는 너비 */
   max-width: 95vw; /* 화면보다 크면 줄어들게 */
+  height: 800px;
   flex: 1;         /* 남은 공간 채우기 */
 }
 
 .right_element {
-  width: 800px;
+  width: 600px;
+  height: 800px;
   flex-shrink: 0; /* 내용 줄어들지 않게 */
 }

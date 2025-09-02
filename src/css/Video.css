@@ -1,11 +1,24 @@
-.video {
-    height: 500px;
-    width: 800px;
-    margin: 0;
+.livqCQ {
+  width: 600px;
+  height: 388.38px;
+  margin: 0;
+  border: 1px solid white;
+  box-sizing: border-box;
 }
 
 .video_title {
   line-height: 50px;
   height: 50px;
   margin: 0;
+  width: 600;
+  text-align: center;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+
+.video {
+  width: 598px;
+  height: auto;
+  border: 1px solid white;
+  box-sizing: border-box;
 }
