@@ -5,10 +5,13 @@ export function useRadarSocket() {
     const [dataArray, setDataArray] = useState([]);
     const wsRef = useRef(null);
 
+    const onConnect = useRef(true);
+
     const url_ws = "ws://192.168.0.123:1883";
 
     useEffect(() => {
-        function initWebSocket() {
+        if(onConnect.current) {
+            function initWebSocket() {
             if (wsRef.current) return;
 
             const ws = new WebSocket(url_ws);
@@ -17,11 +20,14 @@ export function useRadarSocket() {
             ws.onopen = () => {
                 setWsStatus("연결됨");
                 console.log("WebSocket Connected");
+                console.log("onConnect: " + onConnect.current);
+                onConnect.current = false;
             };
 
             ws.onclose = (e) => {
-                setWsStatus("연결 끊김");
+                setWsStatus("연결중");
                 console.log("WebSocket Disconnected:", e.reason);
+                console.log("onConnect: " + onConnect.current);
                 wsRef.current = null;
                 setTimeout(initWebSocket, 5000); // 5초 후 재연결
             };
@@ -56,7 +62,7 @@ export function useRadarSocket() {
         return () => {
             if (wsRef.current) wsRef.current.close();
             wsRef.current = null;
-        };
+        };}
     }, []);
 
     return { wsStatus, dataArray };
