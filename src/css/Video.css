@@ -1,24 +1,39 @@
-.livqCQ {
-  width: 600px;
-  height: 388.38px;
+/* .livqCQ {
+  width: 598px;
+  height: 384.38px;
   margin: 0;
   border: 1px solid white;
-  box-sizing: border-box;
+}
+
+.video_title {
+  line-height: 48px;
+  height: 48px;
+  margin: 0;
+  text-align: center;
+  border: 1px solid white;
+}
+
+.video {
+  width: 596px;
+  height: 338.38px;
+  border: 1px solid white;
+} */
+
+.livqCQ {
+  width: 600px;
+  height: 384.38px;
+  margin: 0;
 }
 
 .video_title {
   line-height: 50px;
-  height: 50px;
+  height: 48px;
   margin: 0;
-  width: 600;
   text-align: center;
-  border: 1px solid white;
-  box-sizing: border-box;
+  border-bottom: 2px solid white;
 }
 
 .video {
-  width: 598px;
-  height: 337.25px;
-  border: 1px solid white;
-  box-sizing: border-box;
+  width: 600px;
+  border-bottom: 2px solid white;
 }

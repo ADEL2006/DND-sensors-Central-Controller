@@ -2,26 +2,24 @@
 
 
 .radar {
-  height: 800px;
-  width: 1000px;
-  border: 1px solid white;
-  box-sizing: border-box; /* border 포함 */
+  height: 796px;
+  width: 996px;
+  border: 2px solid white;
+  border-right: 0;
 }
 
 .radar_title{
   line-height: 50px;
   margin: 0;
-  height: 50px;
+  height: 48px;
   width: 1000px;
   text-align: center;
-  border: 1px solid white;
-  box-sizing: border-box; /* border 포함 */
+  border-bottom: 2px solid white;
 }
 
 .radar_canvas {
   background: black;
-  border: 1px solid white;
-  box-sizing: border-box; /* border 포함 */
+  border-top: 0;
   /* background-image: url('../img/playground.png');
   background-repeat: no-repeat;
   background-size: auto 746px;
@@ -29,7 +27,7 @@
 }
 
 .connection_status {
-  position: absolute;
-  left: 9%;
-  top: 18.5%;
+  margin: 0;
+  height: 30px;
+  margin-left: 6px;
 }

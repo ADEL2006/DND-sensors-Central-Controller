@@ -195,8 +195,8 @@ function Radar({ wsStatus, dataArray }) {
             </h3>
             <canvas
                 ref={canvasRef}
-                width="1000"
-                height="746"
+                width="996"
+                height="716"
                 className='radar_canvas'
             />
         </div>
