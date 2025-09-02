@@ -5,30 +5,31 @@ import Video from './components/Video';
 import './App.css';
 import { useState, useEffect } from 'react';
 import dnetImg from './img/dnet.png'; // App.jsx 기준 상대 경로
+import { data } from 'react-router-dom';
 
 export default function App() {
     const { wsStatus, dataArray } = useRadarSocket();
-    const [statusColor, setStatusColor] = useState("red"); // 기본값 red
+    const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
+    const [sensorStatusColor, setSensorStatusColor] = useState("lime");
+    const [sensorStatus, setSensorStatus] = useState("이상없음")
 
-    // wsStatus 변경 시 색상 업데이트
     useEffect(() => {
-        if (wsStatus === "연결됨") {
-            setStatusColor("lime");
-        } else {
-            setStatusColor("red");
+        if (dataArray.length > 0) {
+            setSensorStatusColor("red");
+            setSensorStatus("칩입자 감지!")
         }
-    }, [wsStatus]);
+    }, [dataArray])
 
     return (
         <div className='main'>
             <div className='main_title'>
-                <img src={dnetImg} className='dnet_logo'/>
-                <h1>
-                    센서 상태: <span style={{ color: statusColor }}>{wsStatus}</span>
+                <img src={dnetImg} className='dnet_logo' />
+                <h1 style={{ width: "1220.31px", textAlign: "center" }}>
+                    센서 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
                 </h1>
             </div>
             <div className='contents'>
-                <Radar dataArray={dataArray} />
+                <Radar wsStatus={wsStatus} dataArray={dataArray} />
                 <div className='right_element'>
                     <Video />
                     <Record dataArray={dataArray} />

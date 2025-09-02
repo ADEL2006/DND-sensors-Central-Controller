@@ -64,14 +64,14 @@ html, body {
 
 .main_title {
   height: 100px;
+  width: 100%;
   margin-top: 20px;
   margin-bottom: 20px; /* 필요 시 spacing */
   display: flex;
 }
 
 .dnet_logo {
-  height: 100px;
-  position: absolute;
+  width: 226.08px;
   left: 1%;
 }
 
