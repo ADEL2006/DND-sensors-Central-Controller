@@ -4,6 +4,7 @@ import Record from './components/Record';
 import Video from './components/Video';
 import './App.css';
 import { useState, useEffect } from 'react';
+import dnetImg from './img/dnet.png'; // App.jsx 기준 상대 경로
 
 export default function App() {
     const { wsStatus, dataArray } = useRadarSocket();
@@ -20,11 +21,12 @@ export default function App() {
 
     return (
         <div className='main'>
-            {/* <div className='main_title'>
+            <div className='main_title'>
+                <img src={dnetImg} className='dnet_logo'/>
                 <h1>
                     센서 상태: <span style={{ color: statusColor }}>{wsStatus}</span>
                 </h1>
-            </div> */}
+            </div>
             <div className='contents'>
                 <Radar dataArray={dataArray} />
                 <div className='right_element'>
