@@ -8,7 +8,7 @@ function Record({ dataArray }) {
         if (!dataArray) return;
 
         setRecordMap(prev => {
-            const updated = {};
+            const updated = { ...prev }; // 기존 데이터 복사
 
             dataArray.forEach(obj => {
                 const id = parseFloat(obj.id);
@@ -26,16 +26,17 @@ function Record({ dataArray }) {
                 }
 
                 if (!isNaN(id) && !isNaN(angle) && !isNaN(distance)) {
-                    updated[id] = { 
+                    updated[id] = {
                         text: `[${id}] ${distance}m / ${angle}° / ${speed}m/s ${arrow}`,
                         color
                     };
                 }
             });
 
-            return updated;
+            return updated; // 기존 + 새로운 데이터 합쳐서 반환
         });
     }, [dataArray]);
+
 
     return (
         <div className='record'>

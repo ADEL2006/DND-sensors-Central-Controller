@@ -35,7 +35,7 @@ function Radar({ dataArray }) {
                 const r = (distance / maxDistance) * maxRadius;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = 'rgb(115, 255, 115)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.2)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -55,7 +55,7 @@ function Radar({ dataArray }) {
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgb(115, 255, 115)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.2)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -77,14 +77,14 @@ function Radar({ dataArray }) {
             ctx.beginPath();
             ctx.arc(centerX, centerY, maxRadius, Math.PI, 0);
             ctx.setLineDash([]);
-            ctx.strokeStyle = 'rgb(115, 255, 115)';
+            ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
             // 감지 물체 표시
             (dataRef.current || []).forEach(obj => {
                 // 물체 감지 시 트레일 제거
-                toggleTrail.current = 1;
+                toggleTrail.current = 0;
 
                 const id = parseFloat(obj.id);
                 const angle = parseFloat(obj.a);
