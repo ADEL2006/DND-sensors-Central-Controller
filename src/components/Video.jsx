@@ -19,7 +19,7 @@ function Video() {
     useEffect(() => {
         if (!ready || !canvasRef.current) return;
 
-        playerRef.current = new window.JSMpeg.Player('ws://localhost:9999', {
+        playerRef.current = new window.JSMpeg.Player('ws://58.79.238.184:4000', {
             canvas: canvasRef.current,
             autoplay: true,
         });
@@ -32,7 +32,7 @@ function Video() {
     return (
         <div className='livqCQ'>
             <h2 className='video_title'>Video</h2>
-            <canvas ref={canvasRef} className='video'/> 
+            <canvas ref={canvasRef} className='video'></canvas> 
         </div>
     );
 }
