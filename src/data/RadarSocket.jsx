@@ -17,7 +17,7 @@ export function useRadarSocket() {
             wsRef.current = ws;
 
             ws.onopen = () => {
-                setWsStatus("연결됨");
+                setWsStatus("Connected");
                 console.log("WebSocket Connected");
                 hasConnected.current = true;
             };
@@ -26,10 +26,10 @@ export function useRadarSocket() {
                 console.log("WebSocket Disconnected:", e.reason);
                 wsRef.current = null;
                 if (!hasConnected.current) {
-                    setWsStatus("연결중");
+                    setWsStatus("Disconnected");
                     setTimeout(initWebSocket, 5000);
                 } else {
-                    setWsStatus("연결됨");
+                    setWsStatus("Connected");
                 }
             };
 
@@ -40,7 +40,7 @@ export function useRadarSocket() {
                     setWsStatus("연결 에러");
                     setTimeout(initWebSocket, 5000);
                 } else {
-                    setWsStatus("연결됨");
+                    setWsStatus("Connected");
                 }
             };
 
@@ -53,7 +53,7 @@ export function useRadarSocket() {
                             a: (parseFloat(obj.a)).toString()
                         }));
                         setDataArray(arr);
-                        setWsStatus("연결됨");
+                        setWsStatus("Connected");
                     } else {
                         console.warn("Data 형식이 예상과 다름:", msg);
                     }

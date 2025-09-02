@@ -42,7 +42,7 @@ function Record({ dataArray }) {
                                 <i id="angle" class="record_text">${angle}°</i>
                                 <span class="record_text">${speed}m/s ${arrow}</span>
                                 <span class="record_text">${now.toLocaleDateString()}</span>
-                                <span class="record_text">${time}</span>
+                                <span id="time" class="record_text">${time}</span>
                             </div>
                         `,
                         color
@@ -60,12 +60,12 @@ function Record({ dataArray }) {
             <h2 className="record_title">Record</h2>
             <div className="record_text_box">
                 <div className="record_text_top">
-                    <b id="id" className="record_text">아이디</b>
+                    <b id="id" className="record_text">타겟번호</b>
                     <span className="record_text">거리</span>
                     <i id = "angle" className="record_text">각도</i>
                     <span className="record_text">속도</span>
                     <span className="record_text">날짜</span>
-                    <span className="record_text">시간</span>
+                    <span id="time" className="record_text">시간</span>
                 </div>
                 {Object.values(recordMap).map((item, index) => (
                     <div
