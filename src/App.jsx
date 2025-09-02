@@ -16,7 +16,7 @@ export default function App() {
     useEffect(() => {
         if (dataArray.length > 0) {
             setSensorStatusColor("red");
-            setSensorStatus("칩입자 감지!")
+            setSensorStatus("침입자 감지!")
         }
     }, [dataArray])
 
@@ -27,7 +27,7 @@ export default function App() {
                     <img src={dnetImg} className="dnet_logo" alt="DNET Logo" />
                 </a>
                 <h1 style={{ width: "1220.31px", textAlign: "center" }}>
-                    센서 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
+                    감지 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
                 </h1>
             </div>
             <div className='contents'>
