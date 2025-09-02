@@ -8,6 +8,13 @@ function Record({ dataArray }) {
         if (!dataArray) return;
 
         setRecordMap(prev => {
+            const now = new Date();
+            const time = now.toLocaleTimeString('ko-KR', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            });
             const updated = { ...prev }; // 기존 데이터 복사
 
             dataArray.forEach(obj => {
@@ -26,8 +33,18 @@ function Record({ dataArray }) {
                 }
 
                 if (!isNaN(id) && !isNaN(angle) && !isNaN(distance)) {
+                    // HTML 태그를 포함한 문자열 생성
                     updated[id] = {
-                        text: `[${id}] ${distance}m / ${angle}° / ${speed}m/s ${arrow}`,
+                        html: `
+                            <div style="width:100%; display:flex; gap:0px;">
+                                <b id="id" class="record_text">[${id}]</b>
+                                <span class="record_text">${distance}m</span>
+                                <i id="angle" class="record_text">${angle}°</i>
+                                <span class="record_text">${speed}m/s ${arrow}</span>
+                                <span class="record_text">${now.toLocaleDateString()}</span>
+                                <span class="record_text">${time}</span>
+                            </div>
+                        `,
                         color
                     };
                 }
@@ -42,14 +59,21 @@ function Record({ dataArray }) {
         <div className='record'>
             <h2 className="record_title">Record</h2>
             <div className="record_text_box">
-                <pre className="record_text">
-                    {Object.values(recordMap).map((item, index) => (
-                        <span key={index} style={{ color: item.color }}>
-                            {item.text}
-                            {"\n"}
-                        </span>
-                    ))}
-                </pre>
+                <div className="record_text_top">
+                    <b id="id" className="record_text">아이디</b>
+                    <span className="record_text">거리</span>
+                    <i id = "angle" className="record_text">각도</i>
+                    <span className="record_text">속도</span>
+                    <span className="record_text">날짜</span>
+                    <span className="record_text">시간</span>
+                </div>
+                {Object.values(recordMap).map((item, index) => (
+                    <div
+                        key={index}
+                        style={{ color: item.color, height: "25px" }}
+                        dangerouslySetInnerHTML={{ __html: item.html }} // HTML 렌더링
+                    />
+                ))}
             </div>
         </div>
     );

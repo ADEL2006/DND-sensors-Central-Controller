@@ -1,20 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap');
 
-.record_text_box {
-  border: 1px solid white;
-  height: 359.62px;
-  box-sizing: border-box;
-}
 
-.record_text {
-  font-family: 'Nunito Sans', 'Arial', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 30px;
-  white-space: pre-wrap;
+.record {
+  height: 411.62px;
+  width: 600px;
   margin: 0;
-  padding: 0;
-  text-align: center;
+  justify-content: center;
+  border: 1px solid white;
+  box-sizing: border-box;
 }
 
 .record_title{
@@ -26,11 +19,38 @@
     box-sizing: border-box;
 }
 
-.record {
-  height: 411.62px;
-  width: 600px;
-  margin: 0;
-  justify-content: center;
+.record_text_box {
   border: 1px solid white;
+  height: 359.62px;
   box-sizing: border-box;
+  font-family: 'Nunito Sans', 'Arial', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 25px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.record_text_top {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  gap: 0px;
+  align-items: center;
+  border-bottom: 1px solid white;
+  margin-bottom: 4px;
+}
+
+.record_text {
+  width: 18%;
+  height: 18px;
+  border-right: 1px solid white;
+  display: inline-block;
+}
+#id {
+  width: 12%;
+}
+#angle {
+  width: 16%;
 }
