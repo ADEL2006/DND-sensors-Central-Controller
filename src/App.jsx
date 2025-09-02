@@ -11,7 +11,7 @@ export default function App() {
 
     // wsStatus 변경 시 색상 업데이트
     useEffect(() => {
-        if (wsStatus === "connected") {
+        if (wsStatus === "연결됨") {
             setStatusColor("lime");
         } else {
             setStatusColor("red");
@@ -22,7 +22,7 @@ export default function App() {
         <div className='main'>
             <div className='main_title'>
                 <h1>
-                    WebSocket 상태: <span style={{ color: statusColor }}>{wsStatus}</span>
+                    센서 상태: <span style={{ color: statusColor }}>{wsStatus}</span>
                 </h1>
             </div>
             <div className='contents'>

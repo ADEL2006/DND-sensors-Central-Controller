@@ -15,19 +15,19 @@ export function useRadarSocket() {
             wsRef.current = ws;
 
             ws.onopen = () => {
-                setWsStatus("connected");
+                setWsStatus("연결됨");
                 console.log("WebSocket Connected");
             };
 
             ws.onclose = (e) => {
-                setWsStatus("connecting");
+                setWsStatus("연결 끊김");
                 console.log("WebSocket Disconnected:", e.reason);
                 wsRef.current = null;
                 setTimeout(initWebSocket, 5000); // 5초 후 재연결
             };
 
             ws.onerror = (e) => {
-                setWsStatus("connecting");
+                setWsStatus("연결 에러");
                 console.log("WebSocket Error:", e);
                 wsRef.current = null;
                 setTimeout(initWebSocket, 5000);
