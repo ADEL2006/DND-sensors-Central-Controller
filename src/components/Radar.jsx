@@ -131,7 +131,7 @@ function Radar({ wsStatus, dataArray }) {
                         speed,
                         lastUpdate: Date.now(),
                         history: [],
-                        color: getRandomColor() // 👈 여기서 랜덤 색상 지정
+                        color: getRandomColor()
                     };
                 } else {
                     beforeCoordinate.current[id].targetX = targetX;
@@ -157,11 +157,11 @@ function Radar({ wsStatus, dataArray }) {
                 obj.x += (obj.targetX - obj.x) * 0.1;
                 obj.y += (obj.targetY - obj.y) * 0.1;
 
-                // 👇 이동 경로 기록
+                // 이동 경로 기록
                 obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
 
-                // 👇 5초 지난 기록 삭제
-                obj.history = obj.history.filter(p => Date.now() - p.time <= 5000);
+                //  5초 지난 기록 삭제
+                obj.history = obj.history.filter(p => Date.now() - p.time <= 2000);
 
                 // 경로 그리기
                 if (obj.history.length > 1) {
