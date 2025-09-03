@@ -12,7 +12,17 @@ function Radar({ wsStatus, dataArray }) {
     const trailRef = useRef([]); // 원 트레일 저장
 
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
-    
+
+    const beforeCoordinate = useRef({});
+
+    function getRandomColor() {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        return `rgba(${r},${g},${b},1)`; // 투명도 1
+    }
+
+
     // wsStatus 변경 시 색상 업데이트
     useEffect(() => {
         if (wsStatus === "Connected") {
@@ -95,42 +105,93 @@ function Radar({ wsStatus, dataArray }) {
 
             // 감지 물체 표시
             (dataRef.current || []).forEach(obj => {
-                // 물체 감지 시 트레일 제거
                 toggleTrail.current = 0;
-
                 const id = parseFloat(obj.id);
+                const distance = parseFloat(obj.d);
                 const angle = parseFloat(obj.a);
                 const angleDeg = angle * -1 + 90;
-                const distance = parseFloat(obj.d);
                 const speed = parseFloat(obj.vy);
                 if (isNaN(angleDeg) || isNaN(distance)) return;
 
                 const angleRad = (angleDeg * Math.PI) / 180;
                 const scaledR = (distance / maxDistance) * maxRadius;
 
-                const x = centerX + scaledR * Math.cos(angleRad);
-                const y = centerY - scaledR * Math.sin(angleRad);
+                const targetX = centerX + scaledR * Math.cos(angleRad);
+                const targetY = centerY - scaledR * Math.sin(angleRad);
 
+                // 기존 값 없으면 초기화
+                if (!beforeCoordinate.current[id]) {
+                    beforeCoordinate.current[id] = {
+                        x: targetX,
+                        y: targetY,
+                        targetX,
+                        targetY,
+                        distance,
+                        angle,
+                        speed,
+                        lastUpdate: Date.now(),
+                        history: [],
+                        color: getRandomColor() // 👈 여기서 랜덤 색상 지정
+                    };
+                } else {
+                    beforeCoordinate.current[id].targetX = targetX;
+                    beforeCoordinate.current[id].targetY = targetY;
+                    beforeCoordinate.current[id].distance = distance;
+                    beforeCoordinate.current[id].angle = angle;
+                    beforeCoordinate.current[id].speed = speed;
+                    beforeCoordinate.current[id].lastUpdate = Date.now();
+                }
+            });
+
+            // 렌더링 시
+            Object.keys(beforeCoordinate.current).forEach(id => {
+                const obj = beforeCoordinate.current[id];
+
+                // 10초 이상 갱신 안된 객체 제거
+                if (Date.now() - obj.lastUpdate > 10000) {
+                    delete beforeCoordinate.current[id];
+                    return;
+                }
+
+                // lerp 이동
+                obj.x += (obj.targetX - obj.x) * 0.1;
+                obj.y += (obj.targetY - obj.y) * 0.1;
+
+                // 👇 이동 경로 기록
+                obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
+
+                // 👇 5초 지난 기록 삭제
+                obj.history = obj.history.filter(p => Date.now() - p.time <= 5000);
+
+                // 경로 그리기
+                if (obj.history.length > 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(obj.history[0].x, obj.history[0].y);
+                    for (let i = 1; i < obj.history.length; i++) {
+                        ctx.lineTo(obj.history[i].x, obj.history[i].y);
+                    }
+                    ctx.strokeStyle = obj.color.replace("1)", "0.6)"); // alpha 0.6
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                // 점 그리기
                 const radius = 6;
-                const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-                gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
-                gradient.addColorStop(1, "rgba(255, 0, 0, 0)");
-
+                const gradient = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, radius);
+                gradient.addColorStop(0, obj.color);            // 중앙 색상
+                gradient.addColorStop(1, obj.color.replace("1)", "0)")); // 바깥쪽 투명
                 ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.arc(obj.x, obj.y, radius, 0, Math.PI * 2);
                 ctx.fillStyle = gradient;
                 ctx.fill();
 
+                // 텍스트 (id, 거리, 각도, 속도)
                 const offset = 15;
-                const textX = x + radius + offset;
-                const textY = y - radius - offset;
-
-                const lineStartOffset = radius;
-                const startX = x + 2.5;
-                const startY = y - 3.5;
+                const textX = obj.x + radius + offset;
+                const textY = obj.y - radius - offset;
 
                 ctx.beginPath();
-                ctx.moveTo(startX, startY);
+                ctx.moveTo(obj.x + 2.5, obj.y - 3.5);
                 ctx.lineTo(textX, textY);
                 ctx.strokeStyle = "white";
                 ctx.lineWidth = 1;
@@ -140,8 +201,13 @@ function Radar({ wsStatus, dataArray }) {
                 ctx.font = "bold 14px 'Nunito Sans', Arial, sans-serif";
                 ctx.textAlign = "left";
                 ctx.textBaseline = "bottom";
-                ctx.fillText(`[${id}] ${distance}m / ${angle}° / ${speed}m/s`, textX, textY);
+                ctx.fillText(
+                    `[${id}] ${obj.distance}m / ${obj.angle}° / ${obj.speed}m/s`,
+                    textX,
+                    textY
+                );
             });
+
 
             // 원 애니메이션
             if (!pulsePausedRef.current) {
