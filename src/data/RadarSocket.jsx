@@ -26,7 +26,7 @@ export function useRadarSocket() {
                 console.log("WebSocket Disconnected:", e.reason);
                 wsRef.current = null;
                 if (!hasConnected.current) {
-                    setWsStatus("Disconnected");
+                    setWsStatus("connecting...");
                     setTimeout(initWebSocket, 5000);
                 } else {
                     setWsStatus("Connected");

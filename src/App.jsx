@@ -26,7 +26,7 @@ export default function App() {
                 <a href="http://www.dno.co.kr/" target="_blank" rel="noopener noreferrer">
                     <img src={dnetImg} className="dnet_logo" alt="DNET Logo" />
                 </a>
-                <h1 style={{ width: "1220.31px", textAlign: "center" }}>
+                <h1 className='detection_status'>
                     감지 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
                 </h1>
             </div>
