@@ -11,12 +11,12 @@ export default function App() {
     const { wsStatus, dataArray } = useRadarSocket();
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
     const [sensorStatusColor, setSensorStatusColor] = useState("lime");
-    const [sensorStatus, setSensorStatus] = useState("이상없음")
+    const [sensorStatus, setSensorStatus] = useState("정상")
 
     useEffect(() => {
         if (dataArray.length > 0) {
             setSensorStatusColor("red");
-            setSensorStatus("침입자 감지!")
+            setSensorStatus("침입자 탐지!")
         }
     }, [dataArray])
 

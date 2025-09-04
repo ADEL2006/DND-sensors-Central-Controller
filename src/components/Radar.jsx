@@ -15,10 +15,38 @@ function Radar({ wsStatus, dataArray }) {
 
     const beforeCoordinate = useRef({});
 
-    function getRandomColor() {
-        const r = Math.floor(Math.random() * 256);
-        const g = Math.floor(Math.random() * 256);
-        const b = Math.floor(Math.random() * 256);
+    function getRandomColor(id) {
+        // const r = Math.floor(Math.random() * 256);
+        // const g = Math.floor(Math.random() * 256);
+        // const b = Math.floor(Math.random() * 256);
+        let r = 0;
+        let g = 0;
+        let b = 0;
+
+        if (id == 1) {
+            r = 255;
+        } else if(id == 2) {
+            r = 255;
+            g = 127;
+        } else if(id == 3) {
+            r = 255;
+            g = 255;
+        } else if(id == 4) {
+            g = 255;
+        } else if(id == 5) {
+            b = 255;
+        } else if(id == 6) {
+            r = 75;
+            b = 130;
+        } else if (id == 7) {
+            r = 148;
+            b = 211;
+        } else {
+            r = Math.floor(Math.random() * 256);
+            g = Math.floor(Math.random() * 256);
+            b = Math.floor(Math.random() * 256);
+        }
+
         return `rgba(${r},${g},${b},1)`; // 투명도 1
     }
 
@@ -131,7 +159,7 @@ function Radar({ wsStatus, dataArray }) {
                         speed,
                         lastUpdate: Date.now(),
                         history: [],
-                        color: getRandomColor()
+                        color: getRandomColor(id)
                     };
                 } else {
                     beforeCoordinate.current[id].targetX = targetX;
