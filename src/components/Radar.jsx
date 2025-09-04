@@ -25,17 +25,17 @@ function Radar({ wsStatus, dataArray }) {
 
         if (id == 1) {
             r = 255;
-        } else if(id == 2) {
+        } else if (id == 2) {
             r = 255;
             g = 127;
-        } else if(id == 3) {
+        } else if (id == 3) {
             r = 255;
             g = 255;
-        } else if(id == 4) {
+        } else if (id == 4) {
             g = 255;
-        } else if(id == 5) {
+        } else if (id == 5) {
             b = 255;
-        } else if(id == 6) {
+        } else if (id == 6) {
             r = 75;
             b = 130;
         } else if (id == 7) {
@@ -132,6 +132,7 @@ function Radar({ wsStatus, dataArray }) {
             ctx.stroke();
 
             // 감지 물체 표시
+            // 감지 물체 표시
             (dataRef.current || []).forEach(obj => {
                 toggleTrail.current = 0;
                 const id = parseFloat(obj.id);
@@ -162,14 +163,23 @@ function Radar({ wsStatus, dataArray }) {
                         color: getRandomColor(id)
                     };
                 } else {
-                    beforeCoordinate.current[id].targetX = targetX;
-                    beforeCoordinate.current[id].targetY = targetY;
-                    beforeCoordinate.current[id].distance = distance;
-                    beforeCoordinate.current[id].angle = angle;
-                    beforeCoordinate.current[id].speed = speed;
-                    beforeCoordinate.current[id].lastUpdate = Date.now();
+                    // 이전 좌표와 비교 → 10m 이상 차이나면 무시
+                    const dx = targetX - beforeCoordinate.current[id].x;
+                    const dy = targetY - beforeCoordinate.current[id].y;
+                    const movedDist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (movedDist <= 10) {
+                        // 10m 이내일 때만 업데이트
+                        beforeCoordinate.current[id].targetX = targetX;
+                        beforeCoordinate.current[id].targetY = targetY;
+                        beforeCoordinate.current[id].distance = distance;
+                        beforeCoordinate.current[id].angle = angle;
+                        beforeCoordinate.current[id].speed = speed;
+                        beforeCoordinate.current[id].lastUpdate = Date.now();
+                    }
                 }
             });
+
 
             // 렌더링 시
             Object.keys(beforeCoordinate.current).forEach(id => {
