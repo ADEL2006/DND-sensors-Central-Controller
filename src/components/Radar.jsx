@@ -132,7 +132,6 @@ function Radar({ wsStatus, dataArray }) {
             ctx.stroke();
 
             // 감지 물체 표시
-            // 감지 물체 표시
             (dataRef.current || []).forEach(obj => {
                 toggleTrail.current = 0;
                 const id = parseFloat(obj.id);
@@ -168,7 +167,7 @@ function Radar({ wsStatus, dataArray }) {
                     const dy = targetY - beforeCoordinate.current[id].y;
                     const movedDist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (movedDist <= 10) {
+                    if (movedDist <= 20) {
                         // 10m 이내일 때만 업데이트
                         beforeCoordinate.current[id].targetX = targetX;
                         beforeCoordinate.current[id].targetY = targetY;
@@ -198,8 +197,8 @@ function Radar({ wsStatus, dataArray }) {
                 // 이동 경로 기록
                 obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
 
-                //  5초 지난 기록 삭제
-                obj.history = obj.history.filter(p => Date.now() - p.time <= 2000);
+                //  10초 지난 기록 삭제
+                obj.history = obj.history.filter(p => Date.now() - p.time <= 10000);
 
                 // 경로 그리기
                 if (obj.history.length > 1) {
@@ -217,7 +216,7 @@ function Radar({ wsStatus, dataArray }) {
                 const radius = 6;
                 const gradient = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, radius);
                 gradient.addColorStop(0, obj.color);            // 중앙 색상
-                gradient.addColorStop(1, obj.color.replace("1)", "0)")); // 바깥쪽 투명
+                // gradient.addColorStop(1, obj.color.replace("1)", "0)")); // 바깥쪽 투명
                 ctx.beginPath();
                 ctx.arc(obj.x, obj.y, radius, 0, Math.PI * 2);
                 ctx.fillStyle = gradient;
