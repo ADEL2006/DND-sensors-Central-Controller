@@ -23,12 +23,44 @@ function Record({ dataArray }) {
                 const distance = parseFloat(obj.d);
                 let speed = parseFloat(obj.vy);
 
-                let color = "lime";
+                function getRandomColor(id) {
+                    let r = 0;
+                    let g = 0;
+                    let b = 0;
+
+                    if (id == 1) {
+                        r = 255;
+                    } else if (id == 2) {
+                        r = 255;
+                        g = 127;
+                    } else if (id == 3) {
+                        r = 255;
+                        g = 255;
+                    } else if (id == 4) {
+                        g = 255;
+                    } else if (id == 5) {
+                        b = 255;
+                    } else if (id == 6) {
+                        r = 75;
+                        b = 130;
+                    } else if (id == 7) {
+                        r = 148;
+                        b = 211;
+                    } else {
+                        r = Math.floor(Math.random() * 256);
+                        g = Math.floor(Math.random() * 256);
+                        b = Math.floor(Math.random() * 256);
+                    }
+
+                    return `rgba(${r},${g},${b},1)`; // 투명도 1
+                }
+
+                let color = getRandomColor(id);
                 let arrow = "↑";
 
                 if (speed < 0) {
                     speed = -speed;
-                    color = "red";
+                    // color = "red";
                     arrow = "↓";
                 }
 
@@ -62,7 +94,7 @@ function Record({ dataArray }) {
                 <div className="record_text_top">
                     <b id="id" className="record_text">타겟번호</b>
                     <span className="record_text">거리</span>
-                    <i id = "angle" className="record_text">각도</i>
+                    <i id="angle" className="record_text">각도</i>
                     <span className="record_text">속도</span>
                     <span className="record_text">날짜</span>
                     <span id="time" className="record_text">시간</span>
