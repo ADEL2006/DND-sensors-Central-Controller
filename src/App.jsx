@@ -3,15 +3,17 @@ import Radar from './components/Radar';
 import Record from './components/Record';
 import Video from './components/Video';
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dnetImg from './img/dnet.png'; // App.jsx 기준 상대 경로
 import { data } from 'react-router-dom';
+import Manual from './components/Manual';
 
 export default function App() {
     const { wsStatus, dataArray } = useRadarSocket();
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
     const [sensorStatusColor, setSensorStatusColor] = useState("lime");
     const [sensorStatus, setSensorStatus] = useState("정상")
+    const [showManual, setShowManual] = useState(false);
 
     useEffect(() => {
         if (dataArray.length > 0) {
@@ -19,6 +21,10 @@ export default function App() {
             setSensorStatus("침입자 탐지!")
         }
     }, [dataArray])
+
+    function toggleManual() {
+        setShowManual(prev => !prev);
+    }
 
     return (
         <div className='main'>
@@ -29,6 +35,7 @@ export default function App() {
                 <h1 className='detection_status'>
                     감지 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
                 </h1>
+                <Manual/>
             </div>
             <div className='contents'>
                 <Radar wsStatus={wsStatus} dataArray={dataArray} />

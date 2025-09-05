@@ -1,0 +1,91 @@
+.manual_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    /* 상, 우, 하, 좌 여백만큼 투명 */
+}
+
+.diagonal-line {
+    width: 2px;
+    height: 150px;
+    background-color: white;
+}
+#line_one {
+    transform-origin: top left;
+    transform: rotate(75deg);
+    margin-top: -250px;
+
+}
+#line_two {
+    transform-origin: bottom right; /* 기준점을 오른쪽 아래로 */
+    transform: rotate(75deg);
+    margin-top: -400px;
+    margin-right: -403px;
+}
+#line_three {
+    transform-origin: top right; /* 기준점을 오른쪽 아래로 */
+    transform: rotate(-75deg);
+    margin-top: 500px;
+    margin-right: -405px;
+}
+
+.manual {
+    background-color: black;
+    padding: 20px;
+    border: 1px solid white;
+    box-sizing: border-box;
+    text-align: left;
+    font-family: 'Nunito Sans', 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 25px;
+}
+
+.manual_close_button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
+#manual_one {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 425px;
+    height: 150px;
+    margin-top: -450px;
+    margin-right: 50px;
+    position: relative;
+}
+#manual_two {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 425px;
+    height: 175px;
+    margin-top: -200px;
+    margin-right: 725px;
+    position: relative;
+}
+#manual_three {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 425px;
+    height: 200px;
+    margin-top: 300px;
+    margin-right: 725px;
+    position: relative;
+}
