@@ -1,4 +1,4 @@
-.manual_button {
+.manual_toggle_button {
     margin-top: 60px;
     margin-left: 120px;
     width: 100px;
@@ -7,6 +7,7 @@
     font-size: 18px;
     font-weight: 500;
     line-height: 25px;
+    border: 3px solid white;
 }
 
 .manual_background {
@@ -53,42 +54,27 @@
 }
 
 .manual {
-    background-color: black;
-    padding: 20px;
-    border: 1px solid white;
-    box-sizing: border-box;
-    text-align: left;
-    font-family: 'Nunito Sans', 'Arial', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 25px;
-}
-
-.manual_close_button {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-    margin-left: 5px;
-}
-
-#manual_one {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    justify-content: flex-start;
+    justify-content: center;
+    background-color: black;
+    padding: 20px;
+    border: 2px solid white;
+    box-sizing: border-box;
+    text-align: left;
+    line-height: 25px;
+}
+
+#manual_one {
     width: 425px;
-    height: 150px;
+    height: 175px;
     margin-top: -450px;
     margin-right: 50px;
     position: relative;
 }
 
 #manual_two {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
     width: 425px;
     height: 175px;
     margin-top: -200px;
@@ -97,13 +83,47 @@
 }
 
 #manual_three {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
     width: 425px;
     height: 200px;
     margin-top: 300px;
     margin-right: 725px;
     position: relative;
+}
+
+.manual_content {
+    width: 100%;
+    font-family: 'Nunito Sans', 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25px;
+}
+
+.manual_buttons {
+    width: 380px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+    font-family: 'Nunito Sans', 'Arial', sans-serif;
+    justify-content: center;
+}
+
+#manual_button_spacer {
+    background-color: rgba(255, 255, 255, 0);
+    border-color: #ffffff00;
+}
+.manual_nav_button {
+    width: 70px;
+    height: 45px;
+}
+.manual_page_count {
+    width: 50px;
+    height: 45px;
+    display: flex;
+    justify-content: center; /* 가로 가운데 */
+    align-items: flex-end;   /* 세로 아래 */
+    font-weight: 1000;
+}
+.manual_close_button {
+    position: absolute;
+    right: 20px;
 }
