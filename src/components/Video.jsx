@@ -19,7 +19,7 @@ function Video() {
     useEffect(() => {
         if (!ready || !canvasRef.current) return;
 
-        playerRef.current = new window.JSMpeg.Player('ws://58.79.238.184:4000', {
+        playerRef.current = new window.JSMpeg.Player('ws://58.79.238.184:4001', {
             canvas: canvasRef.current,
             autoplay: true,
         });

@@ -10,7 +10,7 @@ const streamUrl = 'rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554';
 const stream = new Stream({
   name: 'camera',
   streamUrl: streamUrl,
-  wsPort: 4000,
+  wsPort: 4001,
   ffmpegOptions: {
     '-stats': '',
     '-r': 25,
