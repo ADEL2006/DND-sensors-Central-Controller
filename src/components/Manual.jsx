@@ -14,6 +14,10 @@ function Manual() {
         setManualPage(manualPage + 1);
     }
 
+    function prevPage() {
+        setManualPage(manualPage - 1);
+    }
+
     return (
         <>
             <button onClick={toggleManual} className='manual_button'>
@@ -22,7 +26,7 @@ function Manual() {
 
             {(showManual && manualPage === 1) && (
                 <>
-                    <div className='manual_background' style={{ clipPath: 'inset(0px 0px 0px 1000px)', }}>
+                    <div className='manual_background' style={{ clipPath: 'inset(0px 0px 0px 998px)', marginLeft: '2px' }}>
                         <div id='line_one' class="diagonal-line"></div>
                         <div id='manual_one' className='manual'>
                             레이더 화면 입니다.<br />
@@ -45,7 +49,8 @@ function Manual() {
                             카메라 화면 입니다.<br />
                             현재 감지중인 영역을 촬영하며, 물체가 감지된다면 해당 방향으로 화면을 전환합니다.<br />
                             <div className='manual_close_button'>
-                                <button onClick={nextPage}>다음</button>
+                                <button onClick={prevPage}>이전</button>
+                                <button onClick={nextPage} style={{marginLeft: '15px'}}>다음</button>
                                 <button onClick={toggleManual} style={{marginLeft: '15px'}}>닫기</button>
                             </div>
                         </div>
@@ -63,6 +68,7 @@ function Manual() {
                             감지된 물체의 마지막 정보를 기록하며 새로운 기록이 온다면 새로운 기록으로 대체됩니다.<br />
                             속도 표시에 ↑는 이탈중, ↓는 접근중 이라는 의미입니다<br />
                             <div className='manual_close_button'>
+                                <button onClick={prevPage}>이전</button>
                                 <button onClick={toggleManual} style={{marginLeft: '15px'}}>닫기</button>
                             </div>
                         </div>

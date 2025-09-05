@@ -1,3 +1,14 @@
+.manual_button {
+    margin-top: 60px;
+    margin-left: 120px;
+    width: 100px;
+    height: 50px;
+    font-family: 'Nunito Sans', 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 25px;
+}
+
 .manual_background {
     position: absolute;
     top: 0;
@@ -17,20 +28,25 @@
     height: 150px;
     background-color: white;
 }
+
 #line_one {
     transform-origin: top left;
     transform: rotate(75deg);
     margin-top: -250px;
 
 }
+
 #line_two {
-    transform-origin: bottom right; /* 기준점을 오른쪽 아래로 */
+    transform-origin: bottom right;
+    /* 기준점을 오른쪽 아래로 */
     transform: rotate(75deg);
     margin-top: -400px;
     margin-right: -403px;
 }
+
 #line_three {
-    transform-origin: top right; /* 기준점을 오른쪽 아래로 */
+    transform-origin: top right;
+    /* 기준점을 오른쪽 아래로 */
     transform: rotate(-75deg);
     margin-top: 500px;
     margin-right: -405px;
@@ -67,6 +83,7 @@
     margin-right: 50px;
     position: relative;
 }
+
 #manual_two {
     display: flex;
     flex-direction: column;
@@ -78,6 +95,7 @@
     margin-right: 725px;
     position: relative;
 }
+
 #manual_three {
     display: flex;
     flex-direction: column;
