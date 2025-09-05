@@ -213,7 +213,7 @@ function Radar({ wsStatus, dataArray }) {
                 }
 
                 // 점 그리기
-                const radius = 6;
+                const radius = 3;
                 const gradient = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, radius);
                 gradient.addColorStop(0, obj.color);            // 중앙 색상
                 // gradient.addColorStop(1, obj.color.replace("1)", "0)")); // 바깥쪽 투명
