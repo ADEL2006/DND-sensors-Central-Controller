@@ -7,7 +7,7 @@ export function useRadarSocket() {
 
     const hasConnected = useRef(false);
 
-    const url_ws = "ws://58.79.238.184:18831";
+    const url_ws = "ws://58.79.238.184:1883";
 
     useEffect(() => {
         function initWebSocket() {

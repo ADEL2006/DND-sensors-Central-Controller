@@ -64,7 +64,7 @@ function Record({ dataArray }) {
                     arrow = "↓";
                 }
 
-                if (!isNaN(id) && !isNaN(angle) && !isNaN(distance)) {asd
+                if (!isNaN(id) && !isNaN(angle) && !isNaN(distance)) {
                     // HTML 태그를 포함한 문자열 생성
                     updated[id] = {
                         html: `
