@@ -2,7 +2,6 @@
 
 
 .record {
-  height: 411.62px;
   width: 600px;
   margin: 0;
   justify-content: center;
@@ -65,4 +64,11 @@
   height: 65%;       /* 전체 높이의 절반만 */
   width: 0px;
   background: black; /* border처럼 보이는 선 */
+}
+@media (max-width: 1024px) {
+  .record {
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+  }
 }

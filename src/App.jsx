@@ -29,7 +29,7 @@ export default function App() {
     return (
         <div className='main'>
             <div className='main_title'>
-                <a href="http://www.dno.co.kr/" target="_blank" rel="noopener noreferrer">
+                <a href="http://www.dno.co.kr/" target="_blank" rel="noopener noreferrer" style={{alignItems: "center"}}>
                     <img src={dnetImg} className="dnet_logo" alt="DNET Logo" />
                 </a>
                 <h1 className='detection_status'>

@@ -37,3 +37,15 @@
   width: 600px;
   border-bottom: 2px solid white;
 }
+
+@media (max-width: 1024px) {
+  .livqCQ {
+    width: 100%;
+    height: 443.5px;
+    margin: 0;
+  }
+  .video {
+    width: 696px;
+    border-bottom: 2px solid white;
+  }
+}
