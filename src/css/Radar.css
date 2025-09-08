@@ -31,3 +31,29 @@
   height: 30px;
   margin-left: 6px;
 }
+
+@media (max-width: 767px) {
+  .radar {
+    width: 360px;
+    height: 518px;
+    border: 2px solid white;
+  }
+
+  .connection_status {
+    margin: 0;
+    height: 20px;
+    margin-left: 6px;
+    font-size: 10px;
+  }
+  
+  .radar_title{
+    line-height: 23px;
+    margin: 0;
+    height: 23px;
+    width: 360px;
+    text-align: center;
+    border-bottom: 2px solid white;
+    font-size: 13px;
+    padding-bottom: 2px;
+  }
+}

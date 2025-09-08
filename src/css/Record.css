@@ -66,3 +66,44 @@
   width: 0px;
   background: black; /* border처럼 보이는 선 */
 }
+
+@media (max-width: 767px) {
+  .record {
+    height: auto;
+    width: 360px;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .record_title{
+    margin: 0;
+    line-height: 25px;
+    height: 23px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 2px solid white;
+    padding-bottom: 2px;
+  }
+
+  .record_text_box {
+    font-family: 'Nunito Sans', 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 25px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    height: auto;
+    padding-bottom: 5px;
+  }
+
+  .record_text_top {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    gap: 0px;
+    align-items: center;
+    margin-bottom: 4px;
+    border-bottom: 2px solid white;
+  }
+}

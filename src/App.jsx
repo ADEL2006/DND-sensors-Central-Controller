@@ -14,6 +14,7 @@ export default function App() {
     const [sensorStatusColor, setSensorStatusColor] = useState("lime");
     const [sensorStatus, setSensorStatus] = useState("정상")
     const [showManual, setShowManual] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
 
     useEffect(() => {
         if (dataArray.length > 0) {
@@ -35,7 +36,7 @@ export default function App() {
                 <h1 className='detection_status'>
                     감지 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
                 </h1>
-                <Manual/>
+                { !isMobile && (<Manual/>)}
             </div>
             <div className='contents'>
                 <Radar wsStatus={wsStatus} dataArray={dataArray} />

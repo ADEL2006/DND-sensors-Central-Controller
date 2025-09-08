@@ -15,6 +15,15 @@ function Radar({ wsStatus, dataArray }) {
 
     const beforeCoordinate = useRef({});
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+    const [canvasSize, setCanvasSize] = useState([996, 716]);
+
+    useEffect(() => {
+        if(isMobile) {
+            setCanvasSize([360, 471]);
+        }
+    }, [isMobile])
+
     function getRandomColor(id) {
         // const r = Math.floor(Math.random() * 256);
         // const g = Math.floor(Math.random() * 256);
@@ -248,7 +257,11 @@ function Radar({ wsStatus, dataArray }) {
 
             // 원 애니메이션
             if (!pulsePausedRef.current) {
-                pulseRef.current += 3;
+                if(!isMobile) {
+                    pulseRef.current += 3;
+                } else {
+                    pulseRef.current += 1;
+                }
 
                 if (pulseRef.current > 0) trailRef.current.push(pulseRef.current);
 
@@ -288,7 +301,7 @@ function Radar({ wsStatus, dataArray }) {
         }
 
         drawRadar();
-    }, []);
+    }, [canvasSize]);
 
     return (
         <div className='radar'>
@@ -298,8 +311,8 @@ function Radar({ wsStatus, dataArray }) {
             </h3>
             <canvas
                 ref={canvasRef}
-                width="996"
-                height="716"
+                width={canvasSize[0]}
+                height={canvasSize[1]}
                 className='radar_canvas'
             />
         </div>
