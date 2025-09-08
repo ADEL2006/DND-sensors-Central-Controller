@@ -19,8 +19,8 @@ function Radar({ wsStatus, dataArray }) {
     const [canvasSize, setCanvasSize] = useState([996, 716]);
 
     useEffect(() => {
-        if(isMobile) {
-            setCanvasSize([360, 471]);
+        if (isMobile) {
+            setCanvasSize([360, 291]);
         }
     }, [isMobile])
 
@@ -80,7 +80,7 @@ function Radar({ wsStatus, dataArray }) {
         const ctx = canvas.getContext('2d');
 
         const centerX = canvas.width / 2;
-        const centerY = canvas.height + 1;
+        const centerY = canvas.height;
         const maxDistance = 1000;
         const distanceSteps = [125, 250, 375, 500, 625, 750, 875, 1000];
         const maxRadius = canvas.height * 9 / 10;
@@ -101,34 +101,48 @@ function Radar({ wsStatus, dataArray }) {
                 ctx.fillStyle = "white";
                 ctx.font = "16px Arial";
                 ctx.textAlign = "center";
-                const offset = distance === 1000 ? 20 : 5;
-                ctx.fillText(`${distance}m`, centerX, centerY - r - offset);
+                ctx.textBaseline = "alphabetic"; // ← 추가
+                const offset = distance === 1000 ? (isMobile ? 12 : 20) : 0;
+                ctx.fillText(`${distance}m`, centerX, centerY - r - offset-5);
             });
 
             // 각도 표시
             anglesToShow.forEach(displayText => {
                 const angleRad = ((displayText - 90) * Math.PI) / 180 * -1;
+
                 const x = centerX + maxRadius * Math.cos(angleRad);
                 const y = centerY - maxRadius * Math.sin(angleRad);
 
+                // 반원 선 그리기
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 5)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)'; // alpha 조정
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
-                const textOffset = 15;
+                // 텍스트 위치
+                const textOffset = maxRadius * 0.05; // canvas 크기에 비례
                 let textX = centerX + (maxRadius + textOffset) * Math.cos(angleRad);
                 let textY = centerY - (maxRadius + textOffset) * Math.sin(angleRad);
 
-                if (displayText === 0) textY += 9;
-                else if (displayText > 0) textX += 15;
-                else { textX -= 10; textY += 6; }
+                // 경험적 수치를 maxRadius 기준으로 조정
+                if (displayText === 0) {
+                    textY += isMobile ? (maxRadius * 0.02) : (maxRadius * 0.03);
+                }
+                else if (displayText > 0) {
+                    textX += isMobile ? (maxRadius * 0.05) : (maxRadius * 0.01);
+                    textY += isMobile ? (maxRadius * 0.01) : (maxRadius * 0.03);
+                }
+                else {
+                    textX -= isMobile ? (maxRadius * 0.05) : (maxRadius * 0.01);
+                    textY += isMobile ? (maxRadius * 0.01) : (maxRadius * 0.03);
+                }
 
                 ctx.fillStyle = "white";
-                ctx.font = "14px Arial";
+                ctx.font = `14px Arial`; // 글자 크기도 canvas 비율로 조정
                 ctx.textAlign = displayText === 0 ? "center" : displayText < 0 ? "left" : "right";
+                ctx.textBaseline = "middle";
                 ctx.fillText(`${displayText}°`, textX, textY);
             });
 
@@ -257,7 +271,7 @@ function Radar({ wsStatus, dataArray }) {
 
             // 원 애니메이션
             if (!pulsePausedRef.current) {
-                if(!isMobile) {
+                if (!isMobile) {
                     pulseRef.current += 3;
                 } else {
                     pulseRef.current += 1;

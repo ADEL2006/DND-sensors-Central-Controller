@@ -110,6 +110,7 @@ html, body {
   }
   .dnet_logo {
     width: 100px;
+    margin-left: 10%;
   }
 
   .detection_status { 
