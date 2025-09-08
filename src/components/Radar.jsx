@@ -16,13 +16,9 @@ function Radar({ wsStatus, dataArray }) {
     const beforeCoordinate = useRef({});
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
-    const [canvasSize, setCanvasSize] = useState([996, 716]);
+    const getCanvasSize = () => window.innerWidth <= 767 ? [360, 291] : [996, 716];
+    const [canvasSize, setCanvasSize] = useState(getCanvasSize());
 
-    useEffect(() => {
-        if (isMobile) {
-            setCanvasSize([360, 291]);
-        }
-    }, [isMobile])
 
     function getRandomColor(id) {
         // const r = Math.floor(Math.random() * 256);
@@ -59,7 +55,16 @@ function Radar({ wsStatus, dataArray }) {
         return `rgba(${r},${g},${b},1)`; // 투명도 1
     }
 
-
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 767);
+            setCanvasSize(getCanvasSize());
+            trailRef.current = [];
+            pulseRef.current = 0;
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     // wsStatus 변경 시 색상 업데이트
     useEffect(() => {
         if (wsStatus === "Connected") {
@@ -67,7 +72,6 @@ function Radar({ wsStatus, dataArray }) {
         } else {
             setConnectionStatusColor("red");
         }
-        console.log(wsStatus);
     }, [wsStatus]);
 
     useEffect(() => {
@@ -141,7 +145,7 @@ function Radar({ wsStatus, dataArray }) {
 
                 ctx.fillStyle = "white";
                 ctx.font = `14px Arial`; // 글자 크기도 canvas 비율로 조정
-                ctx.textAlign = displayText === 0 ? "center" : displayText < 0 ? "left" : "right";
+                ctx.textAlign = displayText === 0 ? "center" : (displayText < 0 ? "left" : "right");
                 ctx.textBaseline = "middle";
                 ctx.fillText(`${displayText}°`, textX, textY);
             });
