@@ -10,10 +10,85 @@
 
 .record_title{
   margin: 0;
-  height: 46px;
-  line-height: 46px;
+  height: 48px;
+  width: 100%;
+  line-height: 48px;
   text-align: center;
   border-bottom: 2px solid white;
+  display: flex;
+}
+
+.record_title_text {
+  width: 72%;
+  height: 48px;
+}
+
+.switch_text {
+  position: absolute;
+  font-size: 18px;
+  line-height: 50px;
+  top: 55.5%;
+  right: 4.8%;
+}
+
+.wrapper {
+  width: 15%;
+  height: 48px;
+  text-align: center;
+  margin: 0;
+  margin-top: 5.5px;
+  margin-right: -1%;
+}
+
+#switch {
+  /* hidden */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: 0;
+}
+
+.switch_label {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  width: 58px;
+  height: 28px;
+  background: red;
+  border: 2px solid white;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+.switch_label:hover {
+  background: rgb(255, 57, 57);
+}
+.onf_btn {
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background: rgb(0, 0, 0);
+  transition: 0.2s;
+}
+
+/* checking style */
+#switch:checked+.switch_label {
+  background: lime;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+#switch:checked+.switch_label:hover {
+  background: rgb(57, 255, 57);
+}
+
+/* move */
+#switch:checked+.switch_label .onf_btn {
+  left: 34px;
+  background: #ffffff;
+  /* box-shadow: 1px 2px 3px #000000; */
 }
 
 .record_text_box {
@@ -53,8 +128,15 @@
   background: white; /* border처럼 보이는 선 */
 }
 
-#id, #angle {
+#id{
   width: 14%;
+}
+
+#angle {
+  width: 11%;
+}
+#date {
+  width: 21%;
 }
 
 #time::after {
@@ -75,7 +157,7 @@
     justify-content: center;
   }
 
-  .record_title{
+  .record_title {
     margin: 0;
     line-height: 25px;
     height: 23px;
@@ -83,6 +165,56 @@
     text-align: center;
     border-bottom: 2px solid white;
     padding-bottom: 2px;
+  }
+
+  .record_title_text {
+    width: 70%;
+    height: 48px;
+  }
+
+  .switch_text {
+    position: absolute;
+    font-size: 9px;
+    line-height: 50px;
+    top: 639px;
+    right: 14.5%;
+  }
+
+  .wrapper {
+    width: 15%;
+    height: 48px;
+    text-align: center;
+    margin: 0;
+    margin-top: 4.5px;
+  }
+
+  .switch_label {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    width: 29px;
+    height: 14px;
+    background: red;
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: 0.2s;
+  }
+  .onf_btn {
+    position: absolute;
+    top: 2px;
+    left: 1.5px;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: rgb(0, 0, 0);
+    transition: 0.2s;
+  }
+  /* move */
+  #switch:checked+.switch_label .onf_btn {
+    left: 17px;
+    background: #ffffff;
+    /* box-shadow: 1px 2px 3px #000000; */
   }
 
   .record_text_box {
@@ -95,15 +227,5 @@
     text-align: center;
     height: auto;
     padding-bottom: 5px;
-  }
-
-  .record_text_top {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    gap: 0px;
-    align-items: center;
-    margin-bottom: 4px;
-    border-bottom: 2px solid white;
   }
 }

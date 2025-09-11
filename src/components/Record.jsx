@@ -1,109 +1,135 @@
-import { useEffect, useState } from "react";
-import '../css/Record.css'
+import { useEffect, useRef, useState } from "react";
+import '../css/Record.css';
 
 function Record({ dataArray }) {
     const [recordMap, setRecordMap] = useState({}); // id별 데이터 저장
+    const count = useRef(0);
+    const sendData = useRef(false);
+
+    const handleChange = (e) => {
+        sendData.current = !sendData.current;
+    };
 
     useEffect(() => {
-        if (!dataArray) return;
+        if (!dataArray || dataArray.length === 0) return;
 
-        setRecordMap(prev => {
-            const now = new Date();
-            const time = now.toLocaleTimeString('ko-KR', {
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            });
-            const updated = { ...prev }; // 기존 데이터 복사
+        const now = new Date();
+        // 기존 화면용
+        const timeStr = now.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-            dataArray.forEach(obj => {
-                const id = parseFloat(obj.id);
-                const angle = parseFloat(obj.a);
-                const distance = parseFloat(obj.d);
-                let speed = parseFloat(obj.vy);
+        // 서버용 날짜
+        const dateStr = now.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).replace(/\.\s?/g, '-').replace(/-$/, '');
 
-                function getRandomColor(id) {
-                    let r = 0;
-                    let g = 0;
-                    let b = 0;
+        const updatedMap = { ...recordMap }; // 기존 데이터 복사
 
-                    if (id == 1) {
-                        r = 255;
-                    } else if (id == 2) {
-                        r = 255;
-                        g = 127;
-                    } else if (id == 3) {
-                        r = 255;
-                        g = 255;
-                    } else if (id == 4) {
-                        g = 255;
-                    } else if (id == 5) {
-                        b = 255;
-                    } else if (id == 6) {
-                        r = 75;
-                        b = 130;
-                    } else if (id == 7) {
-                        r = 148;
-                        b = 211;
-                    } else {
-                        r = Math.floor(Math.random() * 256);
-                        g = Math.floor(Math.random() * 256);
-                        b = Math.floor(Math.random() * 256);
-                    }
+        // 서버 전송용 배열
+        const dtoArray = dataArray.map(obj => {
+            const targetId = parseInt(obj.id, 10);
+            const distance = parseFloat(obj.d);
+            const angle = parseFloat(obj.a);
+            const vy = parseFloat(obj.vy);
+            const speed = Math.abs(vy);
+            const entry = vy < 0;
 
-                    return `rgba(${r},${g},${b},1)`; // 투명도 1
-                }
+            // 화면용 HTML 업데이트
+            const color = getRandomColor(targetId);
+            const arrow = vy < 0 ? "↓" : "↑";
 
-                let color = getRandomColor(id);
-                let arrow = "↑";
+            updatedMap[targetId] = {
+                html: `
+                    <div style="width:100%; display:flex; gap:0px;">
+                        <b id="id" class="record_text">[${targetId}]</b>
+                        <span class="record_text">${distance}m</span>
+                        <i id="angle" class="record_text">${angle}°</i>
+                        <span class="record_text">${speed}m/s ${arrow}</span>
+                        <span id="date" class="record_text">${dateStr}</span>
+                        <span id="time" class="record_text">${timeStr}</span>
+                    </div>
+                `,
+                color
+            };
 
-                if (speed < 0) {
-                    speed = -speed;
-                    // color = "red";
-                    arrow = "↓";
-                }
-
-                if (!isNaN(id) && !isNaN(angle) && !isNaN(distance)) {
-                    // HTML 태그를 포함한 문자열 생성
-                    updated[id] = {
-                        html: `
-                            <div style="width:100%; display:flex; gap:0px;">
-                                <b id="id" class="record_text">[${id}]</b>
-                                <span class="record_text">${distance}m</span>
-                                <i id="angle" class="record_text">${angle}°</i>
-                                <span class="record_text">${speed}m/s ${arrow}</span>
-                                <span class="record_text">${now.toLocaleDateString()}</span>
-                                <span id="time" class="record_text">${time}</span>
-                            </div>
-                        `,
-                        color
-                    };
-                }
-            });
-
-            return updated; // 기존 + 새로운 데이터 합쳐서 반환
+            return {
+                targetId,
+                distance,
+                angle,
+                speed,
+                entry,
+                date: dateStr,
+                time: timeStr
+            };
         });
+
+        setRecordMap(updatedMap);
+
+        // 서버 전송
+        if(sendData.current){
+            fetch('http://58.79.238.184:4000/radar/record/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dtoArray)
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('POST 실패');
+                    return res.json();
+                })
+                .then(data => console.log('서버 응답:', data))
+                .catch(err => console.error(++count.current, 'POST 요청 실패:', err));
+        }
+
     }, [dataArray]);
 
+    // 색상 함수
+    function getRandomColor(id) {
+        let r = 0, g = 0, b = 0;
+        switch (id) {
+            case 1: r = 255; break;
+            case 2: r = 255; g = 127; break;
+            case 3: r = 255; g = 255; break;
+            case 4: g = 255; break;
+            case 5: b = 255; break;
+            case 6: r = 75; b = 130; break;
+            case 7: r = 148; b = 211; break;
+            default: r = Math.floor(Math.random() * 256); g = Math.floor(Math.random() * 256); b = Math.floor(Math.random() * 256);
+        }
+        return `rgba(${r},${g},${b},1)`;
+    }
 
     return (
         <div className='record'>
-            <h2 className="record_title">Record</h2>
+            <h2 className="record_title">
+                <div className="wrapper"/>
+                <span className="record_title_text">Record</span>
+                <span className="switch_text">auto record: </span>
+                <div className="wrapper">
+                    <input 
+                    type="checkbox" 
+                    id="switch"
+                    onChange={handleChange}
+                    />
+                        <label for="switch" class="switch_label">
+                            <span class="onf_btn"></span>
+                        </label>
+                </div>
+            </h2>
             <div className="record_text_box">
                 <div className="record_text_top">
                     <b id="id" className="record_text">타겟번호</b>
                     <span className="record_text">거리</span>
                     <i id="angle" className="record_text">각도</i>
                     <span className="record_text">속도</span>
-                    <span className="record_text">날짜</span>
+                    <span id="date" className="record_text">날짜</span>
                     <span id="time" className="record_text">시간</span>
                 </div>
                 {Object.values(recordMap).map((item, index) => (
                     <div
                         key={index}
                         style={{ color: item.color, height: "25px" }}
-                        dangerouslySetInnerHTML={{ __html: item.html }} // HTML 렌더링
+                        dangerouslySetInnerHTML={{ __html: item.html }}
                     />
                 ))}
             </div>
