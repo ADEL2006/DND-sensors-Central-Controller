@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ wsStatus, dataArray }) {
+function Radar({ dataArray }) {
     const canvasRef = useRef(null);
     const dataRef = useRef([]);
 
@@ -19,6 +19,8 @@ function Radar({ wsStatus, dataArray }) {
     const getCanvasSize = () => window.innerWidth <= 767 ? [360, 291] : [996, 716];
     const [canvasSize, setCanvasSize] = useState(getCanvasSize());
 
+    const [maxDistance, setMaxDistance] = useState(500);
+    const [distanceSteps, setDistanceSteps] = useState([125, 250, 375, 500]);
 
     function getRandomColor(id) {
         // const r = Math.floor(Math.random() * 256);
@@ -65,28 +67,28 @@ function Radar({ wsStatus, dataArray }) {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    // wsStatus 변경 시 색상 업데이트
-    useEffect(() => {
-        if (wsStatus === "Connected") {
-            setConnectionStatusColor("lime");
-        } else {
-            setConnectionStatusColor("red");
+
+    const changeDevice = (e) =>  {
+        if(e.target.value === "DND-500T") {
+            setMaxDistance(500);
+            setDistanceSteps([125, 250, 375, 500])
+        } else if (e.target.value === "DND-1000T") {
+            setMaxDistance(1000);
+            setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
         }
-    }, [wsStatus]);
+        beforeCoordinate.current = {};
+        trailRef.current = [];
+        pulseRef.current = 0;
+    }
 
     useEffect(() => {
         dataRef.current = dataArray || [];
-    }, [dataArray]);
-
-    useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
         const centerX = canvas.width / 2;
         const centerY = canvas.height;
-        const maxDistance = 1000;
-        const distanceSteps = [125, 250, 375, 500, 625, 750, 875, 1000];
         const maxRadius = canvas.height * 9 / 10;
         const anglesToShow = [-90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90];
 
@@ -106,7 +108,7 @@ function Radar({ wsStatus, dataArray }) {
                 ctx.font = "16px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "alphabetic"; // ← 추가
-                const offset = distance === 1000 ? (isMobile ? 12 : 20) : 0;
+                const offset = distance === maxDistance ? (isMobile ? 12 : 20) : 0;
                 ctx.fillText(`${distance}m`, centerX, centerY - r - offset-5);
             });
 
@@ -319,13 +321,16 @@ function Radar({ wsStatus, dataArray }) {
         }
 
         drawRadar();
-    }, [canvasSize]);
+    }, [canvasSize, maxDistance, distanceSteps, dataArray]);
 
     return (
         <div className='radar'>
             <h2 className='radar_title'>Radar</h2>
-            <h3 className='connection_status'>
-                <span style={{ color: connectionStatusColor }}>{wsStatus}</span>
+            <h3 className='select_device'>
+                <select onChange={changeDevice} className='device'>
+                    <option value={"DND-500T"}>DND-500T</option>
+                    <option value={"DND-1000T"}>DND-1000T</option>
+                </select>
             </h3>
             <canvas
                 ref={canvasRef}
