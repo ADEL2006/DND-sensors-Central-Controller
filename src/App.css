@@ -72,8 +72,9 @@ html, body {
 }
 
 .dnet_logo {
-  width: 226.08px;
+  width: 190px;
   left: 1%;
+  margin-top: 30px;
 }
 
 .detection_status {

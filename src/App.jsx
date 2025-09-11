@@ -34,7 +34,7 @@ export default function App() {
                     <img src={dnetImg} className="dnet_logo" alt="DNET Logo" />
                 </a>
                 <h1 className='detection_status'>
-                    감지 상태: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
+                    감지 상황: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
                 </h1>
                 { !isMobile && (<Manual/>)}
             </div>

@@ -26,7 +26,7 @@
 }
 
 .video_title {
-  line-height: 50px;
+  line-height: 48px;
   height: 48px;
   margin: 0;
   text-align: center;
@@ -35,6 +35,7 @@
 
 .video {
   width: 600px;
+  height: 332.38px;
   border-bottom: 2px solid white;
 }
 
@@ -46,7 +47,7 @@
   }
 
   .video_title {
-    line-height: 25px;
+    line-height: 23px;
     height: 23px;
     margin: 0;
     text-align: center;
@@ -57,6 +58,7 @@
 
   .video {
     width: 360px;
+    height: 202.5px;
     border-bottom: 2px solid white;
   }
 }

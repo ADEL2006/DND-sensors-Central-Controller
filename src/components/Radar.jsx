@@ -195,7 +195,7 @@ function Radar({ wsStatus, dataArray }) {
                     const movedDist = Math.sqrt(dx * dx + dy * dy);
 
                     if (movedDist <= 20) {
-                        // 10m 이내일 때만 업데이트
+                        // 20m 이내일 때만 업데이트
                         beforeCoordinate.current[id].targetX = targetX;
                         beforeCoordinate.current[id].targetY = targetY;
                         beforeCoordinate.current[id].distance = distance;
@@ -240,7 +240,7 @@ function Radar({ wsStatus, dataArray }) {
                 }
 
                 // 점 그리기
-                const radius = 3;
+                const radius = 4;
                 const gradient = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, radius);
                 gradient.addColorStop(0, obj.color);            // 중앙 색상
                 // gradient.addColorStop(1, obj.color.replace("1)", "0)")); // 바깥쪽 투명
