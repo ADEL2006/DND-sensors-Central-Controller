@@ -21,7 +21,7 @@ function Manual() {
     return (
         <>
             <button onClick={toggleManual} className='manual_toggle_button'>
-                사용법
+                가이드
             </button>
 
             {(showManual && manualPage === 1) && (

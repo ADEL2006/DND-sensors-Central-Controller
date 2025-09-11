@@ -11,9 +11,9 @@ export default function App() {
 
     return (
         <div className='main'>
-            <MainTitle dataArray={dataArray} />
+            <MainTitle wsStatus={wsStatus} dataArray={dataArray} />
             <div className='contents'>
-                <Radar wsStatus={wsStatus} dataArray={dataArray} />
+                <Radar dataArray={dataArray} />
                 <div className='right_element'>
                     <Video />
                     <Record dataArray={dataArray} />

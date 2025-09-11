@@ -43,9 +43,17 @@
 }
 
 .detection_status {
-    width: 1220px;
+    width: 1300px;
     text-align: center;
 }
+.sensor_connection_status {
+    margin-right: 30px;
+}
+/* .connection_status {
+  margin: 0;
+  height: 30px;
+  margin-left: 6px;
+} */
 
 @media (max-width: 767px) {
     .main_title {
@@ -61,21 +69,26 @@
         width: 100px;
         margin: 0;
         margin-left: 10px;
-        margin-top: 7px;
     }
-
-    .detection_status {
-        text-align: center;
-        font-size: 18px;
-        line-height: 25px;
-        margin-left: 129px;
-        margin-top: 30px;
-    }
-
     .logo_wrapper:hover .glow {
         width: 0px;
         height: 0px;
         background: rgba(0, 255, 42, 0.2);
         filter: blur(30px);
     }
+
+    .detection_status {
+        text-align: center;
+        font-size: 18px;
+    }
+    .sensor_connection_status {
+        margin-right: 10px;
+    }
+
+    /* .connection_status {
+        margin: 0;
+        height: 20px;
+        margin-left: 6px;
+        font-size: 10px;
+    } */
 }
