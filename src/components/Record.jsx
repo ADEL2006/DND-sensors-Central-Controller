@@ -102,7 +102,6 @@ function Record({ dataArray }) {
     return (
         <div className='record'>
             <h2 className="record_title">
-                <div className="wrapper"/>
                 <span className="record_title_text">Record</span>
                 <span className="switch_text">auto record: </span>
                 <div className="wrapper">
