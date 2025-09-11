@@ -1,0 +1,81 @@
+.main_title {
+    height: 100px;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* 필요 시 spacing */
+    display: flex;
+}
+
+.logo_wrapper {
+    margin-top: 0.7%;
+    position: relative;
+    display: inline-block;
+}
+
+.dnet_logo {
+    width: 190px;
+    display: block;
+    z-index: 2;
+}
+
+.glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    /* 클릭 방해 안 함 */
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.logo_wrapper:hover .glow {
+    width: 190px;
+    /* 로고보다 조금 크게 */
+    height: 84.03px;
+    background: rgba(0, 255, 42, 0.2);
+    filter: blur(30px);
+    /* 빛 번짐 효과 */
+}
+
+.detection_status {
+    width: 1220px;
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .main_title {
+        height: 50px;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        /* 필요 시 spacing */
+        display: flex;
+    }
+
+    .dnet_logo {
+        width: 100px;
+        margin: 0;
+        margin-left: 10px;
+        margin-top: 7px;
+    }
+
+    .detection_status {
+        text-align: center;
+        font-size: 18px;
+        line-height: 25px;
+        margin-left: 129px;
+        margin-top: 30px;
+    }
+
+    .logo_wrapper:hover .glow {
+        width: 0px;
+        height: 0px;
+        background: rgba(0, 255, 42, 0.2);
+        filter: blur(30px);
+    }
+}
