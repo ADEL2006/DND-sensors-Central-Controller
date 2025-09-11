@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    port: 3333, // 원하는 포트 번호로 변경
+    port: 3334, // 원하는 포트 번호로 변경
   },
 })
