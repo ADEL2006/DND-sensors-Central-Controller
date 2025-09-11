@@ -110,8 +110,8 @@ function Record({ dataArray }) {
                     id="switch"
                     onChange={handleChange}
                     />
-                        <label for="switch" class="switch_label">
-                            <span class="onf_btn"></span>
+                        <label htmlFor="switch" className="switch_label">
+                            <span className="onf_btn"></span>
                         </label>
                 </div>
             </h2>
