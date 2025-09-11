@@ -63,8 +63,8 @@ function Manual() {
                             </div>
                         </div>
                     </div>
-                    <div className='manual_background' style={{ clipPath: 'inset(532px 0px 0px 996px)', marginLeft: '2px' }}/>
-                    <div className='manual_background' style={{ clipPath: 'inset(0px 0px 800px 998px)', }}/>
+                    <div className='manual_background' style={{ clipPath: 'inset(526px 0px 0px 996px)', marginLeft: '2px' }}/>
+                    <div className='manual_background' style={{ clipPath: 'inset(0px 0px 800px 0px)', }}/>
                 </>
             )}
             {(showManual && manualPage === 3) && (
@@ -86,7 +86,7 @@ function Manual() {
                             </div>
                         </div>
                     </div>
-                    <div className='manual_background' style={{ clipPath: 'inset(0px 0px 410px 996px)', marginLeft: '2px' }}/>
+                    <div className='manual_background' style={{ clipPath: 'inset(0px 0px 416px 996px)', marginLeft: '2px' }}/>
                 </>
             )}
 
