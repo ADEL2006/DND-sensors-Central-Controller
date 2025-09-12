@@ -20,7 +20,7 @@ function Radar({ dataArray }) {
     const [canvasSize, setCanvasSize] = useState(getCanvasSize());
 
     const [maxDistance, setMaxDistance] = useState(500);
-    const [distanceSteps, setDistanceSteps] = useState([125, 250, 375, 500]);
+    const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500]);
 
     function getRandomColor(id) {
         // const r = Math.floor(Math.random() * 256);
@@ -71,7 +71,7 @@ function Radar({ dataArray }) {
     const changeDevice = (e) =>  {
         if(e.target.value === "DND-500T") {
             setMaxDistance(500);
-            setDistanceSteps([125, 250, 375, 500])
+            setDistanceSteps([100, 200, 300, 400, 500])
         } else if (e.target.value === "DND-1000T") {
             setMaxDistance(1000);
             setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
@@ -100,7 +100,7 @@ function Radar({ dataArray }) {
                 const r = (distance / maxDistance) * maxRadius;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 5)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.1)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -123,7 +123,7 @@ function Radar({ dataArray }) {
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)'; // alpha 조정
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.1)'; // alpha 조정
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
