@@ -5,7 +5,7 @@ import Stream from 'node-rtsp-stream';
 const app = express();
 app.use(express.static('public'));
 
-const streamUrl = 'rtsp://admin:Pp10293849pp%3F%3F@192.168.0.8:554/profile2/media.smp';
+const streamUrl = 'rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554';
 
 const stream = new Stream({
   name: 'camera',
@@ -20,4 +20,4 @@ const stream = new Stream({
   },
 });
 
-app.listen(4000, () => console.log('Server running on http://localhost:4001'));
+app.listen(4001, () => console.log('Server running on http://localhost:4001'));
