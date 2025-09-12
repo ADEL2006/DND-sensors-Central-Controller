@@ -83,9 +83,14 @@ function Radar({ dataArray }) {
 
     useEffect(() => {
         dataRef.current = dataArray || [];
+    }, [dataArray]); // 데이터 들어올 때마다 ref만 갱신
+
+    useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
+        
+        let animationId; // ← 애니메이션 ID 저장
 
         const centerX = canvas.width / 2;
         const centerY = canvas.height;
@@ -100,7 +105,7 @@ function Radar({ dataArray }) {
                 const r = (distance / maxDistance) * maxRadius;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.1)';
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -123,7 +128,7 @@ function Radar({ dataArray }) {
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.1)'; // alpha 조정
+                ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)'; // alpha 조정
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -137,12 +142,12 @@ function Radar({ dataArray }) {
                     textY += isMobile ? (maxRadius * 0.02) : (maxRadius * 0.03);
                 }
                 else if (displayText > 0) {
-                    textX += isMobile ? (maxRadius * 0.05) : (maxRadius * 0.01);
-                    textY += isMobile ? (maxRadius * 0.01) : (maxRadius * 0.03);
+                    textX += isMobile ? (maxRadius * 0.05) : (displayText === 45 ? maxRadius * 0.003 : (displayText === 30 ? maxRadius * 0.006 : maxRadius * 0.01));
+                    textY += isMobile ? (maxRadius * 0.01) : (displayText === 45 ? maxRadius * 0.025 : (displayText === 30 ? maxRadius * 0.027 : maxRadius * 0.03));
                 }
-                else {
-                    textX -= isMobile ? (maxRadius * 0.05) : (maxRadius * 0.01);
-                    textY += isMobile ? (maxRadius * 0.01) : (maxRadius * 0.03);
+                else if (displayText < 0) {
+                    textX -= isMobile ? (maxRadius * 0.05) : (displayText === -45 ? maxRadius * 0.003 : (displayText === -30 ? maxRadius * 0.006 : maxRadius * 0.01));
+                    textY += isMobile ? (maxRadius * 0.01) : (displayText === -45 ? maxRadius * 0.025 : (displayText === -30 ? maxRadius * 0.027 : maxRadius * 0.03));
                 }
 
                 ctx.fillStyle = "white";
@@ -160,7 +165,7 @@ function Radar({ dataArray }) {
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
-            // 감지 물체 표시
+            // 감지 물체 정보 정리
             (dataRef.current || []).forEach(obj => {
                 toggleTrail.current = 0;
                 const id = parseFloat(obj.id);
@@ -209,7 +214,7 @@ function Radar({ dataArray }) {
             });
 
 
-            // 렌더링 시
+            // 감지 물체 표시
             Object.keys(beforeCoordinate.current).forEach(id => {
                 const obj = beforeCoordinate.current[id];
 
@@ -226,7 +231,7 @@ function Radar({ dataArray }) {
                 // 이동 경로 기록
                 obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
 
-                //  10초 지난 기록 삭제
+                //  10초 지난 경로 삭제
                 obj.history = obj.history.filter(p => Date.now() - p.time <= 10000);
 
                 // 경로 그리기
@@ -277,17 +282,20 @@ function Radar({ dataArray }) {
 
             // 원 애니메이션
             if (!pulsePausedRef.current) {
-                if (!isMobile) {
-                    pulseRef.current += 3;
-                } else {
-                    pulseRef.current += 1;
+                const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리
+                const prevPulse = pulseRef.current;
+                pulseRef.current += step;
+
+                // trail 보간
+                const steps = 2; // 1프레임 안에서 trail 3개 추가
+                for (let i = 1; i <= steps; i++) {
+                    const interp = prevPulse + (step / steps) * i;
+                    trailRef.current.push(interp);
                 }
 
-                if (pulseRef.current > 0) trailRef.current.push(pulseRef.current);
-
-                // toggleTrail이 0이면 트레일 제거, 아니면 기본값 유지
+                // toggleTrail 처리
                 if (toggleTrail.current > 0) {
-                    if (trailRef.current.length > toggleTrail.current) trailRef.current.shift();
+                    while (trailRef.current.length > toggleTrail.current) trailRef.current.shift();
                 } else {
                     trailRef.current = [];
                 }
@@ -317,11 +325,15 @@ function Radar({ dataArray }) {
                 toggleTrail.current = 30;
             }
 
-            requestAnimationFrame(drawRadar);
+            animationId = requestAnimationFrame(drawRadar);
         }
 
         drawRadar();
-    }, [canvasSize, maxDistance, distanceSteps, dataArray]);
+
+        return () => {
+            cancelAnimationFrame(animationId); // cleanup에서 반드시 취소!
+        };
+    }, [canvasSize, maxDistance, distanceSteps]);
 
     return (
         <div className='radar'>
