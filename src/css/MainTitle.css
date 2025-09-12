@@ -45,6 +45,7 @@
 .detection_status {
     width: 1300px;
     text-align: center;
+    font-size: 45px;
 }
 .sensor_connection_status {
     margin-right: 30px;
