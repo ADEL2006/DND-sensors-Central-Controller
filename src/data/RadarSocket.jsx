@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 
 export function useRadarSocket(device) {
-    const [wsStatus, setWsStatus] = useState("connecting");
+    const [wsStatus, setWsStatus] = useState("connecting...");
     const [dataArray, setDataArray] = useState([]);
     const wsRef = useRef(null);
-
     const hasConnected = useRef(false);
 
-    const url_ws = device === "DND-500T" ? "ws://58.79.238.184:1883" : "ws://192.168.0.124:1883";
+    // 🔹 재시도 타이머 관리용 ref
+    const retryTimeout = useRef(null);
+
+    const url_ws = device === "DND-500T" ? "ws://58.79.238.184:1883" : "ws://58.79.238.184:1884";
 
     useEffect(() => {
         function initWebSocket() {
@@ -23,6 +25,12 @@ export function useRadarSocket(device) {
                 setWsStatus("Connected");
                 console.log("WebSocket Connected");
                 hasConnected.current = true;
+
+                // 🔹 기존 재시도 타이머 있으면 제거
+                if (retryTimeout.current) {
+                    clearTimeout(retryTimeout.current);
+                    retryTimeout.current = null;
+                }
             };
 
             ws.onclose = (e) => {
@@ -30,7 +38,14 @@ export function useRadarSocket(device) {
                 wsRef.current = null;
                 if (!hasConnected.current) {
                     setWsStatus("connecting...");
-                    setTimeout(initWebSocket, 5000);
+
+                    // 🔹 중복 재시도 방지
+                    if (!retryTimeout.current) {
+                        retryTimeout.current = setTimeout(() => {
+                            initWebSocket();
+                            retryTimeout.current = null;
+                        }, 5000);
+                    }
                 } else {
                     setWsStatus("Connected");
                 }
@@ -41,7 +56,13 @@ export function useRadarSocket(device) {
                 wsRef.current = null;
                 if (!hasConnected.current) {
                     setWsStatus("연결 에러");
-                    setTimeout(initWebSocket, 5000);
+
+                    if (!retryTimeout.current) {
+                        retryTimeout.current = setTimeout(() => {
+                            initWebSocket();
+                            retryTimeout.current = null;
+                        }, 5000);
+                    }
                 } else {
                     setWsStatus("Connected");
                 }
@@ -71,8 +92,14 @@ export function useRadarSocket(device) {
         return () => {
             if (wsRef.current) wsRef.current.close();
             wsRef.current = null;
+
+            // 🔹 cleanup: 재시도 타이머 제거
+            if (retryTimeout.current) {
+                clearTimeout(retryTimeout.current);
+                retryTimeout.current = null;
+            }
         };
-    }, [device]); // <-- device 의존성 추가
+    }, [device]); // <-- device 의존성
 
     return { wsStatus, dataArray };
 }
