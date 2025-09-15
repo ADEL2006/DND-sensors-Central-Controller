@@ -99,7 +99,6 @@ function Record({ dataArray, colors }) {
                         </label>
                 </div>
             </h2>
-            <div className="record_text_box">
                 <div className="record_text_top">
                     <b id="id" className="record_text">타겟번호</b>
                     <span className="record_text">거리</span>
@@ -108,6 +107,7 @@ function Record({ dataArray, colors }) {
                     <span id="date" className="record_text">날짜</span>
                     <span id="time" className="record_text">시간</span>
                 </div>
+            <div className="record_text_box">
                 {Object.values(recordMap).map((item, index) => (
                     <div
                         key={index}
