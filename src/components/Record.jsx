@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import '../css/Record.css';
 
-function Record({ dataArray }) {
+function Record({ dataArray, colors }) {
     const [recordMap, setRecordMap] = useState({}); // id별 데이터 저장
     const count = useRef(0);
     const sendData = useRef(false);
@@ -36,7 +36,7 @@ function Record({ dataArray }) {
             const entry = vy < 0;
 
             // 화면용 HTML 업데이트
-            const color = getRandomColor(targetId);
+            const color = colors.current[targetId];
             const arrow = vy < 0 ? "↓" : "↑";
 
             updatedMap[targetId] = {
@@ -82,22 +82,6 @@ function Record({ dataArray }) {
         }
 
     }, [dataArray]);
-
-    // 색상 함수
-    function getRandomColor(id) {
-        let r = 0, g = 0, b = 0;
-        switch (id) {
-            case 1: r = 255; break;
-            case 2: r = 255; g = 127; break;
-            case 3: r = 255; g = 255; break;
-            case 4: g = 255; break;
-            case 5: b = 255; break;
-            case 6: r = 75; b = 130; break;
-            case 7: r = 148; b = 211; break;
-            default: r = Math.floor(Math.random() * 256); g = Math.floor(Math.random() * 256); b = Math.floor(Math.random() * 256);
-        }
-        return `rgba(${r},${g},${b},1)`;
-    }
 
     return (
         <div className='record'>

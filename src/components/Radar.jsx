@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ dataArray, device }) {
+function Radar({ dataArray, device, colors }) {
     const canvasRef = useRef(null);
     const dataRef = useRef([]);
 
@@ -16,46 +16,11 @@ function Radar({ dataArray, device }) {
     const beforeCoordinate = useRef({});
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
-    const getCanvasSize = () => window.innerWidth <= 767 ? [360, 321] : [996, 746];
+    const getCanvasSize = () => window.innerWidth <= 767 ? [460, 321] : [996, 746];
     const [canvasSize, setCanvasSize] = useState(getCanvasSize());
 
     const [maxDistance, setMaxDistance] = useState(500);
     const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500]);
-
-    function getRandomColor(id) {
-        // const r = Math.floor(Math.random() * 256);
-        // const g = Math.floor(Math.random() * 256);
-        // const b = Math.floor(Math.random() * 256);
-        let r = 0;
-        let g = 0;
-        let b = 0;
-
-        if (id == 1) {
-            r = 255;
-        } else if (id == 2) {
-            r = 255;
-            g = 127;
-        } else if (id == 3) {
-            r = 255;
-            g = 255;
-        } else if (id == 4) {
-            g = 255;
-        } else if (id == 5) {
-            b = 255;
-        } else if (id == 6) {
-            r = 75;
-            b = 130;
-        } else if (id == 7) {
-            r = 148;
-            b = 211;
-        } else {
-            r = Math.floor(Math.random() * 256);
-            g = Math.floor(Math.random() * 256);
-            b = Math.floor(Math.random() * 256);
-        }
-
-        return `rgba(${r},${g},${b},1)`; // 투명도 1
-    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -206,7 +171,7 @@ function Radar({ dataArray, device }) {
                         speed,
                         lastUpdate: Date.now(),
                         history: [],
-                        color: getRandomColor(id)
+                        color: colors.current[id]
                     };
                 } else {
                     // 이전 좌표와 비교 → 10m 이상 차이나면 무시
@@ -255,7 +220,7 @@ function Radar({ dataArray, device }) {
                         ctx.lineTo(obj.history[i].x, obj.history[i].y);
                     }
                     ctx.strokeStyle = obj.color.replace("1)", "0.6)"); // alpha 0.6
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 4;
                     ctx.stroke();
                 }
 
