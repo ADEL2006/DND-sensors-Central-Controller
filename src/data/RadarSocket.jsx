@@ -6,7 +6,6 @@ export function useRadarSocket(device) {
     const wsRef = useRef(null);
     const hasConnected = useRef(false);
 
-    // 🔹 재시도 타이머 관리용 ref
     const retryTimeout = useRef(null);
 
     const url_ws = device === "DND-500T" ? "ws://58.79.238.184:1883" : "ws://58.79.238.184:1884";
@@ -26,7 +25,7 @@ export function useRadarSocket(device) {
                 console.log("WebSocket Connected");
                 hasConnected.current = true;
 
-                // 🔹 기존 재시도 타이머 있으면 제거
+                // 기존 재시도 타이머 있으면 제거
                 if (retryTimeout.current) {
                     clearTimeout(retryTimeout.current);
                     retryTimeout.current = null;
@@ -39,7 +38,7 @@ export function useRadarSocket(device) {
                 if (!hasConnected.current) {
                     setWsStatus("connecting...");
 
-                    // 🔹 중복 재시도 방지
+                    // 중복 재시도 방지
                     if (!retryTimeout.current) {
                         retryTimeout.current = setTimeout(() => {
                             initWebSocket();
@@ -93,13 +92,13 @@ export function useRadarSocket(device) {
             if (wsRef.current) wsRef.current.close();
             wsRef.current = null;
 
-            // 🔹 cleanup: 재시도 타이머 제거
+            // cleanup: 재시도 타이머 제거
             if (retryTimeout.current) {
                 clearTimeout(retryTimeout.current);
                 retryTimeout.current = null;
             }
         };
-    }, [device]); // <-- device 의존성
+    }, [device]);
 
     return { wsStatus, dataArray };
 }
