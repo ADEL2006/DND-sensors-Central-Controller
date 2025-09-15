@@ -152,7 +152,7 @@
 @media (max-width: 767px) {
   .record {
     height: auto;
-    width: 360px;
+    width: 100%;
     margin: 0;
     justify-content: center;
   }
