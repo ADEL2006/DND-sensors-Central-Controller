@@ -1,17 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 
-export function useRadarSocket() {
+export function useRadarSocket(device) {
     const [wsStatus, setWsStatus] = useState("connecting");
     const [dataArray, setDataArray] = useState([]);
     const wsRef = useRef(null);
 
     const hasConnected = useRef(false);
 
-    const url_ws = "ws://58.79.238.184:1883";
+    const url_ws = device === "DND-500T" ? "ws://58.79.238.184:1883" : "ws://192.168.0.124:1883";
 
     useEffect(() => {
         function initWebSocket() {
-            if (wsRef.current) return;
+            if (wsRef.current) {
+                wsRef.current.close();  // 기존 연결 닫기
+                wsRef.current = null;
+            }
 
             const ws = new WebSocket(url_ws);
             wsRef.current = ws;
@@ -69,7 +72,7 @@ export function useRadarSocket() {
             if (wsRef.current) wsRef.current.close();
             wsRef.current = null;
         };
-    }, []);
+    }, [device]); // <-- device 의존성 추가
 
     return { wsStatus, dataArray };
 }

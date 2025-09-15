@@ -52,14 +52,19 @@ html, body {
 }
 
 
-.main {
-  position: relative;
+#root{
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column; /* 위에서 아래로 쌓기 */
   justify-content: center; /* 화면 세로 중앙 */
   align-items: center; /* 화면 가로 중앙 */
-  height: 100%; /* 화면 전체 높이 */
-  width: 100%;
+}
+
+.main {
+  position: relative;
+  width: 1600px;
+  height: 940px;
   box-sizing: border-box;
 }
 
@@ -71,6 +76,14 @@ html, body {
   flex: 1;         /* 남은 공간 채우기 */
 }
 
+.device {
+  height: 20px;
+  width: 100px;
+  position: absolute;
+  top: 21%;
+  left: 0.5%;
+}
+
 .right_element {
   width: 600px;
   height: 796px;
@@ -80,17 +93,32 @@ html, body {
 
 @media (max-width: 767px) {
   #root{
-    width: 100%;
+    display: flex;
+    flex-direction: column; /* 위에서 아래로 쌓기 */
+    justify-content: flex-start; /* 상단 정렬 */
+    align-items: center; /* 화면 가로 중앙 */
+  }
+  .main {
+    position: relative;
+    min-width: 90%;    /* 화면 폭 대비 90% */
+    max-width: 95%;    /* 화면보다 작게 제한해서 좌우 공백 확보 */
+    box-sizing: border-box;
   }
   .contents {
     display: block;
-    width: 1600px;   /* 원하는 너비 */
-    max-width: 95vw; /* 화면보다 크면 줄어들게 */
-    height: 800px;
+    width: 100%;
+    height: auto;
     flex: 1;         /* 남은 공간 채우기 */
   }
+  .device {
+    height: 20px;
+    width: 100px;
+    position: absolute;
+    top: 13.5%;
+    left: 1.5%;
+  }
   .right_element {
-    width: 360px;
+    width: 100%;
     height: auto;
     flex-shrink: 0; /* 내용 줄어들지 않게 */
     border: 2px solid white;

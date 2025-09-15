@@ -18,54 +18,34 @@
 }
 
 .radar_canvas {
+  width: 100%;
   background: black;
   border-top: 0;
-  /* background-image: url('../img/playground.png');
-  background-repeat: no-repeat;
-  background-size: auto 746px;
-  background-position: center; */
-}
-
-.select_device {
-  margin: 0;
-  height: 30px;
-  margin-left: 6px;
-  display: flex;          /* flex 컨테이너로 변경 */
-  align-items: center;    /* 세로 가운데 */
-}
-.device {
-  height: 20px;
-  width: 100px;
 }
 
 @media (max-width: 767px) {
-  .radar {
-    width: 360px;
-    height: 350px;
-    border: 2px solid white;
-  }
-
-  .select_device {
-    margin: 0;
-    margin-top: 10px;
-    height: 20px;
-    margin-left: 6px;
-    margin-bottom: 2px;
-    font-size: 10px;
-  }
-  .device {
-    height: 20px;
-    width: 100px;
-  }
-  
   .radar_title{
     line-height: 23px;
     margin: 0;
     height: 23px;
-    width: 360px;
+    width: 100%;
     text-align: center;
     border-bottom: 2px solid white;
     font-size: 13px;
     padding-bottom: 2px;
   }
+  
+  .radar {
+    width: 100%;
+    height: auto;
+    border: 2px solid white;
+  }
+
+  .radar_canvas {
+    width: 100%;
+    background: black;
+    border-top: 0;
+    margin-top: 5%;
+  }
+  
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ dataArray }) {
+function Radar({ dataArray, device }) {
     const canvasRef = useRef(null);
     const dataRef = useRef([]);
 
@@ -16,7 +16,7 @@ function Radar({ dataArray }) {
     const beforeCoordinate = useRef({});
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
-    const getCanvasSize = () => window.innerWidth <= 767 ? [360, 291] : [996, 716];
+    const getCanvasSize = () => window.innerWidth <= 767 ? [360, 321] : [996, 746];
     const [canvasSize, setCanvasSize] = useState(getCanvasSize());
 
     const [maxDistance, setMaxDistance] = useState(500);
@@ -68,18 +68,31 @@ function Radar({ dataArray }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const changeDevice = (e) =>  {
-        if(e.target.value === "DND-500T") {
+    useEffect(() => {
+        if(device === "DND-500T") {
             setMaxDistance(500);
             setDistanceSteps([100, 200, 300, 400, 500])
-        } else if (e.target.value === "DND-1000T") {
+        } else if (device === "DND-1000T") {
             setMaxDistance(1000);
             setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
         }
         beforeCoordinate.current = {};
         trailRef.current = [];
         pulseRef.current = 0;
-    }
+    }, [device])
+
+    // const changeDevice = (e) =>  {
+    //     if(e.target.value === "DND-500T") {
+    //         setMaxDistance(500);
+    //         setDistanceSteps([100, 200, 300, 400, 500])
+    //     } else if (e.target.value === "DND-1000T") {
+    //         setMaxDistance(1000);
+    //         setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
+    //     }
+    //     beforeCoordinate.current = {};
+    //     trailRef.current = [];
+    //     pulseRef.current = 0;
+    // }
 
     useEffect(() => {
         dataRef.current = dataArray || [];
@@ -219,7 +232,7 @@ function Radar({ dataArray }) {
                 const obj = beforeCoordinate.current[id];
 
                 // 10초 이상 갱신 안된 객체 제거
-                if (Date.now() - obj.lastUpdate > 10000) {
+                if (Date.now() - obj.lastUpdate > 3000) {
                     delete beforeCoordinate.current[id];
                     return;
                 }
@@ -338,12 +351,12 @@ function Radar({ dataArray }) {
     return (
         <div className='radar'>
             <h2 className='radar_title'>Radar</h2>
-            <h3 className='select_device'>
+            {/* <h3 className='select_device'>
                 <select onChange={changeDevice} className='device'>
                     <option value={"DND-500T"}>DND-500T</option>
                     <option value={"DND-1000T"}>DND-1000T</option>
                 </select>
-            </h3>
+            </h3> */}
             <canvas
                 ref={canvasRef}
                 width={canvasSize[0]}
