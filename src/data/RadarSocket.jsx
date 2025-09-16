@@ -70,16 +70,17 @@ export function useRadarSocket(device) {
             ws.onmessage = (e) => {
                 try {
                     const msg = JSON.parse(e.data);
-                    if (msg.data && Array.isArray(msg.data)) {
-                        const arr = msg.data.map(obj => ({
-                            ...obj,
-                            a: (parseFloat(obj.a)).toString()
-                        }));
-                        setDataArray(arr);
-                        setWsStatus("Connected");
-                    } else {
-                        console.warn("Data 형식이 예상과 다름:", msg);
+                    let arr = [];
+                    if (Array.isArray(msg.data)) {
+                        arr = msg.data;
+                    } else if (Array.isArray(msg.objects)) {
+                        arr = msg.objects;
+                    } else if (msg) {
+                        arr = [msg]; // 단일 객체
                     }
+                    arr = arr.map(obj => ({ ...obj, a: obj.a ? parseFloat(obj.a).toString() : undefined }));
+                    setDataArray(arr);
+                    setWsStatus("Connected");
                 } catch (err) {
                     console.error("Failed to parse message:", e.data, err);
                 }
