@@ -17,7 +17,7 @@ export default function App() {
     };
 
     useEffect(() => {
-        for (var i = 0; i < 250; i++) {
+        for (let i = 0; i < 8; i++) {
             let r = 0;
             let g = 0;
             let b = 0;
@@ -40,14 +40,29 @@ export default function App() {
             } else if (i == 7) {
                 r = 148;
                 b = 211;
-            } else {
-                r = Math.floor(Math.random() * 256);
-                g = Math.floor(Math.random() * 256);
-                b = Math.floor(Math.random() * 256);
             }
             colors.current.push(`rgba(${r},${g},${b},1)`)
         }
     }, [])
+
+
+    useEffect(() => {
+    dataArray.forEach(obj => {
+        const targetId = parseInt(obj.id, 10);
+
+        // 이미 값이 있으면 건너뛰기, 초기 0~7번은 건너뜀
+        if (colors.current[targetId] || targetId < 8) return;
+
+        // 랜덤 색상 생성
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+
+        // console.log(targetId+"번 색상 부여: " + `rgba(${r},${g},${b},1)`);
+
+        colors.current[targetId] = `rgba(${r},${g},${b},1)`;
+    });
+    }, [dataArray]);
 
     return (
         <div className='main'>

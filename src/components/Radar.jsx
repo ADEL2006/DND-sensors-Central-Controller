@@ -193,7 +193,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
                         speed,
                         lastUpdate: Date.now(),
                         history: [],
-                        color: id < 250 ? colors.current[id] : `#ffffff`
+                        color: colors.current[id]
                     };
                 } else {
                     // 이전 좌표와 비교 → 10m 이상 차이나면 무시
