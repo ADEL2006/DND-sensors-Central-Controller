@@ -7,15 +7,18 @@ import './App.css';
 import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
-    const [device, setDevice] = useState("DND-500T");
+    const [device, setDevice] = useState("DND-500T"); // 디바이스값
 
-    const { wsStatus, dataArray } = useRadarSocket(device);
-    const colors = useRef([])
+    const { wsStatus, dataArray } = useRadarSocket(device); // 센서와의 연결상태 / 데이터값
+    const colors = useRef([]) // 색상 정보
 
+    // 선택 디바이스 변경 토글
     const changeDevice = (e) => {
         setDevice(e.target.value);
     };
 
+    // 데이터 고유의색 부여
+    // 1~7번 까지는 빨주노초파남보
     useEffect(() => {
         for (let i = 0; i < 8; i++) {
             let r = 0;
@@ -44,8 +47,7 @@ export default function App() {
             colors.current.push(`rgba(${r},${g},${b},1)`)
         }
     }, [])
-
-
+    // 이외의 색상은 랜덤
     useEffect(() => {
     dataArray.forEach(obj => {
         const targetId = parseInt(obj.id, 10);

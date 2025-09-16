@@ -3,9 +3,9 @@ import '../css/Record.css';
 
 function Record({ dataArray, colors }) {
     const [recordMap, setRecordMap] = useState({}); // id별 데이터 저장
-    const count = useRef(0);
-    const sendData = useRef(false);
+    const sendData = useRef(false); // 서버에 데아터 전송 여부
 
+    // 서버에 데이터 전송 토글 핸들러
     const handleChange = (e) => {
         sendData.current = !sendData.current;
     };
@@ -28,17 +28,18 @@ function Record({ dataArray, colors }) {
 
         // 서버 전송용 배열
         const dtoArray = dataArray.map(obj => {
-            const targetId = parseInt(obj.id, 10);
-            const distance = parseFloat(obj.d);
-            const angle = parseFloat(obj.a);
-            const vy = parseFloat(obj.vy);
-            const speed = Math.abs(vy);
-            const entry = vy < 0;
+            const targetId = parseInt(obj.id, 10); // 타겟 번호
+            const distance = parseFloat(obj.d); // 거라
+            const angle = parseFloat(obj.a); // 각도
+            const vy = parseFloat(obj.vy); // 속도값 원본
+            const speed = Math.abs(vy); // 속도
+            const entry = vy < 0; // 접근 여부
 
             // 화면용 HTML 업데이트
             const color = colors.current[targetId];
-            const arrow = vy < 0 ? "↓" : "↑";
+            const arrow = entry ? "↓" : "↑";
 
+            // 기록 포멧
             updatedMap[targetId] = {
                 html: `
                     <div style="width:100%; display:flex; gap:0px;">
@@ -52,7 +53,7 @@ function Record({ dataArray, colors }) {
                 `,
                 color
             };
-
+            // 서버 로그 포멧
             return {
                 targetId,
                 distance,
@@ -63,7 +64,7 @@ function Record({ dataArray, colors }) {
                 time: timeStr
             };
         });
-
+        // 작성된 기록 포멧 저장
         setRecordMap(updatedMap);
 
         // 서버 전송
@@ -78,7 +79,7 @@ function Record({ dataArray, colors }) {
                     return res.json();
                 })
                 .then(data => console.log('서버 응답:', data))
-                .catch(err => console.error(++count.current, 'POST 요청 실패:', err));
+                .catch(err => console.error('POST 요청 실패:', err));
         }
 
     }, [dataArray]);

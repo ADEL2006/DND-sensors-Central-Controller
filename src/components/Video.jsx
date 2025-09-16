@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import '../css/Video.css';
 
 function Video() {
-    const canvasRef = useRef(null);
-    const playerRef = useRef(null);
-    const [ready, setReady] = useState(false);
-    const [hasSignal, setHasSignal] = useState(false);
+    const canvasRef = useRef(null); // 영상을 표시할 구역
+    const playerRef = useRef(null); // 영상
+    const [ready, setReady] = useState(false); // 영상을 내보낼지 보내지 말지 여부
+    const [hasSignal, setHasSignal] = useState(false); // 영상이 출력 되는지 안되는지
 
     // CDN JSMpeg 준비 확인
     useEffect(() => {

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
 function Radar({ wsStatus, dataArray, device, colors }) {
-    const canvasRef = useRef(null);
-    const dataRef = useRef([]);
+    const canvasRef = useRef(null); // 캔버스
+    const dataRef = useRef([]); // 데이터 값
 
     const toggleTrail = useRef(0); // 기본 트레일 길이
 
@@ -13,15 +13,16 @@ function Radar({ wsStatus, dataArray, device, colors }) {
 
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
 
-    const beforeCoordinate = useRef({});
+    const beforeCoordinate = useRef({}); // 감지된 물체를 표시하는 빨간 점 상태값
 
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
-    const getCanvasSize = () => window.innerWidth <= 767 ? [460, 321] : [996, 746];
-    const [canvasSize, setCanvasSize] = useState(getCanvasSize());
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 인지 아닌지 판단
+    const getCanvasSize = () => isMobile ? [460, 321] : [996, 746]; // 모바일이라면 캔버스 크기를 다르게 표기
+    const [canvasSize, setCanvasSize] = useState(getCanvasSize()); // 캔버스 크기
 
-    const [maxDistance, setMaxDistance] = useState(500);
-    const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500]);
+    const [maxDistance, setMaxDistance] = useState(500); // 최대 사거리
+    const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500]); // 표시할 사거리
 
+    // 화면 크기 변화에 따른 크기 재지정
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 767);
@@ -33,6 +34,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // 센서와 연결된 상태라면 애니메이션 재생
     useEffect(() => {
         if (wsStatus === "Connected") {
             toggleTrail.current = 30;
@@ -41,6 +43,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         }
     }, [wsStatus]);
 
+    // 레이더 초기화 함수
     const resetRadar = () => {
         beforeCoordinate.current = {};
         pulseRef.current = 0;
@@ -50,6 +53,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         dataRef.current = [];
     };
 
+    // 선택 디바이스에 따른 최대 사거리/표시할 사거리 변경
     useEffect(() => {
         if(device === "DND-500T") {
             setMaxDistance(500);
@@ -61,8 +65,8 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         resetRadar();
     }, [device])
 
-    const resetTimer = useRef(null);
-
+    const resetTimer = useRef(null); // 타이머(리셋용)
+    // 5초동안 데이터가 들어오지 않는다면 레이더 초기화
     useEffect(() => {
         dataRef.current = dataArray || [];
         // console.log("dataRef:", dataRef.current, "dataArray:", dataArray);
@@ -85,19 +89,22 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         };
     }, [dataArray]);
 
+    // 캔버스 생성
     useEffect(() => {
-        const canvas = canvasRef.current;
+        const canvas = canvasRef.current; // 캔버스 지정
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d'); // 2D환경 설정
         
         let animationId; // ← 애니메이션 ID 저장
 
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height;
-        const maxRadius = canvas.height * 9 / 10;
-        const anglesToShow = [-90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90];
+        const centerX = canvas.width / 2; // 중앙 X좌표 위치 설정
+        const centerY = canvas.height; // 중앙 Y좌표 위치 설정
+        const maxRadius = canvas.height * 9 / 10; // 레이더의 최대크기
+        const anglesToShow = [-90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90]; // 표시할 각도
 
+        // 레이더 그리기 함수
         function drawRadar() {
+            // 캔버스 초기화
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // 거리 표시
@@ -196,13 +203,12 @@ function Radar({ wsStatus, dataArray, device, colors }) {
                         color: colors.current[id]
                     };
                 } else {
-                    // 이전 좌표와 비교 → 10m 이상 차이나면 무시
+                    // 이전 좌표와 비교 → 20m 이상 차이나면 무시
                     const dx = targetX - beforeCoordinate.current[id].x;
                     const dy = targetY - beforeCoordinate.current[id].y;
                     const movedDist = Math.sqrt(dx * dx + dy * dy);
 
                     if (movedDist <= 20) {
-                        // 20m 이내일 때만 업데이트
                         beforeCoordinate.current[id].targetX = targetX;
                         beforeCoordinate.current[id].targetY = targetY;
                         beforeCoordinate.current[id].distance = distance;
@@ -218,7 +224,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
             Object.keys(beforeCoordinate.current).forEach(id => {
                 const obj = beforeCoordinate.current[id];
 
-                // 10초 이상 갱신 안된 객체 제거
+                // 3초 이상 갱신 안된 객체 제거
                 if (Date.now() - obj.lastUpdate > 3000) {
                     delete beforeCoordinate.current[id];
                     return;
@@ -247,9 +253,9 @@ function Radar({ wsStatus, dataArray, device, colors }) {
                 }
 
                 // 점 그리기
-                const radius = 4;
+                const radius = 4; // 원 크기
                 const gradient = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, radius);
-                gradient.addColorStop(0, obj.color);            // 중앙 색상
+                gradient.addColorStop(0, obj.color); // 중앙 색상
                 // gradient.addColorStop(1, obj.color.replace("1)", "0)")); // 바깥쪽 투명
                 ctx.beginPath();
                 ctx.arc(obj.x, obj.y, radius, 0, Math.PI * 2);
@@ -280,14 +286,14 @@ function Radar({ wsStatus, dataArray, device, colors }) {
             });
 
 
-            // 원 애니메이션
+            // 애니메이션
             if (!pulsePausedRef.current) {
                 const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리
                 const prevPulse = pulseRef.current;
                 pulseRef.current += step;
 
-                // trail 보간
-                const steps = 2; // 1프레임 안에서 trail 3개 추가
+                // trail 보강
+                const steps = 2; // trail 2개 추가(1프레임 당)
                 for (let i = 1; i <= steps; i++) {
                     const interp = prevPulse + (step / steps) * i;
                     trailRef.current.push(interp);
@@ -315,7 +321,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
                 ctx.stroke();
             });
 
-            // trail 끝이 maxRadius 이상이면 초기화
+            // trail 삭제(끝부분에 닿을시)
             if (trailRef.current.length > 0 && trailRef.current[0] >= maxRadius) {
                 trailRef.current = [];
                 pulseRef.current = 0;
@@ -331,19 +337,13 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         drawRadar();
 
         return () => {
-            cancelAnimationFrame(animationId); // cleanup에서 반드시 취소!
+            cancelAnimationFrame(animationId); // cleanup
         };
     }, [canvasSize, maxDistance, distanceSteps]);
 
     return (
         <div className='radar'>
             <h2 className='radar_title'>Radar</h2>
-            {/* <h3 className='select_device'>
-                <select onChange={changeDevice} className='device'>
-                    <option value={"DND-500T"}>DND-500T</option>
-                    <option value={"DND-1000T"}>DND-1000T</option>
-                </select>
-            </h3> */}
             <canvas
                 ref={canvasRef}
                 width={canvasSize[0]}
