@@ -2,17 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 
 import '../css/MainTitle.css';
 import dnetImg from '../img/dnet.png'; // App.jsx 기준 상대 경로
-import Manual from './Manual';
 import { data } from 'react-router-dom';
+import Guide from './Guide';
 
 function MainTitle({ wsStatus, dataArray }) {
-    const [sensorStatusColor, setSensorStatusColor] = useState("lime");
-    const [sensorStatus, setSensorStatus] = useState("정상");
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+    const [sensorStatusColor, setSensorStatusColor] = useState("lime"); // 센서 상태값 색상
+    const [sensorStatus, setSensorStatus] = useState("정상"); // 센서 상태값
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 여부
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
-    const resetTimer = useRef(null);
+    const resetTimer = useRef(null); // 타이머 초기화
 
     useEffect(() => {
+        // 데이터가 존재한다면
         if (dataArray.length > 0) {
             setSensorStatusColor("red");
             setSensorStatus("침입자 탐지!")
@@ -22,6 +23,7 @@ function MainTitle({ wsStatus, dataArray }) {
         if (resetTimer.current) clearTimeout(resetTimer.current);
 
         // 새 타이머 시작
+        // 센서와 연결된 상태에서 5초 이상 데이터가 오지 않는다면 상태값 초기화
         resetTimer.current = setTimeout(() => {
             if (wsStatus === "Connected") {
                 console.log("5초 유예 후 레이더 상태 정상화!");
@@ -37,7 +39,7 @@ function MainTitle({ wsStatus, dataArray }) {
         };
     }, [dataArray]);
 
-    // wsStatus 변경 시 색상 업데이트
+    // 상태값 변경 시 색상 업데이트
     useEffect(() => {
         if (wsStatus === "Connected") {
             setConnectionStatusColor("lime");
@@ -58,10 +60,7 @@ function MainTitle({ wsStatus, dataArray }) {
                 센서 연결 상태: <span className='sensor_connection_status' style={{ color: connectionStatusColor }}>{wsStatus}</span> { isMobile && <br /> }
                 감지 상황: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
             </h1>
-            {/* <h3 className='connection_status'>
-                <span style={{ color: connectionStatusColor }}>{wsStatus}</span>
-            </h3> */}
-            {!isMobile && (<Manual />)}
+            {!isMobile && (<Guide />)}
         </div>
     )
 }

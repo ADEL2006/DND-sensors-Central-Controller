@@ -1,4 +1,4 @@
-.manual_toggle_button {
+.guide_toggle_button {
     position: absolute;
     right: 0;
     top: 9%;
@@ -10,13 +10,13 @@
     line-height: 25px;
     border: 3px solid white;
 }
-.manual_toggle_button:hover {
+.guide_toggle_button:hover {
     background-color: #fff;
     color: black;
     transition: 0.25s;
 }
 
-.manual_background {
+.guide_background {
     position: absolute;
     top: 0;
     left: 0;
@@ -56,7 +56,7 @@
     margin-right: -405px;
 }
 
-.manual {
+.guide {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -69,7 +69,7 @@
     line-height: 25px;
 }
 
-#manual_one {
+#guide_one {
     width: 425px;
     height: 175px;
     margin-top: -450px;
@@ -77,7 +77,7 @@
     position: relative;
 }
 
-#manual_two {
+#guide_two {
     width: 425px;
     height: 175px;
     margin-top: -200px;
@@ -85,7 +85,7 @@
     position: relative;
 }
 
-#manual_three {
+#guide_three {
     width: 425px;
     height: 200px;
     margin-top: 300px;
@@ -93,7 +93,7 @@
     position: relative;
 }
 
-.manual_content {
+.guide_content {
     width: 100%;
     font-family: 'Nunito Sans', 'Arial', sans-serif;
     font-size: 16px;
@@ -101,7 +101,7 @@
     line-height: 25px;
 }
 
-.manual_buttons {
+.guide_buttons {
     width: 380px;
     display: flex;
     justify-content: flex-end;
@@ -110,15 +110,15 @@
     justify-content: center;
 }
 
-#manual_button_spacer {
+#guide_button_spacer {
     background-color: rgba(255, 255, 255, 0);
     border-color: #ffffff00;
 }
-.manual_nav_button {
+.guide_nav_button {
     width: 70px;
     height: 45px;
 }
-.manual_page_count {
+.guide_page_count {
     width: 50px;
     height: 45px;
     display: flex;
@@ -126,13 +126,13 @@
     align-items: flex-end;
     font-weight: 1000;
 }
-.manual_close_button {
+.guide_close_button {
     position: absolute;
     right: 20px;
 }
 
 @media (max-width: 767px) {
-    .manual_toggle_button {
+    .guide_toggle_button {
         position: absolute;
         top: 2.5%;
         width: 70px;
