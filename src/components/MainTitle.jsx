@@ -10,12 +10,31 @@ function MainTitle({ wsStatus, dataArray }) {
     const [sensorStatus, setSensorStatus] = useState("정상");
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
+    const resetTimer = useRef(null);
 
     useEffect(() => {
         if (dataArray.length > 0) {
             setSensorStatusColor("red");
             setSensorStatus("침입자 탐지!")
         }
+
+        // 기존 타이머가 있으면 취소
+        if (resetTimer.current) clearTimeout(resetTimer.current);
+
+        // 새 타이머 시작
+        resetTimer.current = setTimeout(() => {
+            if (wsStatus === "Connected") {
+                console.log("5초 유예 후 레이더 상태 정상화!");
+                setSensorStatusColor("lime");
+                setSensorStatus("정상")
+            }
+            resetTimer.current = null; // 타이머 종료 후 초기화
+        }, 5000);
+
+        // cleanup
+        return () => {
+            if (resetTimer.current) clearTimeout(resetTimer.current);
+        };
     }, [dataArray]);
 
     // wsStatus 변경 시 색상 업데이트

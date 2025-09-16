@@ -5,7 +5,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
     const canvasRef = useRef(null);
     const dataRef = useRef([]);
 
-    const toggleTrail = useRef(30); // 기본 트레일 길이
+    const toggleTrail = useRef(0); // 기본 트레일 길이
 
     const pulseRef = useRef(0); // 현재 원 반경
     const pulsePausedRef = useRef(false); // pulse 증가 중단 여부
@@ -35,11 +35,20 @@ function Radar({ wsStatus, dataArray, device, colors }) {
 
     useEffect(() => {
         if (wsStatus === "Connected") {
-        toggleTrail.current = 30;
+            toggleTrail.current = 30;
         } else {
-        toggleTrail.current = 0;
+            toggleTrail.current = 0;
         }
     }, [wsStatus]);
+
+    const resetRadar = () => {
+        beforeCoordinate.current = {};
+        pulseRef.current = 0;
+        trailRef.current = [];
+        pulsePausedRef.current = false;
+        if (wsStatus === "Connected") toggleTrail.current = 30;
+        dataRef.current = [];
+    };
 
     useEffect(() => {
         if(device === "DND-500T") {
@@ -49,37 +58,14 @@ function Radar({ wsStatus, dataArray, device, colors }) {
             setMaxDistance(1000);
             setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
         }
-        beforeCoordinate.current = {};
-        trailRef.current = [];
-        pulseRef.current = 0;
+        resetRadar();
     }, [device])
-
-    // const changeDevice = (e) =>  {
-    //     if(e.target.value === "DND-500T") {
-    //         setMaxDistance(500);
-    //         setDistanceSteps([100, 200, 300, 400, 500])
-    //     } else if (e.target.value === "DND-1000T") {
-    //         setMaxDistance(1000);
-    //         setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
-    //     }
-    //     beforeCoordinate.current = {};
-    //     trailRef.current = [];
-    //     pulseRef.current = 0;
-    // }
-    const resetRadar = () => {
-        beforeCoordinate.current = {};
-        pulseRef.current = 0;
-        trailRef.current = [];
-        pulsePausedRef.current = false;
-        toggleTrail.current = 30;
-        dataRef.current = [];
-    };
 
     const resetTimer = useRef(null);
 
     useEffect(() => {
         dataRef.current = dataArray || [];
-        console.log("dataRef:", dataRef.current, "dataArray:", dataArray);
+        // console.log("dataRef:", dataRef.current, "dataArray:", dataArray);
 
         // 기존 타이머가 있으면 취소
         if (resetTimer.current) clearTimeout(resetTimer.current);
