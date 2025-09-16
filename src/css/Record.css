@@ -35,13 +35,12 @@
   text-align: center;
   margin: 0;
   margin-right: 1%;
-  display: flex;          /* flex 컨테이너로 변경 */
-  justify-content: center;/* 가로 가운데 */
-  align-items: center;    /* 세로 가운데 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #switch {
-  /* hidden */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -74,7 +73,6 @@
   transition: 0.2s;
 }
 
-/* checking style */
 #switch:checked+.switch_label {
   background: lime;
   border: 2px solid rgb(255, 255, 255);
@@ -84,11 +82,9 @@
   background: rgb(57, 255, 57);
 }
 
-/* move */
 #switch:checked+.switch_label .onf_btn {
   left: 34px;
   background: #ffffff;
-  /* box-shadow: 1px 2px 3px #000000; */
 }
 
 .record_text_box {
@@ -100,10 +96,10 @@
   margin: 0;
   padding-bottom: 4px;
   text-align: center;
-  overflow-y: auto; /* 세로 스크롤만 */
+  overflow-y: auto;
 }
 .record_text_box::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge(Chromium) */
+    display: none;
 }
 .record_text_top {
   width: 100%;
@@ -122,18 +118,17 @@
 
 .record_text {
   width: 18%;
-  /* border-right: 1px solid white; */
   display: inline-block;
-  position: relative; /* 추가 */
+  position: relative;
 }
 .record_text::after {
   content: "";
   position: absolute;
   right: 0;
-  top: 17.5%;          /* 위에서부터 25% 내려오게 */
-  height: 65%;       /* 전체 높이의 절반만 */
+  top: 17.5%;
+  height: 65%;
   width: 1px;
-  background: white; /* border처럼 보이는 선 */
+  background: white;
 }
 
 #id{
@@ -153,10 +148,10 @@
   content: "";
   position: absolute;
   right: 0;
-  top: 17.5%;          /* 위에서부터 25% 내려오게 */
-  height: 65%;       /* 전체 높이의 절반만 */
+  top: 17.5%;
+  height: 65%;
   width: 0px;
-  background: black; /* border처럼 보이는 선 */
+  background: black;
 }
 
 @media (max-width: 767px) {
@@ -192,7 +187,7 @@
     margin-left: 2%;
     display: flex;
     align-items: center;
-    justify-content: center;    /* 가로 가운데 정렬(옵션) */
+    justify-content: center;
   }
 
   .wrapper {
@@ -229,7 +224,6 @@
     background: rgb(0, 0, 0);
     transition: 0.2s;
   }
-  /* move */
   #switch:checked+.switch_label .onf_btn {
     left: 17px;
     background: #ffffff;

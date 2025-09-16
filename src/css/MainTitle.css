@@ -3,7 +3,6 @@
     width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
-    /* 필요 시 spacing */
     display: flex;
 }
 
@@ -27,7 +26,6 @@
     height: 0;
     border-radius: 50%;
     pointer-events: none;
-    /* 클릭 방해 안 함 */
     transform: translate(-50%, -50%);
     transition: all 0.3s ease;
     z-index: 1;
@@ -35,11 +33,9 @@
 
 .logo_wrapper:hover .glow {
     width: 190px;
-    /* 로고보다 조금 크게 */
     height: 84.03px;
     background: rgba(0, 255, 42, 0.2);
     filter: blur(30px);
-    /* 빛 번짐 효과 */
 }
 
 .detection_status {
@@ -50,11 +46,6 @@
 .sensor_connection_status {
     margin-right: 30px;
 }
-/* .connection_status {
-  margin: 0;
-  height: 30px;
-  margin-left: 6px;
-} */
 
 @media (max-width: 767px) {
     .main_title {
@@ -62,7 +53,6 @@
         width: 100%;
         margin-top: 20px;
         margin-bottom: 10px;
-        /* 필요 시 spacing */
         display: flex;
     }
 
@@ -85,11 +75,4 @@
     .sensor_connection_status {
         margin-right: 10px;
     }
-
-    /* .connection_status {
-        margin: 0;
-        height: 20px;
-        margin-left: 6px;
-        font-size: 10px;
-    } */
 }

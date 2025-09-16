@@ -27,7 +27,6 @@
     display: flex;
     justify-content: right;
     align-items: center;
-    /* 상, 우, 하, 좌 여백만큼 투명 */
 }
 
 .diagonal-line {
@@ -45,7 +44,6 @@
 
 #line_two {
     transform-origin: bottom right;
-    /* 기준점을 오른쪽 아래로 */
     transform: rotate(75deg);
     margin-top: -400px;
     margin-right: -403px;
@@ -53,7 +51,6 @@
 
 #line_three {
     transform-origin: top right;
-    /* 기준점을 오른쪽 아래로 */
     transform: rotate(-75deg);
     margin-top: 500px;
     margin-right: -405px;
@@ -125,8 +122,8 @@
     width: 50px;
     height: 45px;
     display: flex;
-    justify-content: center; /* 가로 가운데 */
-    align-items: flex-end;   /* 세로 아래 */
+    justify-content: center;
+    align-items: flex-end;
     font-weight: 1000;
 }
 .manual_close_button {
