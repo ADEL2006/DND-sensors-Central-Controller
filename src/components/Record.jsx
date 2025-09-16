@@ -43,7 +43,7 @@ function Record({ dataArray, colors }) {
                 html: `
                     <div style="width:100%; display:flex; gap:0px;">
                         <b id="id" class="record_text">[${targetId}]</b>
-                        <span class="record_text">${distance}m</span>
+                        <span id="distance" class="record_text">${distance}m</span>
                         <i id="angle" class="record_text">${angle}°</i>
                         <span class="record_text">${speed}m/s ${arrow}</span>
                         <span id="date" class="record_text">${dateStr}</span>
@@ -101,7 +101,7 @@ function Record({ dataArray, colors }) {
             </h2>
                 <div className="record_text_top">
                     <b id="id" className="record_text">타겟번호</b>
-                    <span className="record_text">거리</span>
+                    <span id="distance" className="record_text">거리</span>
                     <i id="angle" className="record_text">각도</i>
                     <span className="record_text">속도</span>
                     <span id="date" className="record_text">날짜</span>

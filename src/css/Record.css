@@ -139,9 +139,11 @@
 #id{
   width: 14%;
 }
-
+#distance {
+  width: 17%;
+}
 #angle {
-  width: 11%;
+  width: 12%;
 }
 #date {
   width: 21%;
