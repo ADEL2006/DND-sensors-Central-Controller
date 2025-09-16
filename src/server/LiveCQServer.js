@@ -10,7 +10,7 @@ const streamUrl = 'rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554';
 const stream = new Stream({
   name: 'camera',
   streamUrl: streamUrl,
-  wsPort: 4002,
+  wsPort: 4001,
   ffmpegOptions: {
     '-stats': '',
     '-r': 25,
@@ -20,4 +20,4 @@ const stream = new Stream({
   },
 });
 
-app.listen(4002, () => console.log('Server running on http://localhost:4002'));
+app.listen(4001, () => console.log('Server running on http://localhost:4001'));

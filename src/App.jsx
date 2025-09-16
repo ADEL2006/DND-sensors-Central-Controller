@@ -7,7 +7,7 @@ import './App.css';
 import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
-    const [device, setDevice] = useState("DND-500T");
+    const [device, setDevice] = useState("DND-1000T");
 
     const { wsStatus, dataArray } = useRadarSocket(device);
     const colors = useRef([])
@@ -57,7 +57,7 @@ export default function App() {
                     <option value="DND-500T">DND-500T</option>
                     <option value="DND-1000T">DND-1000T</option>
                 </select>
-                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} />
+                <Radar dataArray={dataArray} device={device} colors={colors} />
                 <div className='right_element'>
                     <Video />
                     <Record dataArray={dataArray} colors={colors} />

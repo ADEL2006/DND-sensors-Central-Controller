@@ -8,7 +8,7 @@ export function useRadarSocket(device) {
 
     const retryTimeout = useRef(null);
 
-    const url_ws = device === "DND-500T" ? "ws://58.79.238.184:2000" : "ws://58.79.238.184:2001";
+    const url_ws = device === "DND-500T" ? "ws://58.79.238.184:1883" : "ws://58.79.238.184:1884";
 
     useEffect(() => {
         function initWebSocket() {
