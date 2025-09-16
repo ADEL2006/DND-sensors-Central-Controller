@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "host": "vite preview --port 3334"
+    "host": "vite preview --port 3335"
   },
   "dependencies": {
     "express": "^5.1.0",
