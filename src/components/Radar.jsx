@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ dataArray, device, colors }) {
+function Radar({ wsStatus, dataArray, device, colors }) {
     const canvasRef = useRef(null);
     const dataRef = useRef([]);
 
@@ -58,10 +58,36 @@ function Radar({ dataArray, device, colors }) {
     //     trailRef.current = [];
     //     pulseRef.current = 0;
     // }
+    const resetRadar = () => {
+        beforeCoordinate.current = {};
+        pulseRef.current = 0;
+        trailRef.current = [];
+        pulsePausedRef.current = false;
+        toggleTrail.current = 30;
+        dataRef.current = [];
+    };
+
+    const resetTimer = useRef(null);
 
     useEffect(() => {
         dataRef.current = dataArray || [];
-    }, [dataArray]); // 데이터 들어올 때마다 ref만 갱신
+        console.log("dataRef:", dataRef.current, "dataArray:", dataArray);
+
+        // 기존 타이머가 있으면 취소
+        if (resetTimer.current) clearTimeout(resetTimer.current);
+
+        // 새 타이머 시작
+        resetTimer.current = setTimeout(() => {
+            console.log("5초 유예 후 레이더 초기화!");
+            resetRadar();
+            resetTimer.current = null; // 타이머 종료 후 초기화
+        }, 5000);
+
+        // cleanup
+        return () => {
+            if (resetTimer.current) clearTimeout(resetTimer.current);
+        };
+    }, [dataArray]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
