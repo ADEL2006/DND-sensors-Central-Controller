@@ -34,6 +34,14 @@ function Radar({ wsStatus, dataArray, device, colors }) {
     }, []);
 
     useEffect(() => {
+        if (wsStatus === "Connected") {
+        toggleTrail.current = 30;
+        } else {
+        toggleTrail.current = 0;
+        }
+    }, [wsStatus]);
+
+    useEffect(() => {
         if(device === "DND-500T") {
             setMaxDistance(500);
             setDistanceSteps([100, 200, 300, 400, 500])
@@ -78,8 +86,10 @@ function Radar({ wsStatus, dataArray, device, colors }) {
 
         // 새 타이머 시작
         resetTimer.current = setTimeout(() => {
-            console.log("5초 유예 후 레이더 초기화!");
-            resetRadar();
+            if (wsStatus === "Connected") {
+                console.log("5초 유예 후 레이더 초기화!");
+                resetRadar();
+            }
             resetTimer.current = null; // 타이머 종료 후 초기화
         }, 5000);
 
