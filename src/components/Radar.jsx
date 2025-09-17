@@ -19,8 +19,8 @@ function Radar({ wsStatus, dataArray, device, colors }) {
     const getCanvasSize = () => isMobile ? [460, 321] : [996, 746]; // 모바일이라면 캔버스 크기를 다르게 표기
     const [canvasSize, setCanvasSize] = useState(getCanvasSize()); // 캔버스 크기
 
-    const [maxDistance, setMaxDistance] = useState(500); // 최대 사거리
-    const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500]); // 표시할 사거리
+    const [maxDistance, setMaxDistance] = useState(600); // 최대 사거리
+    const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500, 600]); // 표시할 사거리
 
     // 화면 크기 변화에 따른 크기 재지정
     useEffect(() => {
@@ -56,8 +56,8 @@ function Radar({ wsStatus, dataArray, device, colors }) {
     // 선택 디바이스에 따른 최대 사거리/표시할 사거리 변경
     useEffect(() => {
         if(device === "DND-500T") {
-            setMaxDistance(500);
-            setDistanceSteps([100, 200, 300, 400, 500])
+            setMaxDistance(600);
+            setDistanceSteps([100, 200, 300, 400, 500, 600])
         } else if (device === "DND-1000T") {
             setMaxDistance(1000);
             setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
