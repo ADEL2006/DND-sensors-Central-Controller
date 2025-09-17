@@ -141,6 +141,7 @@ function Guide() {
                     <div className='guide_background' style={{ clipPath: 'inset(0px 0px 800px 0px)', }} />
                 </>
             )}
+            
             {(showGuide && guidePage === 6) && (
                 <>
                     <div className='guide_background' style={{ clipPath: 'inset(0px 602px 0px 0px)', }}>

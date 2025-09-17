@@ -13,8 +13,9 @@ function Record({ dataArray, colors }) {
     useEffect(() => {
         if (!dataArray || dataArray.length === 0) return;
 
-        const now = new Date();
-        // 기존 화면용
+        const now = new Date(); // 현재 시각
+        
+        // 기존 화면용 날짜
         const timeStr = now.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
         // 서버용 날짜
@@ -88,7 +89,7 @@ function Record({ dataArray, colors }) {
         <div className='record'>
             <h2 className="record_title">
                 <span className="record_title_text">Record</span>
-                <span className="switch_text">auto record: </span>
+                <span className="switch_text">auto saving: </span>
                 <div className="wrapper">
                     <input 
                     type="checkbox" 

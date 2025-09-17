@@ -95,7 +95,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
         if (!canvas) return;
         const ctx = canvas.getContext('2d'); // 2D환경 설정
         
-        let animationId; // ← 애니메이션 ID 저장
+        let animationId; // ← 애니메이션 ID
 
         const centerX = canvas.width / 2; // 중앙 X좌표 위치 설정
         const centerY = canvas.height; // 중앙 Y좌표 위치 설정

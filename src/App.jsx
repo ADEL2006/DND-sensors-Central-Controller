@@ -1,10 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { useRadarSocket } from './data/RadarSocket';
 import MainTitle from './components/MainTitle';
 import Radar from './components/Radar';
 import Video from './components/Video';
 import Record from './components/Record';
 import './App.css';
-import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
     const [device, setDevice] = useState("DND-500T"); // 디바이스값
@@ -47,7 +47,7 @@ export default function App() {
             colors.current.push(`rgba(${r},${g},${b},1)`)
         }
     }, [])
-    // 이외의 색상은 랜덤
+    // 1~7번 이외의 색상은 랜덤
     useEffect(() => {
     dataArray.forEach(obj => {
         const targetId = parseInt(obj.id, 10);
