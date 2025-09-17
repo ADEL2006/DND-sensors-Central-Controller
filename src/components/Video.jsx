@@ -4,8 +4,9 @@ import '../css/Video.css';
 function Video() {
     const canvasRef = useRef(null); // 영상을 표시할 구역
     const playerRef = useRef(null); // 영상
-    const [ready, setReady] = useState(false); // 영상을 내보낼지 보내지 말지 여부
-    const [hasSignal, setHasSignal] = useState(false); // 영상이 출력 되는지 안되는지
+    const lastFrameRef = useRef(Date.now()); // 마지막 프레임 수신 시간
+    const [ready, setReady] = useState(false); // JSMpeg 준비 여부
+    const [hasSignal, setHasSignal] = useState(false); // 영상 출력 여부
 
     // CDN JSMpeg 준비 확인
     useEffect(() => {
@@ -23,14 +24,28 @@ function Video() {
         playerRef.current = new window.JSMpeg.Player('ws://58.79.238.184:4002', {
             canvas: canvasRef.current,
             autoplay: true,
-            onPlay: () => setHasSignal(true),   // 영상 재생 시작
-            onPause: () => setHasSignal(false), // 신호 끊김
+            onVideoDecode: () => {
+                lastFrameRef.current = Date.now();
+                if (!hasSignal) setHasSignal(true);
+            }
         });
 
         return () => {
             if (playerRef.current) playerRef.current.destroy();
         };
     }, [ready]);
+
+    // 프레임 수신 체크
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now();
+            if (now - lastFrameRef.current > 3000) { // 3초 이상 프레임 없으면
+                setHasSignal(false);
+            }
+        }, 500); // 0.5초마다 체크
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className='livqCQ'>
