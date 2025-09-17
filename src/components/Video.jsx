@@ -39,10 +39,10 @@ function Video() {
     useEffect(() => {
         const interval = setInterval(() => {
             const now = Date.now();
-            if (now - lastFrameRef.current > 3000) { // 3초 이상 프레임 없으면
+            if (now - lastFrameRef.current > 5000) { // 5초 이상 프레임 없으면
                 setHasSignal(false);
             }
-        }, 500); // 0.5초마다 체크
+        }, 1000); // 1초마다 체크
 
         return () => clearInterval(interval);
     }, []);
