@@ -27,6 +27,13 @@
     display: flex;
     justify-content: right;
     align-items: center;
+    z-index: 3;
+}
+
+.guide_area {
+    position: absolute;
+    background-color: transparent;
+    border: 2px solid white;
 }
 
 .diagonal-line {
@@ -35,21 +42,40 @@
     background-color: white;
 }
 
-#line_one {
+#line_connection {
+  position: absolute;
+  height: 110px;
+  top: 101%;
+  left: 50%;
+  transform-origin: top left;
+  transform: rotate(-15deg);
+  z-index: 4;
+}
+
+#line_radar_status {
+  position: absolute;
+  height: 110px;
+  top: 100%;
+  left: 50%;
+  transform-origin: top left;
+  transform: rotate(25deg);
+  z-index: 4;
+}
+
+#line_radar {
     transform-origin: top left;
     transform: rotate(75deg);
     margin-top: -250px;
-
 }
 
-#line_two {
+#line_video {
     transform-origin: bottom right;
     transform: rotate(75deg);
     margin-top: -400px;
     margin-right: -403px;
 }
 
-#line_three {
+#line_record {
     transform-origin: top right;
     transform: rotate(-75deg);
     margin-top: 500px;
@@ -69,7 +95,24 @@
     line-height: 25px;
 }
 
-#guide_one {
+#guide_connection {
+    width: 425px;
+    height: 175px;
+    margin-top: -300px;
+    margin-right: 800px;
+    position: relative;
+}
+
+
+#guide_radar_status {
+    width: 425px;
+    height: 175px;
+    margin-top: -315px;
+    margin-right: 300px;
+    position: relative;
+}
+
+#guide_radar {
     width: 425px;
     height: 175px;
     margin-top: -450px;
@@ -77,7 +120,7 @@
     position: relative;
 }
 
-#guide_two {
+#guide_video {
     width: 425px;
     height: 175px;
     margin-top: -200px;
@@ -85,7 +128,7 @@
     position: relative;
 }
 
-#guide_three {
+#guide_record {
     width: 425px;
     height: 200px;
     margin-top: 300px;
