@@ -44,14 +44,15 @@ export default function App() {
                 r = 148;
                 b = 211;
             }
-            colors.current.push(`rgba(${r},${g},${b},1)`)
+            colors.current[i] = `rgba(${r},${g},${b},1)`;
         }
     }, [])
     // 1~7번 이외의 색상은 랜덤
     useEffect(() => {
     dataArray.forEach(obj => {
         const targetId = parseInt(obj.id, 10);
-
+        
+        console.log("id:", obj.id, "targetId:", targetId, "기존 색상:", colors.current[targetId]);
         // 이미 값이 있으면 건너뛰기, 초기 0~7번은 건너뜀
         if (colors.current[targetId] || targetId < 8) return;
 
@@ -60,7 +61,7 @@ export default function App() {
         const g = Math.floor(Math.random() * 256);
         const b = Math.floor(Math.random() * 256);
 
-        // console.log(targetId+"번 색상 부여: " + `rgba(${r},${g},${b},1)`);
+        console.log(targetId+"번 색상 부여: " + `rgba(${r},${g},${b},1)`);
 
         colors.current[targetId] = `rgba(${r},${g},${b},1)`;
     });
