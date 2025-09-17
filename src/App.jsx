@@ -68,7 +68,7 @@ export default function App() {
 
     return (
         <div className='main'>
-            <MainTitle wsStatus={wsStatus} dataArray={dataArray} />
+            <MainTitle wsStatus={wsStatus} dataArray={dataArray} device={device} />
             <div className='contents'>
                 <select onChange={changeDevice} value={device} className='device'>
                     <option value="DND-500T">DND-500T</option>

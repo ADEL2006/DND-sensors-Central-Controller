@@ -5,12 +5,17 @@ import dnetImg from '../img/dnet.png'; // App.jsx 기준 상대 경로
 import { data } from 'react-router-dom';
 import Guide from './Guide';
 
-function MainTitle({ wsStatus, dataArray }) {
+function MainTitle({ wsStatus, dataArray, device }) {
     const [sensorStatusColor, setSensorStatusColor] = useState("lime"); // 센서 상태값 색상
     const [sensorStatus, setSensorStatus] = useState("정상"); // 센서 상태값
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 여부
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
     const resetTimer = useRef(null); // 타이머 초기화
+
+    useEffect(() => {
+        setSensorStatusColor("lime");
+        setSensorStatus("정상");
+    }, [device]);
 
     useEffect(() => {
         // 데이터가 존재한다면
