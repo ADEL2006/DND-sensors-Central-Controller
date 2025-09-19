@@ -59,8 +59,8 @@ function Radar({ wsStatus, dataArray, device, colors }) {
             setMaxDistance(600);
             setDistanceSteps([100, 200, 300, 400, 500, 600])
         } else if (device === "DND-1000T") {
-            setMaxDistance(1000);
-            setDistanceSteps([125, 250, 375, 500, 625, 750, 875, 1000])
+            setMaxDistance(1200);
+            setDistanceSteps([150, 300, 450, 600, 750, 900, 1050, 1200])
         }
         resetRadar();
     }, [device])
