@@ -18,8 +18,9 @@ export default function App() {
     const [isPublic, setIsPublic] = useState(true);
     const [useDefaultIp, setUseDefaultIp] = useState(true);
     const [displayIp, setDisplayIp] = useState("gray");
-    const [DND_500T, setDND_500T] = useState("ws://58.79.238.184:2000")
-    const [DND_1000T, setDND_1000T] = useState("ws://58.79.238.184:2001")
+    const [readOnly, setReadOnly] = useState(false)
+    const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2000")
+    const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2001")
     const [distance_500T, setDistance_500T] = useState(600);
     const [distance_1000T, setDistance_1000T] = useState(1200);
     const [animationSetting, setAnimationSetting] = useState(1);
@@ -38,13 +39,27 @@ export default function App() {
     function handleDefaultIpSettingToggle() {
         setUseDefaultIp(prev => !prev);
     }
+
     useEffect(() => {
         if(!useDefaultIp) {
             setDisplayIp("white");
+            setReadOnly(false);
+            setIsPublic(false);
         } else {
             setDisplayIp("gray");
+            setReadOnly(true);
         }
     }, [useDefaultIp])
+
+    useEffect(() => {
+        if(useDefaultIp && isPublic) {
+            setDND_500TIp("ws://58.79.238.184:2000");
+            setDND_1000TIp("ws://58.79.238.184:2001");
+        } else if((useDefaultIp && !isPublic) || !useDefaultIp) {
+            setDND_500TIp("ws://192.168.0.123:1883");
+            setDND_1000TIp("ws://192.168.0.124:1883");
+        }
+    }, [isPublic]);
 
     // 데이터 고유의색 부여
     // 1~7번 까지는 빨주노초파남보
@@ -112,46 +127,43 @@ export default function App() {
                             <span className='setting_content'>
 
                                 <div className="setting_row">
-                                    <span>외부 아이피 사용 설정(off시 내부 아이피 사용)</span>
-                                    <div className="wrapper">
-                                        <input type="checkbox" id="is_public" />
-                                        <label htmlFor="is_public" className="switch_label" >
-                                            <span className="onf_btn"></span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div className="setting_row">
                                     <span>기본 아이피 사용 설정</span>
                                     <div className="wrapper">
-                                        <input type="checkbox" id="use_default_ip" onChange={handleDefaultIpSettingToggle} />
+                                        <input type="checkbox" id="use_default_ip" onChange={handleDefaultIpSettingToggle} checked={useDefaultIp} />
                                         <label htmlFor="use_default_ip" className="switch_label">
                                             <span className="onf_btn"></span>
                                         </label>
                                     </div>
                                 </div>
 
-                                <div className="setting_row" style={{ color: displayIp }}>
-                                    <span>500T 아이피 설정</span>
+                                <div className="setting_row">
+                                    <span>외부 아이피 사용 설정(off시 내부 아이피 사용)</span>
                                     <div className="wrapper">
-                                        <input type="checkbox" id="switch" />
-                                        <label htmlFor="switch" className="switch_label">
-                                            <span className="onf_btn"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="setting_row" style={{ color: displayIp }}>
-                                    <span>1000T 아이피 설정</span>
-                                    <div className="wrapper">
-                                        <input type="checkbox" id="switch" />
-                                        <label htmlFor="switch" className="switch_label">
+                                        <input type="checkbox" id="is_public" onChange={handlePublicSettingToggle} checked={isPublic} disabled={!useDefaultIp} />
+                                        <label htmlFor="is_public" className="switch_label" >
                                             <span className="onf_btn"></span>
                                         </label>
                                     </div>
                                 </div>
 
-                                500T 표시 거리 설정<br />
-                                1000T 표시 거리 설정<br />
+                                <div id="ip_input_text" className="setting_row" style={{ color: displayIp }}>
+                                    <span>500T 아이피 설정</span>
+                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value={DND_500TIp} onChange={(e) => setDND_500TIp(e.target.value)} />
+                                </div>
+                                <div className="setting_row" style={{ color: displayIp }}>
+                                    <span>1000T 아이피 설정</span>
+                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value={DND_1000TIp} onChange={(e) => setDND_1000TIp(e.target.value)} />
+                                </div>
+
+                                <div className="setting_row" style={{ color: displayIp }}>
+                                    <span>500T 표시 거리 설정</span>
+                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value="600" onChange={(e) => setDND_1000TIp(e.target.value)} />
+                                </div>
+                                <div className="setting_row" style={{ color: displayIp }}>
+                                    <span>1000T 표시 거리 설정</span>
+                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value="1200" onChange={(e) => setDND_1000TIp(e.target.value)} />
+                                </div>
+
                                 <button className='setting_close_button' onClick={handleSettingToggle}>
                                     완료
                                 </button>

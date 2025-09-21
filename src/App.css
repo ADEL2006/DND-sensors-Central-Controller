@@ -86,6 +86,13 @@ html, body {
   justify-content: space-between; /* 글자와 버튼 사이 띄우기 */
   margin-bottom: 12px;
 }
+#ip_input_text{
+  margin-bottom: 5px;
+}
+.ip_input{
+  color: black;
+  border-radius: 5px;
+}
 
 .setting_close_button {
   width: 70px;
