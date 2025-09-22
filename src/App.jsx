@@ -21,9 +21,12 @@ export default function App() {
     const [readOnly, setReadOnly] = useState(false)
     const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2000")
     const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2001")
+
+    const [useDefaultDistance, setUseDefaultDistance] = useState(true);
+    const [displayDistance, setDisplayDistance] = useState("gray");
     const [distance_500T, setDistance_500T] = useState(600);
     const [distance_1000T, setDistance_1000T] = useState(1200);
-    const [animationSetting, setAnimationSetting] = useState(1);
+    const [animationSetting, setAnimationSetting] = useState("default");
 
     // 선택 디바이스 변경 토글
     const changeDevice = (e) => {
@@ -39,27 +42,43 @@ export default function App() {
     function handleDefaultIpSettingToggle() {
         setUseDefaultIp(prev => !prev);
     }
+    function handleUseDefaultDistanceSettingToggle() {
+        setUseDefaultDistance(prev => !prev);
+    }
+    const changeAnimationSetting = (e) => {
+        setAnimationSetting(e.target.value);
+    }
 
     useEffect(() => {
-        if(!useDefaultIp) {
+        if (!useDefaultIp) {
             setDisplayIp("white");
-            setReadOnly(false);
             setIsPublic(false);
         } else {
             setDisplayIp("gray");
-            setReadOnly(true);
+            setDND_500TIp("ws://192.168.0.123:1883");
+            setDND_1000TIp("ws://192.168.0.124:1883");
         }
     }, [useDefaultIp])
 
     useEffect(() => {
-        if(useDefaultIp && isPublic) {
+        if (useDefaultIp && isPublic) {
             setDND_500TIp("ws://58.79.238.184:2000");
             setDND_1000TIp("ws://58.79.238.184:2001");
-        } else if((useDefaultIp && !isPublic) || !useDefaultIp) {
+        } else if ((useDefaultIp && !isPublic) || !useDefaultIp) {
             setDND_500TIp("ws://192.168.0.123:1883");
             setDND_1000TIp("ws://192.168.0.124:1883");
         }
     }, [isPublic]);
+    
+    useEffect(() => {
+        if (!useDefaultDistance) {
+            setDisplayDistance("white");
+        } else {
+            setDisplayDistance("gray");
+            setDistance_500T(600);
+            setDistance_1000T(1200);
+        }
+    }, [useDefaultDistance])
 
     // 데이터 고유의색 부여
     // 1~7번 까지는 빨주노초파남보
@@ -121,56 +140,73 @@ export default function App() {
             </button>
 
             {isSettingOpen && (
-                <>
-                    <div className='setting_background' style={{ borderRight: '2px solid rgba(0, 0, 0, 0.8)' }}>
-                        <div className='setting_box'>
-                            <span className='setting_content'>
+                <div className='setting_background' style={{ borderRight: '2px solid rgba(0, 0, 0, 0.8)' }}>
+                    <div className='setting_box'>
+                        <span className='setting_content'>
 
-                                <div className="setting_row">
-                                    <span>기본 아이피 사용 설정</span>
-                                    <div className="wrapper">
-                                        <input type="checkbox" id="use_default_ip" onChange={handleDefaultIpSettingToggle} checked={useDefaultIp} />
-                                        <label htmlFor="use_default_ip" className="switch_label">
-                                            <span className="onf_btn"></span>
-                                        </label>
-                                    </div>
+                            <div className="setting_row">
+                                <span>기본 아이피 사용</span>
+                                <div className="wrapper">
+                                    <input type="checkbox" id="use_default_ip" onChange={handleDefaultIpSettingToggle} checked={useDefaultIp} />
+                                    <label htmlFor="use_default_ip" className="switch_label">
+                                        <span className="onf_btn"></span>
+                                    </label>
                                 </div>
+                            </div>
 
-                                <div className="setting_row">
-                                    <span>외부 아이피 사용 설정(off시 내부 아이피 사용)</span>
-                                    <div className="wrapper">
-                                        <input type="checkbox" id="is_public" onChange={handlePublicSettingToggle} checked={isPublic} disabled={!useDefaultIp} />
-                                        <label htmlFor="is_public" className="switch_label" >
-                                            <span className="onf_btn"></span>
-                                        </label>
-                                    </div>
+                            <div className="setting_row">
+                                <span>외부 아이피 사용(off시 내부 아이피 사용)</span>
+                                <div className="wrapper">
+                                    <input type="checkbox" id="is_public" onChange={handlePublicSettingToggle} checked={isPublic} disabled={!useDefaultIp} />
+                                    <label htmlFor="is_public" className="switch_label" >
+                                        <span className="onf_btn"></span>
+                                    </label>
                                 </div>
+                            </div>
 
-                                <div id="ip_input_text" className="setting_row" style={{ color: displayIp }}>
-                                    <span>500T 아이피 설정</span>
-                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value={DND_500TIp} onChange={(e) => setDND_500TIp(e.target.value)} />
-                                </div>
-                                <div className="setting_row" style={{ color: displayIp }}>
-                                    <span>1000T 아이피 설정</span>
-                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value={DND_1000TIp} onChange={(e) => setDND_1000TIp(e.target.value)} />
-                                </div>
+                            <div id="first_input" className="setting_row" style={{ color: displayIp }}>
+                                <span>500T 아이피</span>
+                                <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_500TIp} onChange={(e) => setDND_500TIp(e.target.value)} />
+                            </div>
+                            <div className="setting_row" style={{ color: displayIp }}>
+                                <span>1000T 아이피</span>
+                                <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_1000TIp} onChange={(e) => setDND_1000TIp(e.target.value)} />
+                            </div>
 
-                                <div className="setting_row" style={{ color: displayIp }}>
-                                    <span>500T 표시 거리 설정</span>
-                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value="600" onChange={(e) => setDND_1000TIp(e.target.value)} />
+                            <div className="setting_row">
+                                <span>기본 거리 설정 사용</span>
+                                <div className="wrapper">
+                                    <input type="checkbox" id="use_default_distance" onChange={handleUseDefaultDistanceSettingToggle} checked={useDefaultDistance} />
+                                    <label htmlFor="use_default_distance" className="switch_label" >
+                                        <span className="onf_btn"></span>
+                                    </label>
                                 </div>
-                                <div className="setting_row" style={{ color: displayIp }}>
-                                    <span>1000T 표시 거리 설정</span>
-                                    <input className='ip_input' type='text' readOnly={readOnly} style={{ backgroundColor: displayIp }} value="1200" onChange={(e) => setDND_1000TIp(e.target.value)} />
-                                </div>
+                            </div>
 
-                                <button className='setting_close_button' onClick={handleSettingToggle}>
-                                    완료
-                                </button>
-                            </span>
-                        </div>
+                            <div id="first_input" className="setting_row" style={{ color: displayIp }}>
+                                <span>500T 표시 거리</span>
+                                <input className='ip_input' type='text' readOnly={useDefaultDistance} style={{ backgroundColor: displayDistance }} value={distance_500T} onChange={(e) => setDistance_500T(e.target.value)} />
+                            </div>
+                            <div className="setting_row" style={{ color: displayIp }}>
+                                <span>1000T 표시 거리</span>
+                                <input className='ip_input' type='text' readOnly={useDefaultDistance} style={{ backgroundColor: displayDistance }} value={distance_1000T} onChange={(e) => setDistance_1000T(e.target.value)} />
+                            </div>
+                            
+                            <div className="setting_row" style={{ color: displayIp }}>
+                                <span>애니메이션 표시</span>
+                                <select onChange={changeAnimationSetting} value={animationSetting} className='animation_setting'>
+                                    <option value="on">켜기</option>
+                                    <option value="default">감지된 상황만 끄기</option>
+                                    <option value="off">끄기</option>
+                                </select>
+                            </div>
+
+                            <button className='setting_close_button' onClick={handleSettingToggle}>
+                                완료
+                            </button>
+                        </span>
                     </div>
-                </>
+                </div>
             )}
 
             <div className='contents'>

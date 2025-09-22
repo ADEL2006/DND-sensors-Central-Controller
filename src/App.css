@@ -86,12 +86,13 @@ html, body {
   justify-content: space-between; /* 글자와 버튼 사이 띄우기 */
   margin-bottom: 12px;
 }
-#ip_input_text{
+#first_input{
   margin-bottom: 5px;
 }
 .ip_input{
   color: black;
   border-radius: 5px;
+  border: 2px solid rgb(59, 59, 59);
 }
 
 .setting_close_button {
@@ -144,46 +145,34 @@ html, body {
   transition: 0.2s;
 }
 
-#is_public {
+#is_public, #use_default_distance, #use_default_ip {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   margin: 0;
 }
-#is_public:checked+.switch_label {
-  background: lime;
-  border: 2px solid rgb(255, 255, 255);
-}
-#is_public:checked+.switch_label:hover {
-  background: rgb(57, 255, 57);
-}
-#is_public:checked+.switch_label .onf_btn {
-  left: 34px;
-  background: #ffffff;
-}
-
-#use_default_ip {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  margin: 0;
-}
-
+#is_public:checked+.switch_label, 
+#use_default_distance:checked+.switch_label,
 #use_default_ip:checked+.switch_label {
   background: lime;
   border: 2px solid rgb(255, 255, 255);
 }
-
+#is_public:checked+.switch_label:hover,
+#use_default_distance:checked+.switch_label:hover,
 #use_default_ip:checked+.switch_label:hover {
   background: rgb(57, 255, 57);
 }
-
+#is_public:checked+.switch_label .onf_btn,
+#use_default_distance:checked+.switch_label .onf_btn,
 #use_default_ip:checked+.switch_label .onf_btn {
   left: 34px;
   background: #ffffff;
 }
 
-
+.animation_setting {
+  border-radius: 5px;
+  height: 25px;
+}
 
 .contents {
   display: flex;
