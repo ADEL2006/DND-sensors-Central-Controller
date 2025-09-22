@@ -1,18 +1,28 @@
 // data/RadarSocket.js
 import { useState, useEffect, useRef } from "react";
 
-export function useRadarSocket(device) {
+export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
     const [wsStatus, setWsStatus] = useState("connecting...");
     const [dataArray, setDataArray] = useState([]);
     const wsRef = useRef(null);
     const hasConnected = useRef(false);
     const retryTimeout = useRef(null);
+    const [url_ws, setUrl_ws] = useState(DND_500TIp);
 
-    const url_ws = device === "DND-500T"
-        ? "ws://58.79.238.184:2000"
-        : "ws://58.79.238.184:2001";
+    // const url_ws = device === "DND-500T"
+    //     ? "ws://58.79.238.184:2000"
+    //     : "ws://58.79.238.184:2001";
 
     useEffect(() => {
+        if(device === "DND-500T") {
+            setUrl_ws(DND_500TIp);
+        }else {
+            setUrl_ws(DND_1000TIp);
+        }
+    }, [device, DND_500TIp, DND_1000TIp]);
+
+    useEffect(() => {
+        if (!url_ws) return;
         setWsStatus("Connecting...");
         hasConnected.current = false;
 
@@ -33,6 +43,7 @@ export function useRadarSocket(device) {
 
             const ws = new WebSocket(url_ws);
             wsRef.current = ws;
+            console.log("Attempting to connect to WebSocket at:", url_ws);
 
             ws.onopen = () => {
                 setWsStatus("Connected");
@@ -102,7 +113,7 @@ export function useRadarSocket(device) {
             }
             hasConnected.current = false;
         };
-    }, [device]);
+    }, [url_ws]);
 
     return { wsStatus, dataArray };
 }
