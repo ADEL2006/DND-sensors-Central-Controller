@@ -36,6 +36,7 @@ html, body {
   padding: 0;
   padding-top: 2px;
   border: 3px solid white;
+  background-color: black;
 }
 .setting_img {
   width: 40px;

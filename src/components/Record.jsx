@@ -90,7 +90,7 @@ function Record({ dataArray, colors }) {
             <h2 className="record_title">
                 <span className="record_title_text">Record</span>
                 <span className="switch_text">auto saving: </span>
-                <div className="wrapper">
+                <div className="record_wrapper">
                     <input 
                     type="checkbox" 
                     id="switch"
