@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ wsStatus, dataArray, device, colors }) {
+function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel }) {
     const canvasRef = useRef(null); // 캔버스
     const dataRef = useRef([]); // 데이터 값
 
@@ -21,6 +21,8 @@ function Radar({ wsStatus, dataArray, device, colors }) {
 
     const [maxDistance, setMaxDistance] = useState(600); // 최대 사거리
     const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500, 600]); // 표시할 사거리
+    
+    const valueFalseAlarmADJ = noiseFilterLevel;
 
     // 화면 크기 변화에 따른 크기 재지정
     useEffect(() => {
@@ -208,7 +210,7 @@ function Radar({ wsStatus, dataArray, device, colors }) {
                     const dy = targetY - beforeCoordinate.current[id].y;
                     const movedDist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (movedDist <= 20) {
+                    if (movedDist <= valueFalseAlarmADJ) {
                         beforeCoordinate.current[id].targetX = targetX;
                         beforeCoordinate.current[id].targetY = targetY;
                         beforeCoordinate.current[id].distance = distance;

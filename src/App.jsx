@@ -10,9 +10,6 @@ import setting from './img/setting.png'
 export default function App() {
     const [device, setDevice] = useState("DND-500T"); // 디바이스값
 
-    const { wsStatus, dataArray } = useRadarSocket(device); // 센서와의 연결상태 / 데이터값
-    const colors = useRef([]) // 색상 정보
-
     const [isSettingOpen, setIsSettingOpen] = useState(false);
 
     const [isPublic, setIsPublic] = useState(true);
@@ -22,11 +19,16 @@ export default function App() {
     const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2000")
     const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2001")
 
+    const [noiseFilterLevel, setNoiseFilterLevel] = useState(20);
+
     const [useDefaultDistance, setUseDefaultDistance] = useState(true);
     const [displayDistance, setDisplayDistance] = useState("gray");
     const [distance_500T, setDistance_500T] = useState(600);
     const [distance_1000T, setDistance_1000T] = useState(1200);
     const [animationSetting, setAnimationSetting] = useState("default");
+
+    const { wsStatus, dataArray } = useRadarSocket(device, DND_500TIp, DND_1000TIp); // 센서와의 연결상태 / 데이터값
+    const colors = useRef([]) // 색상 정보
 
     // 선택 디바이스 변경 토글
     const changeDevice = (e) => {
@@ -65,8 +67,8 @@ export default function App() {
             setDND_500TIp("ws://58.79.238.184:2000");
             setDND_1000TIp("ws://58.79.238.184:2001");
         } else if ((useDefaultIp && !isPublic) || !useDefaultIp) {
-            setDND_500TIp("ws://192.168.0.123:1883");
-            setDND_1000TIp("ws://192.168.0.124:1883");
+            setDND_500TIp("ws://192.168.0.201:1883");
+            setDND_1000TIp("ws://192.168.0.202:1883");
         }
     }, [isPublic]);
     
@@ -173,7 +175,13 @@ export default function App() {
                                 <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_1000TIp} onChange={(e) => setDND_1000TIp(e.target.value)} />
                             </div>
 
-                            <div className="setting_row">
+                            <div className="setting_row" style={{ color: displayIp }}>
+                                <span>튀는값 제어 (기본 20)</span>
+                                <input className='ip_input' type='text' style={{ backgroundColor: "white" }} value={noiseFilterLevel} onChange={(e) => setNoiseFilterLevel(e.target.value)} />
+                            </div>
+                            
+
+                            {/* <div className="setting_row">
                                 <span>기본 거리 설정 사용</span>
                                 <div className="wrapper">
                                     <input type="checkbox" id="use_default_distance" onChange={handleUseDefaultDistanceSettingToggle} checked={useDefaultDistance} />
@@ -199,7 +207,7 @@ export default function App() {
                                     <option value="default">감지된 상황만 끄기</option>
                                     <option value="off">끄기</option>
                                 </select>
-                            </div>
+                            </div> */}
 
                             <button className='setting_close_button' onClick={handleSettingToggle}>
                                 완료
@@ -214,7 +222,7 @@ export default function App() {
                     <option value="DND-500T">DND-500T</option>
                     <option value="DND-1000T">DND-1000T</option>
                 </select>
-                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} />
+                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} noiseFilterLevel={noiseFilterLevel} />
                 <div className='right_element'>
                     <Video />
                     <Record dataArray={dataArray} colors={colors} />
