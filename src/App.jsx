@@ -175,7 +175,7 @@ export default function App() {
                                 <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_1000TIp} onChange={(e) => setDND_1000TIp(e.target.value)} />
                             </div>
 
-                            <div className="setting_row" style={{ color: displayIp }}>
+                            <div className="setting_row" style={{ color: "white" }}>
                                 <span>튀는값 제어 (기본 20)</span>
                                 <input className='ip_input' type='text' style={{ backgroundColor: "white" }} value={noiseFilterLevel} onChange={(e) => setNoiseFilterLevel(e.target.value)} />
                             </div>
