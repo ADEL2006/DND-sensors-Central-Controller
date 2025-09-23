@@ -5,9 +5,6 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
     const [showGuide, setshowGuide] = useState(false); // 가이드 표시 여부
     const [guidePage, setguidePage] = useState(1); // 가이드 페이지
 
-    const [connectionGuideSize, setConnectionGuideSize] = useState([[]]);
-    const [radarStatusGuideSize, setRadarStatusGuideSize] = useState([[]]);
-
     // 가이드 on/off 토글 힘수
     function toggleGuide() {
         setshowGuide(prev => !prev);
@@ -30,34 +27,6 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
         else setIsSettingOpen(false);
     }, [guidePage])
 
-    useEffect(() => {
-        if (sensorStatus === "정상") {
-            setConnectionGuideSize([
-                ['620px', '100px', '350px', '24px'],
-                ['inset(0px 0px 800px 985px)'],
-                ['inset(0px 1350px 800px 0px)']
-            ]);
-
-            setRadarStatusGuideSize([
-                ['365px', '100px', '960px', '24px'],
-                ['inset(0px 650px 800px 0px)'],
-                ['inset(0px 0px 800px 1350px)']
-            ]);
-        } else if(sensorStatus === "침입자 탐지!") {
-            setConnectionGuideSize([
-                ['575px', '100px', '290px', '24px'],
-                ['inset(0px 0px 800px 900px)'],
-                ['inset(0px 1350px 800px 0px)']
-            ]);
-
-            setRadarStatusGuideSize([
-                ['505px', '100px', '890px', '24px'],
-                ['inset(0px 720px 800px 0px)'],
-                ['inset(0px 0px 800px 1350px)']
-            ]);
-        }
-    }, [sensorStatus])
-
     return (
         <>
             <button onClick={toggleGuide} className='guide_toggle_button'>
@@ -66,7 +35,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
 
             {(showGuide && guidePage === 1) && (
                 <>
-                    <div className='guide_background' style={{ clipPath: 'inset(140px 0px 0px 0px)', borderRight: '2px solid rgba(0, 0, 0, 0.8)' }}>
+                    <div className='guide_background' style={{ clipPath: 'inset(140px 0px 0px 0px)', borderRight: '2px solid rgba(0, 0, 0, 0)' }}>
                         <div id='guide_connection' className='guide'>
                             <span className='guide_content'>
                                 센서와의 연결 상태입니다. <br />
@@ -81,22 +50,17 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </div>
                         </div>
                     </div>
-                    <div className='guide_area' style={{ 
-                        width: connectionGuideSize[0][0], 
-                        height: connectionGuideSize[0][1], 
-                        left: connectionGuideSize[0][2], 
-                        top: connectionGuideSize[0][3] 
-                        }} >
+                    <div id='guide_area_connection' className='guide_area' >
                         <div id='line_connection' class="diagonal-line" />
                     </div>
-                    <div className='guide_background' style={{ clipPath: connectionGuideSize[1][0] }} />
-                    <div className='guide_background' style={{ clipPath: connectionGuideSize[2][0] }} />
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 800px 940px)' }} />
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 1410px 800px 0px)' }} />
                 </>
             )}
 
             {(showGuide && guidePage === 2) && (
                 <>
-                    <div className='guide_background' style={{ clipPath: 'inset(140px 0px 0px 0px)', borderRight: '2px solid rgba(0, 0, 0, 0.8)' }}>
+                    <div className='guide_background' style={{ clipPath: 'inset(140px 0px 0px 0px)', borderRight: '2px solid rgba(0, 0, 0, 0)' }}>
                         <div id='guide_radar_status' className='guide'>
                             <span className='guide_content'>
                                 레이더의 감지 상황 입니다.<br />
@@ -111,16 +75,11 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </div>
                         </div>
                     </div>
-                    <div className='guide_area' style={{ 
-                        width: radarStatusGuideSize[0][0], 
-                        height: radarStatusGuideSize[0][1], 
-                        left: radarStatusGuideSize[0][2], 
-                        top: radarStatusGuideSize[0][3]
-                        }} >
+                    <div id='guide_area_radar_status' className='guide_area' >
                         <div id='line_radar_status' class="diagonal-line" />
                     </div>
-                    <div className='guide_background' style={{ clipPath: radarStatusGuideSize[1][0], }} />
-                    <div className='guide_background' style={{ clipPath: radarStatusGuideSize[2][0], }} />
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 700px 800px 0px)' }} />
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 800px 1435px)' }} />
                 </>
             )}
             
