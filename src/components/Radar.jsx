@@ -21,8 +21,6 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
     const [maxDistance, setMaxDistance] = useState(600); // 최대 사거리
     const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500, 600]); // 표시할 사거리
-    
-    const valueFalseAlarmADJ = noiseFilterLevel;
 
     // 화면 크기 변화에 따른 크기 재지정
     useEffect(() => {
@@ -95,7 +93,6 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
     // 캔버스 생성
     useEffect(() => {
-        console.log("testestestsetsetestestest");
         const canvas = canvasRef.current; // 캔버스 지정
         if (!canvas) return;
         const ctx = canvas.getContext('2d'); // 2D환경 설정
@@ -124,9 +121,9 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 ctx.fillStyle = "white";
                 ctx.font = "16px Arial";
                 ctx.textAlign = "center";
-                ctx.textBaseline = "alphabetic"; // ← 추가
+                ctx.textBaseline = "alphabetic";
                 const offset = Number(distance) === Number(maxDistance) ? (isMobile ? 12 : 20) : 0;
-                ctx.fillText(`${distance.toFixed(2)}m`, centerX, centerY - r - offset-5);
+                ctx.fillText(`${distance.toFixed(2)}m`, centerX, centerY - r - offset-5); // 거리는 소수 둘째자리 수까지 표시
             });
 
             // 각도 표시
@@ -179,19 +176,19 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
             // 감지 물체 정보 정리
             (dataRef.current || []).forEach(obj => {
-                if (animationSetting !== "on") toggleTrail.current = 0;
-                const id = parseFloat(obj.id);
-                const distance = parseFloat(obj.d);
-                const angle = parseFloat(obj.a);
-                const angleDeg = angle * -1 + 90;
-                const speed = parseFloat(obj.vy);
+                if (animationSetting !== "on") toggleTrail.current = 0; // 애니메이션 설정이 on이 아니라면
+                const id = parseFloat(obj.id); // 타겟 번호
+                const distance = parseFloat(obj.d); // 거리
+                const angle = parseFloat(obj.a); // 각도
+                const angleDeg = angle * -1 + 90; // 표시에 사용할 각도값
+                const speed = parseFloat(obj.vy); // 속도
                 if (isNaN(angleDeg) || isNaN(distance)) return;
 
-                const angleRad = (angleDeg * Math.PI) / 180;
-                const scaledR = (distance / maxDistance) * maxRadius;
+                const angleRad = (angleDeg * Math.PI) / 180; // 각도를 라디안으로 변환
+                const scaledR = (distance / maxDistance) * maxRadius; // 거리 비율 계산
 
-                const targetX = centerX + scaledR * Math.cos(angleRad);
-                const targetY = centerY - scaledR * Math.sin(angleRad);
+                const targetX = centerX + scaledR * Math.cos(angleRad); // X좌표
+                const targetY = centerY - scaledR * Math.sin(angleRad); // Y좌표
 
                 // 기존 값 없으면 초기화
                 if (!beforeCoordinate.current[id]) {
@@ -213,7 +210,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                     const dy = targetY - beforeCoordinate.current[id].y;
                     const movedDist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (movedDist <= valueFalseAlarmADJ) {
+                    if (movedDist <= noiseFilterLevel) {
                         beforeCoordinate.current[id].targetX = targetX;
                         beforeCoordinate.current[id].targetY = targetY;
                         beforeCoordinate.current[id].distance = distance;
@@ -291,7 +288,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             });
 
 
-            // 애니메이션
+            // 애니메이션 설정이 off가 아니라면 동작
             if(animationSetting !== 'off') {
                 if (!pulsePausedRef.current) {
                     const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리

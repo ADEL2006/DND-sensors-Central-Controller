@@ -10,22 +10,21 @@ import setting from './img/setting.png'
 export default function App() {
     const [device, setDevice] = useState("DND-500T"); // 디바이스값
 
-    const [isSettingOpen, setIsSettingOpen] = useState(false);
+    const [isSettingOpen, setIsSettingOpen] = useState(false); // 설정창 오픈 여부
 
-    const [isPublic, setIsPublic] = useState(true);
-    const [useDefaultIp, setUseDefaultIp] = useState(true);
-    const [displayIp, setDisplayIp] = useState("gray");
-    const [readOnly, setReadOnly] = useState(false)
-    const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2001")
-    const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2002")
+    const [isPublic, setIsPublic] = useState(true); // 내/외부 아이피 사용 여부
+    const [useDefaultIp, setUseDefaultIp] = useState(true); // 기본 아이피 사용 여부
+    const [displayIp, setDisplayIp] = useState("gray"); // 아이피 입력 설정 색상
+    const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2001"); // 500T 아이피값
+    const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2002"); // 1000T 아이피값
 
-    const [noiseFilterLevel, setNoiseFilterLevel] = useState(20);
+    const [noiseFilterLevel, setNoiseFilterLevel] = useState(20); // 튀는값 제어값
 
-    const [useDefaultDistance, setUseDefaultDistance] = useState(true);
-    const [displayDistance, setDisplayDistance] = useState("gray");
-    const [distance_500T, setDistance_500T] = useState(600);
-    const [distance_1000T, setDistance_1000T] = useState(1200);
-    const [animationSetting, setAnimationSetting] = useState("default");
+    const [useDefaultDistance, setUseDefaultDistance] = useState(true); // 기본 거리 사용 여부
+    const [displayDistance, setDisplayDistance] = useState("gray"); // 거리 입력 설정 색상
+    const [distance_500T, setDistance_500T] = useState(600); // 500T 표시 거리값
+    const [distance_1000T, setDistance_1000T] = useState(1200); // 1000T 표시 거리값
+    const [animationSetting, setAnimationSetting] = useState("default"); // 애니메이션 표시 방식
 
     const { wsStatus, dataArray } = useRadarSocket(device, DND_500TIp, DND_1000TIp); // 센서와의 연결상태 / 데이터값
     const colors = useRef([]) // 색상 정보
@@ -35,47 +34,55 @@ export default function App() {
         setDevice(e.target.value);
     };
 
+    // 설정창 오픈 토글
     function handleSettingToggle() {
         setIsSettingOpen(prev => !prev);
     }
-    function handlePublicSettingToggle() {
-        setIsPublic(prev => !prev);
-    }
+    // 기본 아이피 사용 토글
     function handleDefaultIpSettingToggle() {
         setUseDefaultIp(prev => !prev);
     }
+    // 내/외부 아이피 사용 토글
+    function handlePublicSettingToggle() {
+        setIsPublic(prev => !prev);
+    }
+    // 기본 거리 사용 토글
     function handleUseDefaultDistanceSettingToggle() {
         setUseDefaultDistance(prev => !prev);
     }
+    // 에니메이션 설정 변경 토글
     const changeAnimationSetting = (e) => {
         setAnimationSetting(e.target.value);
     }
 
+    // 기본 아이피 사용 여부가 변경될때
     useEffect(() => {
-        if (!useDefaultIp) {
+        if (!useDefaultIp) { // 기본 아이피 사용 안할때
             setDisplayIp("white");
             setIsPublic(false);
-        } else {
+        } else { // 기본 아이피 사용 할때
             setDisplayIp("gray");
             setDND_500TIp("ws://192.168.0.202:1883");
             setDND_1000TIp("ws://192.168.0.124:1883");
         }
     }, [useDefaultIp])
 
+    // 내/외부 아이피 시용 여부가 변경될떄
     useEffect(() => {
-        if (useDefaultIp && isPublic) {
+        if (useDefaultIp && isPublic) { // 외부 아이피를 사용할때
             setDND_500TIp("ws://58.79.238.184:2001");
             setDND_1000TIp("ws://58.79.238.184:2002");
-        } else if ((useDefaultIp && !isPublic) || !useDefaultIp) {
+        } else if ((useDefaultIp && !isPublic) || !useDefaultIp) { // 내부 아이피를 사용할때
             setDND_500TIp("ws://192.168.0.202:1883");
             setDND_1000TIp("ws://192.168.0.124:1883");
         }
     }, [isPublic]);
     
+    // 기본 거리 사용 여부가 변경될때
     useEffect(() => {
-        if (!useDefaultDistance) {
+        if (!useDefaultDistance) { // 기본 거리 사용을 안할때
             setDisplayDistance("white");
-        } else {
+        } else { // 기본 거리 사용을 할때
             setDisplayDistance("gray");
             setDistance_500T(600);
             setDistance_1000T(1200);
