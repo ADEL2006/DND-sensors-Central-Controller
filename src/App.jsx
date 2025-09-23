@@ -16,8 +16,8 @@ export default function App() {
     const [useDefaultIp, setUseDefaultIp] = useState(true);
     const [displayIp, setDisplayIp] = useState("gray");
     const [readOnly, setReadOnly] = useState(false)
-    const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2000")
-    const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2001")
+    const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2001")
+    const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2002")
 
     const [noiseFilterLevel, setNoiseFilterLevel] = useState(20);
 
@@ -57,18 +57,18 @@ export default function App() {
             setIsPublic(false);
         } else {
             setDisplayIp("gray");
-            setDND_500TIp("ws://192.168.0.123:1883");
+            setDND_500TIp("ws://192.168.0.202:1883");
             setDND_1000TIp("ws://192.168.0.124:1883");
         }
     }, [useDefaultIp])
 
     useEffect(() => {
         if (useDefaultIp && isPublic) {
-            setDND_500TIp("ws://58.79.238.184:2000");
-            setDND_1000TIp("ws://58.79.238.184:2001");
+            setDND_500TIp("ws://58.79.238.184:2001");
+            setDND_1000TIp("ws://58.79.238.184:2002");
         } else if ((useDefaultIp && !isPublic) || !useDefaultIp) {
-            setDND_500TIp("ws://192.168.0.201:1883");
-            setDND_1000TIp("ws://192.168.0.202:1883");
+            setDND_500TIp("ws://192.168.0.202:1883");
+            setDND_1000TIp("ws://192.168.0.124:1883");
         }
     }, [isPublic]);
     
@@ -155,7 +155,6 @@ export default function App() {
                                     </label>
                                 </div>
                             </div>
-
                             <div className="setting_row">
                                 <span>외부 아이피 사용(off시 내부 아이피 사용)</span>
                                 <div className="wrapper">
@@ -165,7 +164,6 @@ export default function App() {
                                     </label>
                                 </div>
                             </div>
-
                             <div id="first_input" className="setting_row" style={{ color: displayIp }}>
                                 <span>500T 아이피</span>
                                 <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_500TIp} onChange={(e) => setDND_500TIp(e.target.value)} />
@@ -180,7 +178,6 @@ export default function App() {
                                 <input className='ip_input' type='text' style={{ backgroundColor: "white" }} value={noiseFilterLevel} onChange={(e) => setNoiseFilterLevel(e.target.value)} />
                             </div>
                             
-
                             <div className="setting_row">
                                 <span>기본 거리 설정 사용</span>
                                 <div className="wrapper">
@@ -190,7 +187,6 @@ export default function App() {
                                     </label>
                                 </div>
                             </div>
-
                             <div id="first_input" className="setting_row" style={{ color: displayDistance }}>
                                 <span>500T 표시 거리</span>
                                 <input className='ip_input' type='text' readOnly={useDefaultDistance} style={{ backgroundColor: displayDistance }} value={distance_500T} onChange={(e) => setDistance_500T(e.target.value)} />
@@ -222,7 +218,7 @@ export default function App() {
                     <option value="DND-500T">DND-500T</option>
                     <option value="DND-1000T">DND-1000T</option>
                 </select>
-                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} noiseFilterLevel={noiseFilterLevel} distance_500T={distance_500T} distance_1000T={distance_1000T} />
+                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} noiseFilterLevel={noiseFilterLevel} distance_500T={distance_500T} distance_1000T={distance_1000T} animationSetting={animationSetting} />
                 <div className='right_element'>
                     <Video />
                     <Record dataArray={dataArray} colors={colors} />

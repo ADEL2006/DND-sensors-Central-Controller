@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance_500T, distance_1000T }) {
+function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance_500T, distance_1000T, animationSetting }) {
     const canvasRef = useRef(null); // 캔버스
     const dataRef = useRef([]); // 데이터 값
 
@@ -179,7 +179,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
             // 감지 물체 정보 정리
             (dataRef.current || []).forEach(obj => {
-                toggleTrail.current = 0;
+                if (animationSetting !== "on") toggleTrail.current = 0;
                 const id = parseFloat(obj.id);
                 const distance = parseFloat(obj.d);
                 const angle = parseFloat(obj.a);
@@ -292,48 +292,51 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
 
             // 애니메이션
-            if (!pulsePausedRef.current) {
-                const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리
-                const prevPulse = pulseRef.current;
-                pulseRef.current += step;
+            if(animationSetting !== 'off') {
+                if (!pulsePausedRef.current) {
+                    const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리
+                    const prevPulse = pulseRef.current;
+                    pulseRef.current += step;
 
-                // trail 보강
-                const steps = 2; // trail 2개 추가(1프레임 당)
-                for (let i = 1; i <= steps; i++) {
-                    const interp = prevPulse + (step / steps) * i;
-                    trailRef.current.push(interp);
+                    // trail 보강
+                    const steps = 2; // trail 2개 추가(1프레임 당)
+                    for (let i = 1; i <= steps; i++) {
+                        const interp = prevPulse + (step / steps) * i;
+                        trailRef.current.push(interp);
+                    }
+
+                    // toggleTrail 처리
+                    if (toggleTrail.current > 0) {
+                        while (trailRef.current.length > toggleTrail.current) trailRef.current.shift();
+                    } else {
+                        trailRef.current = [];
+                    }
                 }
 
-                // toggleTrail 처리
-                if (toggleTrail.current > 0) {
-                    while (trailRef.current.length > toggleTrail.current) trailRef.current.shift();
-                } else {
+                // trail 그리기
+                trailRef.current.forEach((r, i) => {
+                    if (r > maxRadius) return;
+
+                    const t = (i + 1) / trailRef.current.length;
+                    const alpha = Math.pow(t, 1.5);
+
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, r, Math.PI, 0);
+                    ctx.strokeStyle = `rgba(0, 255, 0, ${alpha * 0.5})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+
+                // trail 삭제(끝부분에 닿을시)
+                if (trailRef.current.length > 0 && trailRef.current[0] >= maxRadius) {
                     trailRef.current = [];
+                    pulseRef.current = 0;
+                    pulsePausedRef.current = false;
+
+                    // 다음 사이클에서는 다시 기본 트레일 길이
+                    toggleTrail.current = 30;
                 }
-            }
 
-            // trail 그리기
-            trailRef.current.forEach((r, i) => {
-                if (r > maxRadius) return;
-
-                const t = (i + 1) / trailRef.current.length;
-                const alpha = Math.pow(t, 1.5);
-
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = `rgba(0, 255, 0, ${alpha * 0.5})`;
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            });
-
-            // trail 삭제(끝부분에 닿을시)
-            if (trailRef.current.length > 0 && trailRef.current[0] >= maxRadius) {
-                trailRef.current = [];
-                pulseRef.current = 0;
-                pulsePausedRef.current = false;
-
-                // 다음 사이클에서는 다시 기본 트레일 길이
-                toggleTrail.current = 30;
             }
 
             animationId = requestAnimationFrame(drawRadar);
@@ -344,7 +347,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
         return () => {
             cancelAnimationFrame(animationId); // cleanup
         };
-    }, [canvasSize, maxDistance, distanceSteps]);
+    }, [canvasSize, maxDistance, distanceSteps, animationSetting]);
 
     return (
         <div className='radar'>
