@@ -93,12 +93,12 @@ function Record({ dataArray, colors }) {
                 <div className="record_wrapper">
                     <input 
                     type="checkbox" 
-                    id="switch"
+                    id="record_switch"
                     onChange={handleChange}
                     />
-                        <label htmlFor="switch" className="switch_label">
-                            <span className="onf_btn"></span>
-                        </label>
+                    <label htmlFor="record_switch" className="record_switch_label">
+                        <span className="record_onf_btn"></span>
+                    </label>
                 </div>
             </h2>
                 <div className="record_text_top">

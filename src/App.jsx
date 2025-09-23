@@ -139,8 +139,6 @@ export default function App() {
         });
     }, [dataArray]);
 
-
-
     return (
         <div className='main'>
             <MainTitle wsStatus={wsStatus} dataArray={dataArray} device={device} />
@@ -149,7 +147,7 @@ export default function App() {
             </button>
 
             {isSettingOpen && (
-                <div className='setting_background' style={{ borderRight: '2px solid rgba(0, 0, 0, 0.8)' }}>
+                <div className='setting_background'>
                     <div className='setting_box'>
                         <span className='setting_content'>
 
