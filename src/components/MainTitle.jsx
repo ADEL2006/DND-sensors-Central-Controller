@@ -5,7 +5,7 @@ import dnetImg from '../img/dnet.png'; // App.jsx 기준 상대 경로
 import { data } from 'react-router-dom';
 import Guide from './Guide';
 
-function MainTitle({ wsStatus, dataArray, device }) {
+function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
     const [sensorStatusColor, setSensorStatusColor] = useState("lime"); // 센서 상태값 색상
     const [sensorStatus, setSensorStatus] = useState("정상"); // 센서 상태값
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 여부
@@ -65,7 +65,7 @@ function MainTitle({ wsStatus, dataArray, device }) {
                 센서 연결 상태: <span className='sensor_connection_status' style={{ color: connectionStatusColor }}>{wsStatus}</span> { isMobile && <br /> }
                 감지 상황: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
             </h1>
-            {!isMobile && (<Guide />)}
+            {!isMobile && (<Guide setIsSettingOpen={setIsSettingOpen} sensorStatus={sensorStatus} />)}
         </div>
     )
 }

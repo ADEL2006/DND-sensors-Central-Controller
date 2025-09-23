@@ -23,7 +23,6 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
     display: flex;
     justify-content: right;
     align-items: center;
@@ -60,6 +59,13 @@
   transform-origin: top left;
   transform: rotate(25deg);
   z-index: 4;
+}
+
+#line_setting {
+    transform-origin: top left;
+    transform: rotate(45deg);
+    margin-top: -400px;
+    margin-right: -3px;
 }
 
 #line_radar {
@@ -109,6 +115,14 @@
     height: 175px;
     margin-top: -315px;
     margin-right: 300px;
+    position: relative;
+}
+
+#guide_setting {
+    width: 425px;
+    height: 175px;
+    margin-top: -650px;
+    margin-right: -44px;
     position: relative;
 }
 

@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../css/Guide.css'
 
-function Guide() {
+function Guide({ setIsSettingOpen, sensorStatus }) {
     const [showGuide, setshowGuide] = useState(false); // 가이드 표시 여부
     const [guidePage, setguidePage] = useState(1); // 가이드 페이지
+
+    const [connectionGuideSize, setConnectionGuideSize] = useState([[]]);
+    const [radarStatusGuideSize, setRadarStatusGuideSize] = useState([[]]);
 
     // 가이드 on/off 토글 힘수
     function toggleGuide() {
         setshowGuide(prev => !prev);
         setguidePage(1);
+        setIsSettingOpen(false);
     }
 
     // 가이드 다음 페이지
@@ -20,6 +24,39 @@ function Guide() {
     function prevPage() {
         setguidePage(guidePage - 1);
     }
+
+    useEffect(() => {
+        if(guidePage === 3) setIsSettingOpen(true);
+        else setIsSettingOpen(false);
+    }, [guidePage])
+
+    useEffect(() => {
+        if (sensorStatus === "정상") {
+            setConnectionGuideSize([
+                ['620px', '100px', '350px', '24px'],
+                ['inset(0px 0px 800px 985px)'],
+                ['inset(0px 1350px 800px 0px)']
+            ]);
+
+            setRadarStatusGuideSize([
+                ['365px', '100px', '960px', '24px'],
+                ['inset(0px 650px 800px 0px)'],
+                ['inset(0px 0px 800px 1350px)']
+            ]);
+        } else if(sensorStatus === "침입자 탐지!") {
+            setConnectionGuideSize([
+                ['575px', '100px', '290px', '24px'],
+                ['inset(0px 0px 800px 900px)'],
+                ['inset(0px 1350px 800px 0px)']
+            ]);
+
+            setRadarStatusGuideSize([
+                ['505px', '100px', '890px', '24px'],
+                ['inset(0px 720px 800px 0px)'],
+                ['inset(0px 0px 800px 1350px)']
+            ]);
+        }
+    }, [sensorStatus])
 
     return (
         <>
@@ -44,11 +81,16 @@ function Guide() {
                             </div>
                         </div>
                     </div>
-                    <div className='guide_area' style={{ width: '575px', height: '100px', left: '290px', top: '24px' }} >
+                    <div className='guide_area' style={{ 
+                        width: connectionGuideSize[0][0], 
+                        height: connectionGuideSize[0][1], 
+                        left: connectionGuideSize[0][2], 
+                        top: connectionGuideSize[0][3] 
+                        }} >
                         <div id='line_connection' class="diagonal-line" />
                     </div>
-                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 800px 900px)', }} />
-                    <div className='guide_background' style={{ clipPath: 'inset(0px 1350px 800px 0px)', }} />
+                    <div className='guide_background' style={{ clipPath: connectionGuideSize[1][0] }} />
+                    <div className='guide_background' style={{ clipPath: connectionGuideSize[2][0] }} />
                 </>
             )}
 
@@ -69,14 +111,41 @@ function Guide() {
                             </div>
                         </div>
                     </div>
-                    <div className='guide_area' style={{ width: '505px', height: '100px', left: '890px', top: '24px' }} >
+                    <div className='guide_area' style={{ 
+                        width: radarStatusGuideSize[0][0], 
+                        height: radarStatusGuideSize[0][1], 
+                        left: radarStatusGuideSize[0][2], 
+                        top: radarStatusGuideSize[0][3]
+                        }} >
                         <div id='line_radar_status' class="diagonal-line" />
                     </div>
-                    <div className='guide_background' style={{ clipPath: 'inset(0px 720px 800px 0px)', }} />
+                    <div className='guide_background' style={{ clipPath: radarStatusGuideSize[1][0], }} />
+                    <div className='guide_background' style={{ clipPath: radarStatusGuideSize[2][0], }} />
+                </>
+            )}
+            
+            {(showGuide && guidePage === 3) && (
+                <>
+                    <div className='guide_background' style={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}>
+                        <div id='line_setting' class="diagonal-line" />
+                        <div id='guide_setting' className='guide'>
+                            <span className='guide_content'>
+                                우측 상단의 버튼으로 볼 수 있는 설정 화면 입니다.<br />
+                                이곳에서 IP, 튀는값 제어, 표시 거리, 애니메이션 등 <br />
+                                여러가지 설정이 가능합니다
+                            </span>
+                            <div className='guide_buttons'>
+                                <button onClick={prevPage} className='guide_nav_button'>이전</button>
+                                <span className='guide_page_count'>3 / 7</span>
+                                <button onClick={nextPage} className='guide_nav_button'>다음</button>
+                                <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
+                            </div>
+                        </div>
+                    </div>
                 </>
             )}
 
-            {(showGuide && guidePage === 3) && (
+            {(showGuide && guidePage === 4) && (
                 <>
                     <div className='guide_background' style={{ clipPath: 'inset(0px 0px 0px 998px)', marginLeft: '2px' }}>
                         <div id='line_radar' class="diagonal-line" />
@@ -88,29 +157,7 @@ function Guide() {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>3 / 6</span>
-                                <button onClick={nextPage} className='guide_nav_button'>다음</button>
-                                <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='guide_background' style={{ clipPath: 'inset(0px 600px 800px 0px)', }} />
-                </>
-            )}
-
-            {(showGuide && guidePage === 4) && (
-                <>
-                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 0px 998px)', marginLeft: '2px' }}>
-                        <div id='line_radar' class="diagonal-line" />
-                        <div id='guide_radar' className='guide'>
-                            <span className='guide_content'>
-                                왼쪽 상단의 기기 선택 메뉴가 있으며, <br />
-                                연결할 기기를 선택할 수 있습니다.<br />
-                                &nbsp;&nbsp;&nbsp;
-                            </span>
-                            <div className='guide_buttons'>
-                                <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>4 / 6</span>
+                                <span className='guide_page_count'>4 / 7</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -122,6 +169,28 @@ function Guide() {
 
             {(showGuide && guidePage === 5) && (
                 <>
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 0px 998px)', marginLeft: '2px' }}>
+                        <div id='line_radar' class="diagonal-line" />
+                        <div id='guide_radar' className='guide'>
+                            <span className='guide_content'>
+                                왼쪽 상단의 기기 선택 메뉴가 있으며, <br />
+                                연결할 기기를 선택할 수 있습니다.<br />
+                                &nbsp;&nbsp;&nbsp;
+                            </span>
+                            <div className='guide_buttons'>
+                                <button onClick={prevPage} className='guide_nav_button'>이전</button>
+                                <span className='guide_page_count'>5 / 7</span>
+                                <button onClick={nextPage} className='guide_nav_button'>다음</button>
+                                <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 600px 800px 0px)', }} />
+                </>
+            )}
+
+            {(showGuide && guidePage === 6) && (
+                <>
                     <div className='guide_background' style={{ clipPath: 'inset(0px 602px 0px 0px)', }}>
                         <div id='line_video' class="diagonal-line" />
                         <div id='guide_video' className='guide'>
@@ -131,7 +200,7 @@ function Guide() {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>5 / 6</span>
+                                <span className='guide_page_count'>6 / 7</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -142,7 +211,7 @@ function Guide() {
                 </>
             )}
             
-            {(showGuide && guidePage === 6) && (
+            {(showGuide && guidePage === 7) && (
                 <>
                     <div className='guide_background' style={{ clipPath: 'inset(0px 602px 0px 0px)', }}>
                         <div id='line_record' class="diagonal-line" />
@@ -155,7 +224,7 @@ function Guide() {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>6 / 6</span>
+                                <span className='guide_page_count'>7 / 7</span>
                                 <div id="guide_button_spacer" className='guide_nav_button'></div>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>

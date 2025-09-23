@@ -47,11 +47,10 @@ html, body {
   width: 101%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 2000;
   display: flex;
   justify-content: right;
   align-items: center;
-  z-index: 3;
+  z-index: 2;
 }
 
 .setting_box {
@@ -233,11 +232,10 @@ html, body {
     width: 102%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
     display: flex;
     justify-content: right;
     align-items: center;
-    z-index: 3;
+    z-index: 2;
   }
 
   .setting_box {

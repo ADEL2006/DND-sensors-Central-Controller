@@ -141,7 +141,7 @@ export default function App() {
 
     return (
         <div className='main'>
-            <MainTitle wsStatus={wsStatus} dataArray={dataArray} device={device} />
+            <MainTitle wsStatus={wsStatus} dataArray={dataArray} device={device} setIsSettingOpen={setIsSettingOpen} />
             <button className='setting_button' onClick={handleSettingToggle}>
                 <img src={setting} className="setting_img" alt="setting_img" />
             </button>
@@ -152,7 +152,7 @@ export default function App() {
                         <span className='setting_content'>
 
                             <div className="setting_row">
-                                <span>기본 아이피 사용</span>
+                                <span>기본 IP 사용</span>
                                 <div className="wrapper">
                                     <input type="checkbox" id="use_default_ip" onChange={handleDefaultIpSettingToggle} checked={useDefaultIp} />
                                     <label htmlFor="use_default_ip" className="switch_label">
@@ -161,7 +161,7 @@ export default function App() {
                                 </div>
                             </div>
                             <div className="setting_row">
-                                <span>외부 아이피 사용(off시 내부 아이피 사용)</span>
+                                <span>외부 IP 사용(off시 내부 IP 사용)</span>
                                 <div className="wrapper">
                                     <input type="checkbox" id="is_public" onChange={handlePublicSettingToggle} checked={isPublic} disabled={!useDefaultIp} />
                                     <label htmlFor="is_public" className="switch_label" >
@@ -170,11 +170,11 @@ export default function App() {
                                 </div>
                             </div>
                             <div id="first_input" className="setting_row" style={{ color: displayIp }}>
-                                <span>500T 아이피</span>
+                                <span>500T IP</span>
                                 <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_500TIp} onChange={(e) => setDND_500TIp(e.target.value)} />
                             </div>
                             <div className="setting_row" style={{ color: displayIp }}>
-                                <span>1000T 아이피</span>
+                                <span>1000T IP</span>
                                 <input className='ip_input' type='text' readOnly={useDefaultIp} style={{ backgroundColor: displayIp }} value={DND_1000TIp} onChange={(e) => setDND_1000TIp(e.target.value)} />
                             </div>
 
