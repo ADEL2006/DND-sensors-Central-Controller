@@ -10,6 +10,7 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
     const [sensorStatus, setSensorStatus] = useState("정상"); // 센서 상태값
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 여부
     const [connectionStatusColor, setConnectionStatusColor] = useState("red"); // 기본값 red
+    const [marginBottom, setMarginBottom] = useState("20px") // 제목의 아래 마진값
     const resetTimer = useRef(null); // 타이머 초기화
 
     useEffect(() => {
@@ -50,22 +51,36 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
             setConnectionStatusColor("lime");
         } else {
             setConnectionStatusColor("red");
+            if(wsStatus === "Connection failed" && isMobile) {
+                setMarginBottom("35px")
+            } else {
+                setMarginBottom("20px")
+            }
         }
     }, [wsStatus]);
 
     return (
-        <div className='main_title'>
+        <div className='main_title' style={{ marginBottom: marginBottom }}>
             <div className='logo_wrapper'>
                 <a href="http://www.dno.co.kr/" target="_blank" rel="noopener noreferrer">
                     <img src={dnetImg} className="dnet_logo" alt="DNET Logo" />
                 </a>
                 <span className="glow"></span>
             </div>
-            <h1 className='detection_status'>
-                센서 연결 상태: <span className='sensor_connection_status' style={{ color: connectionStatusColor }}>{wsStatus}</span> { isMobile && <br /> }
-                감지 상황: <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
+            <h1 className='statuses'>
+                <span className='sensor_connection_status_container'>
+                    센서 연결 상태: 
+                    { (isMobile && wsStatus === "Connection failed") && <br />}
+                    <span className='sensor_connection_status' style={{ color: connectionStatusColor }}> {wsStatus}</span> 
+                    { isMobile && <br /> }
+                </span>
+                <span className='detection_status_container'>
+                    감지 상황: 
+                    <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
+                </span>
+                
             </h1>
-            {!isMobile && (<Guide setIsSettingOpen={setIsSettingOpen} sensorStatus={sensorStatus} />)}
+            {!isMobile && (<Guide setIsSettingOpen={setIsSettingOpen} sensorStatus={sensorStatus} wsStatus={wsStatus} />)}
         </div>
     )
 }

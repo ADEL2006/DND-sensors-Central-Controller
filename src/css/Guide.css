@@ -34,13 +34,24 @@
     background-color: transparent;
     border: 2px solid white;
 }
+#guide_area_connection {
+    width: 730px;
+    height: 100px;
+    left: 190px;
+    top: 24px;
+}
+#guide_area_radar_status {
+    width: 500px;
+    height: 100px;
+    left: 930px;
+    top: 24px;
+}
 
 .diagonal-line {
     width: 2px;
     height: 150px;
     background-color: white;
 }
-
 #line_connection {
   position: absolute;
   height: 110px;
@@ -50,7 +61,6 @@
   transform: rotate(-15deg);
   z-index: 4;
 }
-
 #line_radar_status {
   position: absolute;
   height: 110px;
@@ -60,27 +70,23 @@
   transform: rotate(25deg);
   z-index: 4;
 }
-
 #line_setting {
     transform-origin: top left;
     transform: rotate(45deg);
     margin-top: -400px;
     margin-right: -3px;
 }
-
 #line_radar {
     transform-origin: top left;
     transform: rotate(75deg);
     margin-top: -250px;
 }
-
 #line_video {
     transform-origin: bottom right;
     transform: rotate(75deg);
     margin-top: -400px;
     margin-right: -403px;
 }
-
 #line_record {
     transform-origin: top right;
     transform: rotate(-75deg);

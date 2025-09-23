@@ -8,16 +8,15 @@ export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
     const hasConnected = useRef(false);
     const retryTimeout = useRef(null);
     const [url_ws, setUrl_ws] = useState(DND_500TIp);
-
-    // const url_ws = device === "DND-500T"
-    //     ? "ws://58.79.238.184:2000"
-    //     : "ws://58.79.238.184:2001";
+    const urlRef = useRef(DND_500TIp); // 최신 URL 참조용
 
     useEffect(() => {
-        if(device === "DND-500T") {
+        if (device === "DND-500T") {
             setUrl_ws(DND_500TIp);
-        }else {
+            urlRef.current = DND_500TIp;
+        } else {
             setUrl_ws(DND_1000TIp);
+            urlRef.current = DND_1000TIp;
         }
     }, [device, DND_500TIp, DND_1000TIp]);
 
@@ -41,26 +40,42 @@ export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
                 retryTimeout.current = null;
             }
 
-            const ws = new WebSocket(url_ws);
+            // WebSocket 생성 시도
+            let ws;
+            try {
+                ws = new WebSocket(urlRef.current); // 최신 URL 사용
+            } catch (err) {
+                console.error("WebSocket creation failed:", err);
+                setWsStatus("Connection failed");
+
+                // 3초 후 재시도
+                if (!retryTimeout.current) {
+                    retryTimeout.current = setTimeout(() => {
+                        initWebSocket();
+                        retryTimeout.current = null;
+                    }, 3000);
+                }
+                return;
+            }
+
             wsRef.current = ws;
-            console.log("Attempting to connect to WebSocket at:", url_ws);
+            console.log("Attempting to connect to WebSocket at:", urlRef.current);
 
             ws.onopen = () => {
                 setWsStatus("Connected");
-                console.log("WebSocket Connected:", url_ws);
+                console.log("WebSocket Connected:", urlRef.current);
                 hasConnected.current = true;
             };
 
             ws.onclose = (e) => {
-                console.log("WebSocket Disconnected:", e.reason);
+                console.log("WebSocket Disconnected:", e?.reason);
                 wsRef.current = null;
 
-                // 아직 연결 안 된 상태에서만 재연결
                 if (!hasConnected.current && !retryTimeout.current) {
                     retryTimeout.current = setTimeout(() => {
                         if (!wsRef.current) initWebSocket();
                         retryTimeout.current = null;
-                    }, 5000);
+                    }, 3000);
                 }
             };
 
@@ -74,7 +89,7 @@ export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
                     retryTimeout.current = setTimeout(() => {
                         if (!wsRef.current) initWebSocket();
                         retryTimeout.current = null;
-                    }, 5000);
+                    }, 3000);
                 }
             };
 

@@ -214,7 +214,6 @@ html, body {
   .setting_button {
     position: absolute;
     right: 0%;
-    top: 48px;
     width: 30px;
     height: 30px;
     padding: 0;
@@ -365,7 +364,7 @@ html, body {
     height: 20px;
     width: 100px;
     position: absolute;
-    top: 115px;
+    top: 125px;
     left: 1.5%;
     font-size: 11px;
   }

@@ -9,7 +9,10 @@ import setting from './img/setting.png'
 
 export default function App() {
     const [device, setDevice] = useState("DND-500T"); // 디바이스값
+    const [deviceTop, setDeviceTop] = useState("125px");
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 인지 아닌지 판단
+    const [settingButtonTop, setSettingButtonTop] = useState("55px");
     const [isSettingOpen, setIsSettingOpen] = useState(false); // 설정창 오픈 여부
 
     const [isPublic, setIsPublic] = useState(true); // 내/외부 아이피 사용 여부
@@ -138,11 +141,21 @@ export default function App() {
             colors.current[targetId] = `rgba(${r},${g},${b},1)`;
         });
     }, [dataArray]);
+    
+    useEffect(() => {
+        if(wsStatus === "Connection failed" && isMobile) {
+            setSettingButtonTop("70px");
+            setDeviceTop("140px");
+        } else {
+            setSettingButtonTop("55px");
+            setDeviceTop("125px");
+        }
+    }, [wsStatus])
 
     return (
         <div className='main'>
             <MainTitle wsStatus={wsStatus} dataArray={dataArray} device={device} setIsSettingOpen={setIsSettingOpen} />
-            <button className='setting_button' onClick={handleSettingToggle}>
+            <button className='setting_button' onClick={handleSettingToggle} style={ isMobile ? { top: settingButtonTop } : {}}>
                 <img src={setting} className="setting_img" alt="setting_img" />
             </button>
 
@@ -219,7 +232,7 @@ export default function App() {
             )}
 
             <div className='contents'>
-                <select onChange={changeDevice} value={device} className='device'>
+                <select onChange={changeDevice} value={device} className='device' style={ isMobile ? { top: deviceTop } : {}}>
                     <option value="DND-500T">DND-500T</option>
                     <option value="DND-1000T">DND-1000T</option>
                 </select>

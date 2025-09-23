@@ -2,7 +2,6 @@
     height: 100px;
     width: 100%;
     margin-top: 20px;
-    margin-bottom: 20px;
     display: flex;
 }
 
@@ -37,14 +36,24 @@
     background: rgba(0, 255, 42, 0.2);
     filter: blur(30px);
 }
-
-.detection_status {
+.statuses {
     width: 1300px;
-    text-align: center;
+    text-align: left;
+    padding-left: 20px;
     font-size: 45px;
+}
+
+.sensor_connection_status_container {
+    display: inline-block;
+    width: 740px;
 }
 .sensor_connection_status {
     margin-right: 30px;
+}
+
+.detection_status_container {
+    display: inline-block;
+    width: 465px;
 }
 
 @media (max-width: 767px) {
@@ -68,9 +77,18 @@
         filter: blur(30px);
     }
 
-    .detection_status {
+    .statuses {
         text-align: center;
         font-size: 17px;
+    }
+
+    .sensor_connection_status_container {
+        display: inline;
+        width: auto;
+    }
+    .detection_status_container {
+        display: inline;
+        width: auto;
     }
     .sensor_connection_status {
         margin-right: 10px;
