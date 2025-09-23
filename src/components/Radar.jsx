@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Radar.css';
 
-function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel }) {
+function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance_500T, distance_1000T }) {
     const canvasRef = useRef(null); // 캔버스
     const dataRef = useRef([]); // 데이터 값
 
@@ -58,14 +58,16 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel }) {
     // 선택 디바이스에 따른 최대 사거리/표시할 사거리 변경
     useEffect(() => {
         if(device === "DND-500T") {
-            setMaxDistance(600);
-            setDistanceSteps([100, 200, 300, 400, 500, 600])
+            setMaxDistance(distance_500T);
+            const step = distance_500T / 6;
+            setDistanceSteps([step * 1, step * 2, step * 3, step * 4, step * 5, step * 6]);
         } else if (device === "DND-1000T") {
-            setMaxDistance(1200);
-            setDistanceSteps([150, 300, 450, 600, 750, 900, 1050, 1200])
+            setMaxDistance(distance_1000T);
+            const step = distance_1000T / 8;
+            setDistanceSteps([step * 1, step * 2, step * 3, step * 4, step * 5, step * 6, step * 7, step * 8]);
         }
         resetRadar();
-    }, [device])
+    }, [device, distance_500T, distance_1000T])
 
     const resetTimer = useRef(null); // 타이머(리셋용)
     // 5초동안 데이터가 들어오지 않는다면 레이더 초기화
@@ -93,6 +95,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel }) {
 
     // 캔버스 생성
     useEffect(() => {
+        console.log("testestestsetsetestestest");
         const canvas = canvasRef.current; // 캔버스 지정
         if (!canvas) return;
         const ctx = canvas.getContext('2d'); // 2D환경 설정
@@ -122,8 +125,8 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel }) {
                 ctx.font = "16px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "alphabetic"; // ← 추가
-                const offset = distance === maxDistance ? (isMobile ? 12 : 20) : 0;
-                ctx.fillText(`${distance}m`, centerX, centerY - r - offset-5);
+                const offset = Number(distance) === Number(maxDistance) ? (isMobile ? 12 : 20) : 0;
+                ctx.fillText(`${distance.toFixed(2)}m`, centerX, centerY - r - offset-5);
             });
 
             // 각도 표시

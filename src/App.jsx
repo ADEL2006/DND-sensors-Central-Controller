@@ -181,7 +181,7 @@ export default function App() {
                             </div>
                             
 
-                            {/* <div className="setting_row">
+                            <div className="setting_row">
                                 <span>기본 거리 설정 사용</span>
                                 <div className="wrapper">
                                     <input type="checkbox" id="use_default_distance" onChange={handleUseDefaultDistanceSettingToggle} checked={useDefaultDistance} />
@@ -191,23 +191,23 @@ export default function App() {
                                 </div>
                             </div>
 
-                            <div id="first_input" className="setting_row" style={{ color: displayIp }}>
+                            <div id="first_input" className="setting_row" style={{ color: displayDistance }}>
                                 <span>500T 표시 거리</span>
                                 <input className='ip_input' type='text' readOnly={useDefaultDistance} style={{ backgroundColor: displayDistance }} value={distance_500T} onChange={(e) => setDistance_500T(e.target.value)} />
                             </div>
-                            <div className="setting_row" style={{ color: displayIp }}>
+                            <div className="setting_row" style={{ color: displayDistance }}>
                                 <span>1000T 표시 거리</span>
                                 <input className='ip_input' type='text' readOnly={useDefaultDistance} style={{ backgroundColor: displayDistance }} value={distance_1000T} onChange={(e) => setDistance_1000T(e.target.value)} />
                             </div>
                             
-                            <div className="setting_row" style={{ color: displayIp }}>
+                            <div className="setting_row">
                                 <span>애니메이션 표시</span>
                                 <select onChange={changeAnimationSetting} value={animationSetting} className='animation_setting'>
                                     <option value="on">켜기</option>
                                     <option value="default">감지된 상황만 끄기</option>
                                     <option value="off">끄기</option>
                                 </select>
-                            </div> */}
+                            </div>
 
                             <button className='setting_close_button' onClick={handleSettingToggle}>
                                 완료
@@ -222,7 +222,7 @@ export default function App() {
                     <option value="DND-500T">DND-500T</option>
                     <option value="DND-1000T">DND-1000T</option>
                 </select>
-                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} noiseFilterLevel={noiseFilterLevel} />
+                <Radar wsStatus={wsStatus} dataArray={dataArray} device={device} colors={colors} noiseFilterLevel={noiseFilterLevel} distance_500T={distance_500T} distance_1000T={distance_1000T} />
                 <div className='right_element'>
                     <Video />
                     <Record dataArray={dataArray} colors={colors} />
