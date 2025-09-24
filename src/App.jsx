@@ -12,7 +12,7 @@ export default function App() {
     const [deviceTop, setDeviceTop] = useState("125px");
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 인지 아닌지 판단
-    const [settingButtonTop, setSettingButtonTop] = useState("55px");
+    const [settingButtonTop, setSettingButtonTop] = useState("55px"); // 모바일용 설정 버튼 위치 조정
     const [isSettingOpen, setIsSettingOpen] = useState(false); // 설정창 오픈 여부
 
     const [isPublic, setIsPublic] = useState(true); // 내/외부 아이피 사용 여부
@@ -27,7 +27,12 @@ export default function App() {
     const [displayDistance, setDisplayDistance] = useState("gray"); // 거리 입력 설정 색상
     const [distance_500T, setDistance_500T] = useState(600); // 500T 표시 거리값
     const [distance_1000T, setDistance_1000T] = useState(1200); // 1000T 표시 거리값
+
     const [animationSetting, setAnimationSetting] = useState("default"); // 애니메이션 표시 방식
+
+    // const [useDefaultCamera, setUseDefaultCamera] = useState(true); // 기본 카메라 사용 여부
+    // const [displayCamera, setDisplayCamera] = useState("gray"); // 카메라 아이피 입력 설정 색상
+    // const [cameraIP, setCameraIP] = useState("rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554"); // 카메라 아이피값
 
     const { wsStatus, dataArray } = useRadarSocket(device, DND_500TIp, DND_1000TIp); // 센서와의 연결상태 / 데이터값
     const colors = useRef([]) // 색상 정보
@@ -57,7 +62,10 @@ export default function App() {
     const changeAnimationSetting = (e) => {
         setAnimationSetting(e.target.value);
     }
-
+    // 기본 카메라 사용 토글
+    // function changeDefaultCameraIPToggle() {
+    //     setUseDefaultCamera(prev => !prev);
+    // }
     // 기본 아이피 사용 여부가 변경될때
     useEffect(() => {
         if (!useDefaultIp) { // 기본 아이피 사용 안할때
@@ -91,6 +99,16 @@ export default function App() {
             setDistance_1000T(1200);
         }
     }, [useDefaultDistance])
+
+    // 기본 카메라 사용 여부가 변경될때
+    // useEffect(() => {
+    //     if(useDefaultCamera) {
+    //         setDisplayCamera("gray");
+    //         setCameraIP("rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554");
+    //     } else {
+    //         setDisplayCamera("white");
+    //     }
+    // }, [useDefaultCamera])
 
     // 데이터 고유의색 부여
     // 1~7번 까지는 빨주노초파남보
@@ -222,6 +240,21 @@ export default function App() {
                                     <option value="off">끄기</option>
                                 </select>
                             </div>
+
+                            
+                            {/* <div className="setting_row">
+                                <span>기본 카메라 주소 사용</span>
+                                <div className="wrapper">
+                                    <input type="checkbox" id="use_default_camera" onChange={changeDefaultCameraIPToggle} checked={useDefaultCamera} disabled={!useDefaultIp} />
+                                    <label htmlFor="use_default_camera" className="switch_label" >
+                                        <span className="onf_btn"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="setting_row" style={{color: displayCamera}} >
+                                <span>연결할 카메라 주소</span>
+                                <input id='camera_ip_input' className='ip_input' type='text' readOnly={useDefaultCamera} style={{ backgroundColor: displayCamera }} value={cameraIP} onChange={(e) => setCameraIP(e.target.value)} />
+                            </div> */}
 
                             <button className='setting_close_button' onClick={handleSettingToggle}>
                                 완료
