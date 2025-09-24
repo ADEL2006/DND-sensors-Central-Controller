@@ -13,11 +13,13 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
     const [marginBottom, setMarginBottom] = useState("20px") // 제목의 아래 마진값
     const resetTimer = useRef(null); // 타이머 초기화
 
+    // 감지 상황 초기화
     useEffect(() => {
         setSensorStatusColor("lime");
         setSensorStatus("정상");
     }, [device]);
 
+    // 데이터가 들어올때
     useEffect(() => {
         // 데이터가 존재한다면
         if (dataArray.length > 0) {

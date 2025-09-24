@@ -16,7 +16,6 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
     function nextPage() {
         setguidePage(guidePage + 1);
     }
-
     // 가이드 이전 페이지
     function prevPage() {
         setguidePage(guidePage - 1);
@@ -165,8 +164,8 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </div>
                         </div>
                     </div>
-                    <div className='guide_background' style={{ clipPath: 'inset(526px 0px 0px 996px)', marginLeft: '2px' }} />
-                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 800px 0px)', }} />
+                    <div className='guide_background' style={{ clipPath: 'inset(525px 0px 0px 996px)', marginLeft: '2px', marginTop: '1px' }} />
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 800px 998px)' }} />
                 </>
             )}
             

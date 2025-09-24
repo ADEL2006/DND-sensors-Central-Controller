@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 
 export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
-    const [wsStatus, setWsStatus] = useState("connecting...");
+    const [wsStatus, setWsStatus] = useState("Connecting...");
     const [dataArray, setDataArray] = useState([]);
     const wsRef = useRef(null);
     const hasConnected = useRef(false);
