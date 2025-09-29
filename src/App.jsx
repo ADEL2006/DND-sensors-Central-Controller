@@ -9,7 +9,7 @@ import setting from './img/setting.png'
 
 export default function App() {
     const [device, setDevice] = useState("DND-500T"); // 디바이스값
-    const [deviceTop, setDeviceTop] = useState("125px");
+    const [deviceTop, setDeviceTop] = useState("125px"); // 모바일용 디바이스 선택 버튼 위치 조정
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); // 모바일 인지 아닌지 판단
     const [settingButtonTop, setSettingButtonTop] = useState("55px"); // 모바일용 설정 버튼 위치 조정
@@ -42,6 +42,22 @@ export default function App() {
         setDevice(e.target.value);
     };
 
+    useEffect(() => {
+        if(!isSettingOpen) {
+            fetch('http://58.79.238.184:4000/ip/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: DND_500TIp
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('POST 실패');
+                    return res.json();
+                })
+                .then(data => console.log('서버 응답:', data))
+                .catch(err => console.error('POST 요청 실패:', err));
+        }
+    }, [isSettingOpen])
+
     // 설정창 오픈 토글
     function handleSettingToggle() {
         setIsSettingOpen(prev => !prev);
@@ -66,6 +82,7 @@ export default function App() {
     // function changeDefaultCameraIPToggle() {
     //     setUseDefaultCamera(prev => !prev);
     // }
+
     // 기본 아이피 사용 여부가 변경될때
     useEffect(() => {
         if (!useDefaultIp) { // 기본 아이피 사용 안할때
