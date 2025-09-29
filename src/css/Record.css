@@ -18,10 +18,28 @@
   display: flex;
 }
 
+.record_place {
+  width: 30%;
+  height: 20px;
+  margin-top: 11px;
+  margin-left: 8px;
+  background-color: white;
+  color: black;
+}
+
+.record_type {
+  width: 5%;
+  height: 20px;
+  margin-top: 11px;
+  margin-left: 8px;
+  background-color: white;
+  color: black;
+}
+
 .record_title_text {
-  width: 36%;
+  width: 31%;
   height: 48px;
-  margin-left: 33%;
+  margin-left: 0%;
 }
 
 .switch_text {

@@ -4,6 +4,9 @@ import '../css/Record.css';
 function Record({ dataArray, colors }) {
     const [recordMap, setRecordMap] = useState({}); // id별 데이터 저장
     const sendData = useRef(false); // 서버에 데아터 전송 여부
+    const [recordPlace, setRecordPlace] = useState();
+    const [recordType, setRecordType] = useState();
+    const [distBetween, setDistBetween] = useState();
 
     // 서버에 데이터 전송 토글 핸들러
     const handleChange = (e) => {
@@ -30,11 +33,24 @@ function Record({ dataArray, colors }) {
         // 서버 전송용 배열
         const dtoArray = dataArray.map(obj => {
             const targetId = parseInt(obj.id, 10); // 타겟 번호
-            const distance = parseFloat(obj.d); // 거라
+            const distance = parseFloat(obj.d); // 거리
             const angle = parseFloat(obj.a); // 각도
             const vy = parseFloat(obj.vy); // 속도값 원본
             const speed = Math.abs(vy); // 속도
             const entry = vy < 0; // 접근 여부
+
+            // function toCartesian(d, a) {
+            //     const rad = a * Math.PI / 180;
+            //     return {
+            //         x: d * Math.sin(rad),
+            //         y: d * Math.cos(rad)
+            //     };
+            // }
+
+            // const p1 = toCartesian(obj1.d, obj1.a);
+            // const p2 = toCartesian(obj2.d, obj2.a);
+
+            // setDistBetween(Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)));
 
             // 화면용 HTML 업데이트
             const color = colors.current[targetId];
@@ -62,7 +78,9 @@ function Record({ dataArray, colors }) {
                 speed,
                 entry,
                 date: dateStr,
-                time: timeStr
+                time: timeStr,
+                testType: recordType,
+                testPlace: recordPlace
             };
         });
         // 작성된 기록 포멧 저장
@@ -88,6 +106,8 @@ function Record({ dataArray, colors }) {
     return (
         <div className='record'>
             <h2 className="record_title">
+                <input className="record_place" value={recordPlace} onChange={(e) => setRecordPlace(e.target.value)} />
+                <input className="record_type" value={recordType} onChange={(e) => setRecordType(e.target.value)} />
                 <span className="record_title_text">Record</span>
                 <span className="switch_text">auto saving: </span>
                 <div className="record_wrapper">

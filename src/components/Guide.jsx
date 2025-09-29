@@ -43,7 +43,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </span>
                             <div className='guide_buttons'>
                                 <div id='guide_button_spacer' className='guide_nav_button'></div>
-                                <span className='guide_page_count'>1 / 6</span>
+                                <span className='guide_page_count'>1 / 8</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -68,7 +68,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>2 / 6</span>
+                                <span className='guide_page_count'>2 / 8</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -94,7 +94,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>3 / 7</span>
+                                <span className='guide_page_count'>3 / 8</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -115,7 +115,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>4 / 7</span>
+                                <span className='guide_page_count'>4 / 8</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -137,7 +137,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>5 / 7</span>
+                                <span className='guide_page_count'>5 / 8</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -158,7 +158,7 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>6 / 7</span>
+                                <span className='guide_page_count'>6 / 8</span>
                                 <button onClick={nextPage} className='guide_nav_button'>다음</button>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
@@ -178,11 +178,33 @@ function Guide({ setIsSettingOpen, sensorStatus }) {
                                 기록 화면 입니다.<br />
                                 감지된 사물의 마지막 정보를 기록합니다. <br />
                                 속도 표시에 ↑는 이탈중, ↓는 접근중 이라는 의미입니다<br />
-                                auto record: 서버에 감지 기록을 저장합니다.
                             </span>
                             <div className='guide_buttons'>
                                 <button onClick={prevPage} className='guide_nav_button'>이전</button>
-                                <span className='guide_page_count'>7 / 7</span>
+                                <span className='guide_page_count'>7 / 8</span>
+                                <button onClick={nextPage} className='guide_nav_button'>다음</button>
+                                <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 0px 416px 996px)', marginLeft: '2px' }} />
+                </>
+            )}
+
+            {(showGuide && guidePage === 8) && (
+                <>
+                    <div className='guide_background' style={{ clipPath: 'inset(0px 602px 0px 0px)', }}>
+                        <div id='line_record' class="diagonal-line" />
+                        <div id='guide_record' className='guide'>
+                            <span className='guide_content'>
+                                첫번째 긴 빈칸에 현재 장소(문자)를 입력하고<br />
+                                두번째 작은 입력칸에 센서의 종류(숫자)를 입력한뒤,<br />
+                                auto record를 활성화 하여 서버에 기록을 저장하세요<br />
+                                반드시 장소, 센서 종류를 입력한뒤에 기록을 저장하세요.
+                            </span>
+                            <div className='guide_buttons'>
+                                <button onClick={prevPage} className='guide_nav_button'>이전</button>
+                                <span className='guide_page_count'>8 / 8</span>
                                 <div id="guide_button_spacer" className='guide_nav_button'></div>
                                 <button onClick={toggleGuide} className='guide_close_button'>닫기</button>
                             </div>
