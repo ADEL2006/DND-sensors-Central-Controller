@@ -193,6 +193,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 const targetX = centerX + scaledR * Math.cos(angleRad); // X좌표
                 const targetY = centerY - scaledR * Math.sin(angleRad); // Y좌표
 
+                const now = new Date(); // 먼저 현재 시간 객체 생성
                 // 서버용 날짜
                 const dateStr = now.toLocaleDateString('ko-KR', {
                     year: 'numeric',
@@ -243,19 +244,18 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                     "time": timeStr,
                     "isFilter": !beforeCoordinate.current[id]
                 }
-                fetch('http://58.79.238.184:4000/data/push', {
+                fetch('http://58.79.238.184:4000/radar/data/push', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: data
+                    body: JSON.stringify(data)
                 })
                     .then(res => {
                         if (!res.ok) throw new Error('POST 실패');
                         return res.json();
                     })
-                    .then(data => console.log('서버 응답:', data))
+                    // .then(data => console.log('서버 응답:', data))
                     .catch(err => console.error('POST 요청 실패:', err));
             });
-
 
             // 감지 물체 표시
             Object.keys(beforeCoordinate.current).forEach(id => {
@@ -271,11 +271,19 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 obj.x += (obj.targetX - obj.x) * 0.1;
                 obj.y += (obj.targetY - obj.y) * 0.1;
 
-                // 이동 경로 기록
-                obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
+                // // 이동 경로 기록
+                // obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
 
-                //  10초 지난 경로 삭제
-                obj.history = obj.history.filter(p => Date.now() - p.time <= 10000);
+                // //  10초 지난 경로 삭제
+                // obj.history = obj.history.filter(p => Date.now() - p.time <= 10000);
+
+                // 이동 경로 기록
+                obj.history.push({ x: obj.x, y: obj.y });
+
+                // 최대 30개까지만 유지
+                if (obj.history.length > 30) {
+                    obj.history.shift();
+                }
 
                 // 경로 그리기
                 if (obj.history.length > 1) {
