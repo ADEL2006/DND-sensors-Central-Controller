@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    port: 3333, // 원하는 포트 번호로 변경
+    port: 3333,
+  },
+  define: {
+    global: 'window',  // ← 이 줄 추가
   },
 })
