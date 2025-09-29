@@ -1,6 +1,4 @@
 
-
-
 .radar {
   height: 796px;
   width: 996px;
@@ -21,6 +19,8 @@
   width: 100%;
   background: black;
   border-top: 0;
+  background: url('../img/airstrip.JPG') no-repeat center center;
+  background-size: cover; /* 이미지 꽉 채우기 */
 }
 
 @media (max-width: 767px) {
@@ -45,7 +45,9 @@
     width: 100%;
     background: black;
     border-top: 0;
-    margin-top: 5%;
+    margin-top: 2%;
+    background: url('../img/airstrip.JPG') no-repeat center center;
+    background-size: cover; /* 이미지 꽉 채우기 */
   }
   
 }

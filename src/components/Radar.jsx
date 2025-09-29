@@ -114,11 +114,11 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 const r = (distance / maxDistance) * maxRadius;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
-                ctx.fillStyle = "white";
+                ctx.fillStyle = "black";
                 ctx.font = "16px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "alphabetic";
@@ -137,7 +137,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgba(115, 255, 115, 0.5)'; // alpha 조정
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // alpha 조정
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -159,7 +159,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                     textY += isMobile ? (maxRadius * 0.01) : (displayText === -45 ? maxRadius * 0.025 : (displayText === -30 ? maxRadius * 0.027 : maxRadius * 0.03));
                 }
 
-                ctx.fillStyle = "white";
+                ctx.fillStyle = "black";
                 ctx.font = `14px Arial`; // 글자 크기도 canvas 비율로 조정
                 ctx.textAlign = displayText === 0 ? "center" : (displayText < 0 ? "left" : "right");
                 ctx.textBaseline = "middle";
@@ -170,7 +170,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             ctx.beginPath();
             ctx.arc(centerX, centerY, maxRadius, Math.PI, 0);
             ctx.setLineDash([]);
-            ctx.strokeStyle = 'rgba(115, 255, 115, 1)';
+            ctx.strokeStyle = '#000000';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import '../css/Video.css';
+import airstrip from '../img/airstrip.jpg'
 
 function Video() {
     const canvasRef = useRef(null); // 영상을 표시할 구역
@@ -53,7 +54,7 @@ function Video() {
             <div className="video_wrapper">
                 <canvas ref={canvasRef} className='video'></canvas> 
                 <span className="no_signal" style={{ display: hasSignal ? 'none' : 'block' }}>
-                    NO SIGNAL
+                    <img src={airstrip} style={{ height: '100%', width: "100%" }} />
                 </span>
             </div>
         </div>
