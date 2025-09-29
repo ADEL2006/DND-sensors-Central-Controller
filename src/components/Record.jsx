@@ -18,15 +18,15 @@ function Record({ dataArray, colors }) {
 
         const now = new Date(); // 현재 시각
         
-        // 기존 화면용 날짜
-        const timeStr = now.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
         // 서버용 날짜
         const dateStr = now.toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
         }).replace(/\.\s?/g, '-').replace(/-$/, '');
+
+        // 기존 화면용 시간
+        const timeStr = now.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
         const updatedMap = { ...recordMap }; // 기존 데이터 복사
 

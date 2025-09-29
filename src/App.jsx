@@ -44,7 +44,7 @@ export default function App() {
 
     useEffect(() => {
         if(!isSettingOpen) {
-            fetch('http://58.79.238.184:4000/ip/save', {
+            fetch('http://58.79.238.184:4000/ip/push', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: DND_500TIp

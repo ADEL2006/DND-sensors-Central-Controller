@@ -22,6 +22,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
     const [maxDistance, setMaxDistance] = useState(600); // 최대 사거리
     const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500, 600]); // 표시할 사거리
 
+
     // 화면 크기 변화에 따른 크기 재지정
     useEffect(() => {
         const handleResize = () => {
@@ -177,11 +178,13 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             // 감지 물체 정보 정리
             (dataRef.current || []).forEach(obj => {
                 if (animationSetting !== "on") toggleTrail.current = 0; // 애니메이션 설정이 on이 아니라면
+
                 const id = parseFloat(obj.id); // 타겟 번호
                 const distance = parseFloat(obj.d); // 거리
                 const angle = parseFloat(obj.a); // 각도
                 const angleDeg = angle * -1 + 90; // 표시에 사용할 각도값
-                const speed = parseFloat(obj.vy); // 속도
+                const vx = parseFloat(obj.vx); // vx
+                const speed = parseFloat(obj.vy); // 속도/vy
                 if (isNaN(angleDeg) || isNaN(distance)) return;
 
                 const angleRad = (angleDeg * Math.PI) / 180; // 각도를 라디안으로 변환
@@ -189,6 +192,15 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
                 const targetX = centerX + scaledR * Math.cos(angleRad); // X좌표
                 const targetY = centerY - scaledR * Math.sin(angleRad); // Y좌표
+
+                // 서버용 날짜
+                const dateStr = now.toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }).replace(/\.\s?/g, '-').replace(/-$/, '');
+                // 기존 화면용 시간
+                const timeStr = now.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
                 // 기존 값 없으면 초기화
                 if (!beforeCoordinate.current[id]) {
@@ -219,6 +231,29 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                         beforeCoordinate.current[id].lastUpdate = Date.now();
                     }
                 }
+                const data = {
+                    "id": id,
+                    "x": targetX,
+                    "y": targetY,
+                    "distance": distance,
+                    "angle": angle,
+                    "vx": vx,
+                    "vy": speed,
+                    "date": dateStr,
+                    "time": timeStr,
+                    "isFilter": !beforeCoordinate.current[id]
+                }
+                fetch('http://58.79.238.184:4000/data/push', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: data
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error('POST 실패');
+                        return res.json();
+                    })
+                    .then(data => console.log('서버 응답:', data))
+                    .catch(err => console.error('POST 요청 실패:', err));
             });
 
 
