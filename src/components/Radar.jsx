@@ -22,6 +22,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
     const [maxDistance, setMaxDistance] = useState(600); // 최대 사거리
     const [distanceSteps, setDistanceSteps] = useState([100, 200, 300, 400, 500, 600]); // 표시할 사거리
 
+    const isFiltered = useRef(false);
 
     // 화면 크기 변화에 따른 크기 재지정
     useEffect(() => {
@@ -56,7 +57,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
     // 선택 디바이스에 따른 최대 사거리/표시할 사거리 변경
     useEffect(() => {
-        if(device === "DND-500T") {
+        if (device === "DND-500T") {
             setMaxDistance(distance_500T);
             const step = distance_500T / 6;
             setDistanceSteps([step * 1, step * 2, step * 3, step * 4, step * 5, step * 6]);
@@ -85,7 +86,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             }
             resetTimer.current = null; // 타이머 종료 후 초기화
         }, 5000);
-
+        
         // cleanup
         return () => {
             if (resetTimer.current) clearTimeout(resetTimer.current);
@@ -97,7 +98,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
         const canvas = canvasRef.current; // 캔버스 지정
         if (!canvas) return;
         const ctx = canvas.getContext('2d'); // 2D환경 설정
-        
+
         let animationId; // ← 애니메이션 ID
 
         const centerX = canvas.width / 2; // 중앙 X좌표 위치 설정
@@ -115,16 +116,16 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 const r = (distance / maxDistance) * maxRadius;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, r, Math.PI, 0);
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
-                ctx.fillStyle = "black";
+                ctx.fillStyle = "white";
                 ctx.font = "16px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "alphabetic";
                 const offset = Number(distance) === Number(maxDistance) ? (isMobile ? 12 : 20) : 0;
-                ctx.fillText(`${distance.toFixed(2)}m`, centerX, centerY - r - offset-5); // 거리는 소수 둘째자리 수까지 표시
+                ctx.fillText(`${distance.toFixed(2)}m`, centerX, centerY - r - offset - 5); // 거리는 소수 둘째자리 수까지 표시
             });
 
             // 각도 표시
@@ -138,7 +139,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // alpha 조정
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; // alpha 조정
                 ctx.setLineDash([5, 3]);
                 ctx.stroke();
 
@@ -160,7 +161,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                     textY += isMobile ? (maxRadius * 0.01) : (displayText === -45 ? maxRadius * 0.025 : (displayText === -30 ? maxRadius * 0.027 : maxRadius * 0.03));
                 }
 
-                ctx.fillStyle = "black";
+                ctx.fillStyle = "white";
                 ctx.font = `14px Arial`; // 글자 크기도 canvas 비율로 조정
                 ctx.textAlign = displayText === 0 ? "center" : (displayText < 0 ? "left" : "right");
                 ctx.textBaseline = "middle";
@@ -171,7 +172,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             ctx.beginPath();
             ctx.arc(centerX, centerY, maxRadius, Math.PI, 0);
             ctx.setLineDash([]);
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
@@ -185,6 +186,10 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 const angleDeg = angle * -1 + 90; // 표시에 사용할 각도값
                 const vx = parseFloat(obj.vx); // vx
                 const speed = parseFloat(obj.vy); // 속도/vy
+
+                const x = parseFloat(obj.x);
+                const y = parseFloat(obj.y);
+
                 if (isNaN(angleDeg) || isNaN(distance)) return;
 
                 const angleRad = (angleDeg * Math.PI) / 180; // 각도를 라디안으로 변환
@@ -223,7 +228,8 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                     const dy = targetY - beforeCoordinate.current[id].y;
                     const movedDist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (movedDist <= noiseFilterLevel) {
+                    isFiltered.current = (movedDist <= noiseFilterLevel);
+                    if (isFiltered.current) {
                         beforeCoordinate.current[id].targetX = targetX;
                         beforeCoordinate.current[id].targetY = targetY;
                         beforeCoordinate.current[id].distance = distance;
@@ -232,29 +238,6 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                         beforeCoordinate.current[id].lastUpdate = Date.now();
                     }
                 }
-                const data = {
-                    "id": id,
-                    "x": targetX,
-                    "y": targetY,
-                    "distance": distance,
-                    "angle": angle,
-                    "vx": vx,
-                    "vy": speed,
-                    "date": dateStr,
-                    "time": timeStr,
-                    "isFilter": !beforeCoordinate.current[id]
-                }
-                fetch('http://58.79.238.184:4000/radar/data/push', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                })
-                    .then(res => {
-                        if (!res.ok) throw new Error('POST 실패');
-                        return res.json();
-                    })
-                    // .then(data => console.log('서버 응답:', data))
-                    .catch(err => console.error('POST 요청 실패:', err));
             });
 
             // 감지 물체 표시
@@ -271,19 +254,19 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
                 obj.x += (obj.targetX - obj.x) * 0.1;
                 obj.y += (obj.targetY - obj.y) * 0.1;
 
-                // // 이동 경로 기록
-                // obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
-
-                // //  10초 지난 경로 삭제
-                // obj.history = obj.history.filter(p => Date.now() - p.time <= 10000);
-
                 // 이동 경로 기록
-                obj.history.push({ x: obj.x, y: obj.y });
+                obj.history.push({ x: obj.x, y: obj.y, time: Date.now() });
 
-                // 최대 30개까지만 유지
-                if (obj.history.length > 30) {
-                    obj.history.shift();
-                }
+                //  10초 지난 경로 삭제
+                obj.history = obj.history.filter(p => Date.now() - p.time <= 10000);
+
+                // // 이동 경로 기록
+                // obj.history.push({ x: obj.x, y: obj.y });
+
+                // // 최대 30개까지만 유지
+                // if (obj.history.length > 30) {
+                //     obj.history.shift();
+                // }
 
                 // 경로 그리기
                 if (obj.history.length > 1) {
@@ -332,7 +315,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
 
             // 애니메이션 설정이 off가 아니라면 동작
-            if(animationSetting !== 'off') {
+            if (animationSetting !== 'off') {
                 if (!pulsePausedRef.current) {
                     const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리
                     const prevPulse = pulseRef.current;
