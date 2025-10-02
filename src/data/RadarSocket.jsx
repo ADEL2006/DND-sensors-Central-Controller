@@ -77,6 +77,7 @@ export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
                         retryTimeout.current = null;
                     }, 3000);
                 }
+                hasConnected.current = false;
             };
 
             ws.onerror = (e) => {

@@ -19,7 +19,7 @@
   width: 100%;
   background: black;
   border-top: 0;
-  background: url('../img/airstrip.JPG') no-repeat center center;
+  /* background: url('../img/airstrip.JPG') no-repeat center center; */
   background-size: cover; /* 이미지 꽉 채우기 */
 }
 
