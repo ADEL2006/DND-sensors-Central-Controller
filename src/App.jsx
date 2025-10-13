@@ -6,6 +6,7 @@ import Video from './components/Video';
 import Record from './components/Record';
 import './App.css';
 import setting from './img/setting.png'
+import { ServerSocket } from './data/ServerSocket';
 
 export default function App() {
     const [device, setDevice] = useState("DND-500T"); // 디바이스값
@@ -15,8 +16,8 @@ export default function App() {
     const [settingButtonTop, setSettingButtonTop] = useState("55px"); // 모바일용 설정 버튼 위치 조정
     const [isSettingOpen, setIsSettingOpen] = useState(false); // 설정창 오픈 여부
 
-    const [isPublic, setIsPublic] = useState(true); // 내/외부 아이피 사용 여부
     const [useDefaultIp, setUseDefaultIp] = useState(true); // 기본 아이피 사용 여부
+    const [isPublic, setIsPublic] = useState(true); // 내/외부 아이피 사용 여부
     const [displayIp, setDisplayIp] = useState("gray"); // 아이피 입력 설정 색상
     const [DND_500TIp, setDND_500TIp] = useState("ws://58.79.238.184:2001"); // 500T 아이피값
     const [DND_1000TIp, setDND_1000TIp] = useState("ws://58.79.238.184:2002"); // 1000T 아이피값
@@ -34,7 +35,8 @@ export default function App() {
     // const [displayCamera, setDisplayCamera] = useState("gray"); // 카메라 아이피 입력 설정 색상
     // const [cameraIP, setCameraIP] = useState("rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554"); // 카메라 아이피값
 
-    const { wsStatus, dataArray } = useRadarSocket(device, DND_500TIp, DND_1000TIp); // 센서와의 연결상태 / 데이터값
+    // const { wsStatus, dataArray } = useRadarSocket(device, DND_500TIp, DND_1000TIp); // 센서와의 연결상태 / 데이터값
+    const { wsStatus, dataArray } = ServerSocket(); // 센서와의 연결상태 / 데이터값
     const colors = useRef([]) // 색상 정보
 
     // 선택 디바이스 변경 토글
@@ -44,10 +46,24 @@ export default function App() {
 
     useEffect(() => {
         if(!isSettingOpen) {
-            fetch('http://58.79.238.184:4000/ip/push', {
+
+            const settingData = {
+                "id": 1,
+                "useDefaultIP": useDefaultIp,
+                "usePublicIp": isPublic,
+                "ip500T": DND_500TIp,
+                "ip1000T": DND_1000TIp,
+                "noiseFilterLevel": noiseFilterLevel,
+                "useDefaultDistance": useDefaultDistance,
+                "distance500T": distance_500T,
+                "distance1000T": distance_1000T,
+                "animationSetting": animationSetting
+            }
+
+            fetch('http://58.79.238.184:4000/setting/push', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: DND_500TIp
+                body: settingData
             })
                 .then(res => {
                     if (!res.ok) throw new Error('POST 실패');
