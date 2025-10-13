@@ -178,7 +178,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
             // 감지 물체 정보 정리
             (dataRef.current || []).forEach(obj => {
-                if (animationSetting !== "on") toggleTrail.current = 0; // 애니메이션 설정이 on이 아니라면
+                if (animationSetting !== 0) toggleTrail.current = 0; // 애니메이션 설정이 on이 아니라면
 
                 // const id = parseFloat(obj.id); // 타겟 번호
                 // const distance = parseFloat(obj.d); // 거리
@@ -323,7 +323,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
 
 
             // 애니메이션 설정이 off가 아니라면 동작
-            if (animationSetting !== 'off') {
+            if (animationSetting !== 2) {
                 if (!pulsePausedRef.current) {
                     const step = isMobile ? 2 : 6; // 한 프레임에 이동할 거리
                     const prevPulse = pulseRef.current;

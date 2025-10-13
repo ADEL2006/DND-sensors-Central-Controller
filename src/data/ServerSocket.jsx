@@ -37,7 +37,7 @@ export function ServerSocket() {
 
                 // 센서 연결 상태 받아오기
                 client.subscribe('/topic/socket/connecting', (message) => {
-                    const body = JSON.parse(message.body);
+                    const body = message.body;
                     setWsStatus(body);
                 });
             },
