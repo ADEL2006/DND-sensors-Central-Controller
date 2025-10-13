@@ -71,7 +71,7 @@ export default function App() {
     // 설정창 오픈/저장 토글
     function handleSettingToggle() {
         if (isSettingOpen) { // 설정창을 닫는 시점
-            // 서버로 값 전송
+            // 서버로 보냘 데이터 포맷
             const settingData = {
                 id: 1,
                 useDefaultIP: useDefaultIp,
@@ -82,11 +82,11 @@ export default function App() {
                 useDefaultDistance: useDefaultDistance,
                 distance500T: Number(distance_500T),
                 distance1000T: Number(distance_1000T),
-                // animationSetting: animationSetting === "on" ? 0 : (animationSetting === "default" ? 1 : 2)
                 animationSetting: animationSetting,
                 device: device
             };
 
+            // 서버로 데이터 전송
             fetch('http://58.79.238.184:4000/setting/push', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -118,11 +118,7 @@ export default function App() {
         console.log("애니메이션:", e.target.value);
         setAnimationSetting(e.target.value);
     }
-    // 기본 카메라 사용 토글
-    // function changeDefaultCameraIPToggle() {
-    //     setUseDefaultCamera(prev => !prev);
-    // }
-
+    
     // 기본 아이피 사용 여부가 변경될때
     useEffect(() => {
         if (!useDefaultIp) { // 기본 아이피 사용 안할때
@@ -217,7 +213,7 @@ export default function App() {
 
     useEffect(() => {
         if(blockFirstPush){
-            // 서버로 값 전송
+            // 서버로 보낼 데이터 포맷
             const settingData = {
                 id: 1,
                 useDefaultIP: useDefaultIp,
@@ -228,11 +224,11 @@ export default function App() {
                 useDefaultDistance: useDefaultDistance,
                 distance500T: Number(distance_500T),
                 distance1000T: Number(distance_1000T),
-                // animationSetting: animationSetting === "on" ? 0 : (animationSetting === "default" ? 1 : 2)
                 animationSetting: animationSetting,
                 device: device
             };
 
+            // 서버로 데이터 전송
             fetch('http://58.79.238.184:4000/setting/push', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },

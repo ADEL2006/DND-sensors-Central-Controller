@@ -67,7 +67,7 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             setDistanceSteps([step * 1, step * 2, step * 3, step * 4, step * 5, step * 6, step * 7, step * 8]);
         }
         resetRadar();
-    }, [device, distance_500T, distance_1000T])
+    }, [device, distance_500T, distance_1000T]);
 
     const resetTimer = useRef(null); // 타이머(리셋용)
     // 5초동안 데이터가 들어오지 않는다면 레이더 초기화

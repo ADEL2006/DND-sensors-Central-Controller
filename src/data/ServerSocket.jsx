@@ -4,9 +4,10 @@ import SockJS from 'sockjs-client';
 
 export function ServerSocket() {
     const [dataArray, setDataArray] = useState(null);
-    const [wsStatus, setWsStatus] = useState(null);
+    const [wsStatus, setWsStatus] = useState("Error");
     const clientRef = useRef(null);
 
+    // 센서 연결 상태 초깃값 호출
     useEffect(() => {
         fetch('http://58.79.238.184:4000/setting/wsStatus/get', {
             method: 'GET',
@@ -14,17 +15,17 @@ export function ServerSocket() {
         })
             .then(res => res.text())
             .then(data => {
-                setWsStatus(data); // 반드시 여기 안에서 호출
+                setWsStatus(data);
             })
             .catch(err => console.error(err));
     }, [])
 
+    // 소켓 연결
     useEffect(() => {
-        const socket = new SockJS('http://58.79.238.184:4000/ws');
+        const socket = new SockJS('http://58.79.238.184:4000/ws'); // 소켓 주소
         const client = new Client({
             webSocketFactory: () => socket,
             reconnectDelay: 5000, // 연결 끊기면 5초 후 자동 재연결
-            // debug: (str) => console.log('STOMP: ' + str),
             onConnect: () => {
                 console.log('Connected to WebSocket');
 
