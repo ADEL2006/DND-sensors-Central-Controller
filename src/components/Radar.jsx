@@ -180,12 +180,20 @@ function Radar({ wsStatus, dataArray, device, colors, noiseFilterLevel, distance
             (dataRef.current || []).forEach(obj => {
                 if (animationSetting !== "on") toggleTrail.current = 0; // 애니메이션 설정이 on이 아니라면
 
-                const id = parseFloat(obj.id); // 타겟 번호
-                const distance = parseFloat(obj.d); // 거리
-                const angle = parseFloat(obj.a); // 각도
+                // const id = parseFloat(obj.id); // 타겟 번호
+                // const distance = parseFloat(obj.d); // 거리
+                // const angle = parseFloat(obj.a); // 각도
+                // const angleDeg = angle * -1 + 90; // 표시에 사용할 각도값
+                // const speed = parseFloat(obj.vy); // 속도/vy
+
+                // const x = parseFloat(obj.x);
+                // const y = parseFloat(obj.y);
+
+                const id = parseFloat(obj.targetId); // 타겟 번호
+                const distance = parseFloat(obj.distance); // 거리
+                const angle = parseFloat(obj.angle); // 각도
                 const angleDeg = angle * -1 + 90; // 표시에 사용할 각도값
-                const vx = parseFloat(obj.vx); // vx
-                const speed = parseFloat(obj.vy); // 속도/vy
+                const speed = parseFloat(obj.speed).toFixed(2); // 속도/vy
 
                 const x = parseFloat(obj.x);
                 const y = parseFloat(obj.y);

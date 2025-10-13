@@ -22,9 +22,9 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
     // 데이터가 들어올때
     useEffect(() => {
         // 데이터가 존재한다면
-        if (dataArray.length > 0) {
+        if (dataArray && dataArray.length !== 0) {
             setSensorStatusColor("red");
-            setSensorStatus("침입자 탐지!")
+            setSensorStatus("침입자 탐지!");
         }
 
         // 기존 타이머가 있으면 취소

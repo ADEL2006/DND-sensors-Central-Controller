@@ -12,7 +12,7 @@ function Record({ dataArray, colors }) {
     };
 
     useEffect(() => {
-        if (!dataArray || dataArray.length === 0) return;
+        if (!dataArray) return;
 
         const now = new Date(); // 현재 시각
 
@@ -30,12 +30,13 @@ function Record({ dataArray, colors }) {
 
         // 서버 전송용 배열
         const dtoArray = dataArray.map(obj => {
-            const targetId = parseInt(obj.id, 10); // 타겟 번호
-            const distance = parseFloat(obj.d); // 거리
-            const angle = parseFloat(obj.a); // 각도
-            const vy = parseFloat(obj.vy); // 속도값 원본
-            const speed = Math.abs(vy); // 속도
-            const entry = vy < 0; // 접근 여부
+            const targetId = parseInt(obj.targetId, 10); // 타겟 번호
+            const distance = parseFloat(obj.distance); // 거리
+            const angle = parseFloat(obj.angle); // 각도
+            // const vy = parseFloat(obj.vy); // 속도값 원본
+            // const speed = Math.abs(vy); // 속도
+            const speed = parseFloat(obj.speed).toFixed(2);
+            const entry = Boolean(obj.entry); // 접근 여부
 
             // 화면용 HTML 업데이트
             const color = colors.current[targetId];
@@ -66,6 +67,7 @@ function Record({ dataArray, colors }) {
                 time: timeStr
             };
         });
+
         // 작성된 기록 포멧 저장
         setRecordMap(updatedMap);
 

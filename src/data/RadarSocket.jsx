@@ -104,6 +104,7 @@ export function useRadarSocket(device, DND_500TIp, DND_1000TIp) {
 
                     arr = arr.map(obj => ({ ...obj, a: obj.a ? parseFloat(obj.a).toString() : undefined }));
                     setDataArray(arr);
+                    console.log('Sensor Data:', arr);
                     setWsStatus("Connected");
                 } catch (err) {
                     console.error("Failed to parse message:", e.data, err);
