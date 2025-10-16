@@ -51,13 +51,12 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
     useEffect(() => {
         if (wsStatus === "Connected") {
             setConnectionStatusColor("lime");
-        } else {
+        } else if (wsStatus === "Error") {
             setConnectionStatusColor("red");
-            if(wsStatus === "Connection failed" && isMobile) {
-                setMarginBottom("35px")
-            } else {
-                setMarginBottom("20px")
-            }
+            setMarginBottom("20px")
+        } else {
+            setConnectionStatusColor("yellow")
+            setMarginBottom("20px")
         }
     }, [wsStatus]);
 
@@ -78,7 +77,7 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
                 </span>
                 <span className='detection_status_container'>
                     감지 상황: 
-                    <span style={{ color: sensorStatusColor }}>{sensorStatus}</span>
+                    <span style={{ color: sensorStatusColor }}> {sensorStatus}</span>
                 </span>
                 
             </h1>
