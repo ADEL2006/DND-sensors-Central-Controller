@@ -79,7 +79,6 @@ function MainTitle({ wsStatus, dataArray, device, setIsSettingOpen }) {
                     감지 상황: 
                     <span style={{ color: sensorStatusColor }}> {sensorStatus}</span>
                 </span>
-                
             </h1>
             {!isMobile && (<Guide setIsSettingOpen={setIsSettingOpen} sensorStatus={sensorStatus} wsStatus={wsStatus} />)}
         </div>

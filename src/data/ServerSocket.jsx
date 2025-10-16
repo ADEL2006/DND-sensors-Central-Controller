@@ -3,9 +3,9 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export function ServerSocket() {
-    const [dataArray, setDataArray] = useState(null);
-    const [wsStatus, setWsStatus] = useState("Error");
-    const clientRef = useRef(null);
+    const [dataArray, setDataArray] = useState(null);   // 감지 데이터
+    const [wsStatus, setWsStatus] = useState("Error");  // 센서 연결 상태
+    const clientRef = useRef(null);                     // 현재 연결중인 소켓 인스턴스 지정
 
     // 센서 연결 상태 초깃값 호출
     useEffect(() => {

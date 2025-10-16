@@ -205,13 +205,8 @@ export default function App() {
     }, [dataArray]);
 
     useEffect(() => {
-        if (wsStatus === "Connection failed" && isMobile) {
-            setSettingButtonTop("70px");
-            setDeviceTop("140px");
-        } else {
-            setSettingButtonTop("55px");
-            setDeviceTop("125px");
-        }
+        setSettingButtonTop("55px");
+        setDeviceTop("125px");
     }, [wsStatus])
 
     useEffect(() => {
