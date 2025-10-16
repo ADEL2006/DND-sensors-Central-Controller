@@ -33,6 +33,8 @@ export default function App() {
 
     const [animationSetting, setAnimationSetting] = useState("1"); // 애니메이션 표시 방식
 
+    const [videoURL, setVideoURL] = useState("rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554");
+
     // const { wsStatus, dataArray } = useRadarSocket(device, DND_500TIp, DND_1000TIp); // 센서와의 연결상태 / 데이터값
     const { wsStatus, dataArray } = ServerSocket(); // 센서와의 연결상태 / 데이터값
     const colors = useRef([]) // 색상 정보
@@ -83,7 +85,8 @@ export default function App() {
                 distance500T: Number(distance_500T),
                 distance1000T: Number(distance_1000T),
                 animationSetting: animationSetting,
-                device: device
+                device: device,
+                videoURL: videoURL
             };
 
             // 서버로 데이터 전송
@@ -267,7 +270,7 @@ export default function App() {
                                 </div>
                             </div>
                             <div className="setting_row">
-                                <span>외부 IP 사용(off시 내부 IP 사용)</span>
+                                <span style={{color: useDefaultIp ? "white" : "gray"}}>외부 IP 사용(off시 내부 IP 사용)</span>
                                 <div className="wrapper">
                                     <input type="checkbox" id="is_public" onChange={handlePublicSettingToggle} checked={isPublic} disabled={!useDefaultIp} />
                                     <label htmlFor="is_public" className="switch_label" >
@@ -316,20 +319,10 @@ export default function App() {
                                 </select>
                             </div>
 
-
-                            {/* <div className="setting_row">
-                                <span>기본 카메라 주소 사용</span>
-                                <div className="wrapper">
-                                    <input type="checkbox" id="use_default_camera" onChange={changeDefaultCameraIPToggle} checked={useDefaultCamera} disabled={!useDefaultIp} />
-                                    <label htmlFor="use_default_camera" className="switch_label" >
-                                        <span className="onf_btn"></span>
-                                    </label>
-                                </div>
+                            <div className="setting_row">
+                                <span>CCTV URL</span>
+                                <textarea className='ip_input' id='camera_ip_input' type='text' style={{ backgroundColor: "white" }} value={videoURL} onChange={(e) => setVideoURL(e.target.value)} />
                             </div>
-                            <div className="setting_row" style={{color: displayCamera}} >
-                                <span>연결할 카메라 주소</span>
-                                <input id='camera_ip_input' className='ip_input' type='text' readOnly={useDefaultCamera} style={{ backgroundColor: displayCamera }} value={cameraIP} onChange={(e) => setCameraIP(e.target.value)} />
-                            </div> */}
 
                             <button className='setting_close_button' onClick={handleSettingToggle}>
                                 완료

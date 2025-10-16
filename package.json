@@ -15,6 +15,7 @@
     "express": "^5.1.0",
     "jsmpeg": "^1.0.0",
     "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2",
     "node-rtsp-stream": "^0.0.9",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

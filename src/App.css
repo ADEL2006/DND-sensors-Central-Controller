@@ -93,7 +93,10 @@ html, body {
   border: 2px solid rgb(59, 59, 59);
 }
 #camera_ip_input{
-  width: 300px;
+  width: 350px;
+  height: 41px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
 }
 
 .setting_close_button {
