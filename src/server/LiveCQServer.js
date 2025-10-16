@@ -8,9 +8,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// LiveCQ 카메라 URL: rtsp://admin:Pp10293849pp%3F%3F@192.168.1.100:554
+// 한화 카메라 URL: rtsp://admin:Pp10293849pp%3F%3F@192.168.0.8:554/profile2/media.smp
+
 let stream; // 현재 실행 중인 스트림 인스턴스 저장
 
-// 🔹 스트림 시작 함수
+// 스트림 시작 함수
 function startStream(rtspUrl) {
   if (!rtspUrl) {
     console.error("RTSP URL이 비어 있습니다!");
@@ -59,10 +62,10 @@ async function fetchCameraUrlFromSpring() {
 // Node.js API (Spring에서 URL 변경 요청할 때 사용 가능)
 app.post("/video/set/url", (req, res) => {
   const { url } = req.body;
-  if (!url) return res.status(400).json({ message: "Missing RTSP URL" });
+  if (!url) return res.status(400).json("Missing RTSP URL");
 
   startStream(url);
-  res.json({ message: "Stream updated", url });
+  res.json(`Stream updated: ${url}`);
 });
 
 // 서버 시작 시 1회 실행
