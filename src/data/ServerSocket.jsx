@@ -3,12 +3,18 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export function ServerSocket() {
+    const blockAfterRequest = useRef(false);
+
     const [dataArray, setDataArray] = useState(null);   // 감지 데이터
     const [wsStatus, setWsStatus] = useState("Error");  // 센서 연결 상태
     const clientRef = useRef(null);                     // 현재 연결중인 소켓 인스턴스 지정
 
     // 센서 연결 상태 초깃값 호출
     useEffect(() => {
+        // 이미 한번 호출했다면 스킵
+        if(blockAfterRequest.current) return;
+        blockAfterRequest.current = true;
+        
         fetch('http://58.79.238.184:4000/setting/wsStatus/get', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
